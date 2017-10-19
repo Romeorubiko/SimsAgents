@@ -1,2 +1,2 @@
 # SimsAgents
-Bodigo jadex para los agentes que conllevará la practica de los sims (segunda parte)
+Código jadex para los agentes que conllevará la practica de los Sims (segunda parte)
