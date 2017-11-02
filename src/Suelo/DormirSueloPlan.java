@@ -41,7 +41,7 @@ public class DormirSueloPlan extends Plan {
 
         IMessageEvent respuesta = createMessageEvent("has_dormido_suelo");
         respuesta.setContent(content);
-
+        sendMessage(respuesta);
 
 
     }
