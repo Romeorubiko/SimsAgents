@@ -68,12 +68,13 @@ public class LeerLibroPlan extends Plan {
         }
 
         try {
-            wait(Accion.TIEMPO_LARGO);
+            wait(Accion.TIEMPO_MEDIO);
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
 
         IMessageEvent respuesta = createMessageEvent("libro_leido");
         respuesta.setContent(content);
+        sendMessage(respuesta);
     }
 }

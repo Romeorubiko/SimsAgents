@@ -1,0 +1,9 @@
+<agent name="Estanteria"
+       package="dormitorio.estanteria">
+    <plan name="LeerLibroPlan">
+        <body class="dormitorio.estanteria.LeerLibroPlan"/>
+        <trigger>
+            <messageevent ref="libro_leido"/>
+        </trigger>
+    </plan>
+</agent>
