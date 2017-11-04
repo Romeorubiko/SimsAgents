@@ -8,7 +8,7 @@ import jadex.runtime.*;
 
 public class Musica extends Concepto {
 
-	public enum TiposMusica {
+	private enum TiposMusica {
 		ROCK, POP, CLASICA
 	}
 
