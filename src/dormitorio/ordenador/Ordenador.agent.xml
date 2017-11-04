@@ -1,0 +1,29 @@
+<agent name="Ordenador"
+       package="dormitorio.ordenador">
+    <plan name="NavegarPorInternetPlan">
+        <body class="dormitorio.ordenador.NavegarPorInternetPlan"/>
+        <trigger>
+            <messageevent ref="request_navegar"/>
+        </trigger>
+    </plan>
+
+    <plan name="ChatearPlan">
+       <body class="dormitorio.ordenador.ChatearPlan"/>
+        <trigger>
+            <messageevent ref="request_chatear"/>
+        </trigger>
+    </plan>
+    <plan name="JugarPlan">
+        <body class="dormitorio.ordenador.JugarPlan"/>
+        <trigger>
+            <messageevent ref="request_jugar"/>
+        </trigger>
+    </plan>
+    <plan name="EscribirPlan">
+        <body class="dormitorio.ordenador.EscribirPlan"/>
+        <trigger>
+            <messageevent ref="request_escribir"/>
+        </trigger>
+    </plan>
+
+</agent>
