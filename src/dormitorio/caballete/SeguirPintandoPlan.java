@@ -49,6 +49,7 @@ public class SeguirPintandoPlan extends Plan {
                         incrementoPintura = Habilidad.HB_POCO;
                         incrementoRecurso = Necesidad.NC_POCO;
                         respuesta = createMessageEvent("cuadro_terminado");
+                        getBeliefbase().getBelief("cuadro_instalado").setFact(null);
                         break;
                     }
                     millis++;

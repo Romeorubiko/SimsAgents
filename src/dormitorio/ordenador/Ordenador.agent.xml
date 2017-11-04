@@ -1,31 +1,39 @@
 <agent name="Ordenador"
        package="dormitorio.ordenador">
+    <beliefs>
+        <belief name="obsolescencia" class="Integer">
+            <fact>new Integer(100)</fact>
+        </belief>
+        <belief name="sim_jugando" class="Boolean">
+            <fact>new Boolean(false)</fact>
+        </belief>
+    </beliefs>
     <plans>
-    <plan name="NavegarPorInternetPlan">
-        <body class="dormitorio.ordenador.NavegarPorInternetPlan"/>
-        <trigger>
-            <messageevent ref="request_navegar"/>
-        </trigger>
-    </plan>
+        <plan name="NavegarPorInternetPlan">
+            <body class="dormitorio.ordenador.NavegarPorInternetPlan"/>
+            <trigger>
+                <messageevent ref="request_navegar"/>
+            </trigger>
+        </plan>
 
-    <plan name="ChatearPlan">
-       <body class="dormitorio.ordenador.ChatearPlan"/>
-        <trigger>
-            <messageevent ref="request_chatear"/>
-        </trigger>
-    </plan>
-    <plan name="JugarPlan">
-        <body class="dormitorio.ordenador.JugarPlan"/>
-        <trigger>
-            <messageevent ref="request_jugar"/>
-        </trigger>
-    </plan>
-    <plan name="EscribirPlan">
-        <body class="dormitorio.ordenador.EscribirPlan"/>
-        <trigger>
-            <messageevent ref="request_escribir"/>
-        </trigger>
-    </plan>
+        <plan name="ChatearPlan">
+            <body class="dormitorio.ordenador.ChatearPlan"/>
+            <trigger>
+                <messageevent ref="request_chatear"/>
+            </trigger>
+        </plan>
+        <plan name="JugarVideojuegoPlan">
+            <body class="dormitorio.ordenador.JugarVideojuegoPlan"/>
+            <trigger>
+                <messageevent ref="request_jugar"/>
+            </trigger>
+        </plan>
+        <plan name="EscribirPlan">
+            <body class="dormitorio.ordenador.EscribirPlan"/>
+            <trigger>
+                <messageevent ref="request_escribir"/>
+            </trigger>
+        </plan>
     </plans>
     <events>
         <messageevent name="request_navegar" direction="receive" type="fipa">
@@ -74,6 +82,13 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+        </messageevent>
+
+        <messageevent name="aparato_estropeado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.AparatoEstropeadoJugar"/>
         </messageevent>
 
     </events>
