@@ -1,11 +1,13 @@
 <agent name="Estanteria"
        package="dormitorio.estanteria">
-    <plan name="LeerLibroPlan">
-        <body class="dormitorio.estanteria.LeerLibroPlan"/>
-        <trigger>
-            <messageevent ref="request_leer_libro"/>
-        </trigger>
-    </plan>
+    <plans>
+        <plan name="LeerLibroPlan">
+            <body class="dormitorio.estanteria.LeerLibroPlan"/>
+            <trigger>
+                <messageevent ref="request_leer_libro"/>
+            </trigger>
+        </plan>
+    </plans>
 
     <events>
         <messageevent name="request_leer_libro" direction="receive" type="fipa">
