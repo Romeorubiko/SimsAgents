@@ -28,5 +28,17 @@
         <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
     </parameter>
     </messageevent>
+
+    <messageevent name="request_foto_retrato" direction="receive" type="fipa">
+        <parameter name="performative" class="String" direction="fixed">
+            <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+        </parameter>
+    </messageevent>
+    <messageevent name="foto_retrato_realizada" direction="send" type="fipa">
+        <parameter name="performative" class="String" direction="fixed">
+            <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+        </parameter>
+    </messageevent>
+
 </events>
 </agent>
