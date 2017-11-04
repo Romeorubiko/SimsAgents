@@ -11,6 +11,12 @@ public class OrdenadorEstropeadoChatear extends Predicado {
     public OrdenadorEstropeadoChatear() {
     }
 
+    public OrdenadorEstropeadoChatear(Energia energia, InteraccionSocial interaccionSocial, Diversion diversion) {
+        this.energia = energia;
+        this.interaccionSocial = interaccionSocial;
+        this.diversion = diversion;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

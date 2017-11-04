@@ -10,6 +10,11 @@ public class OrdenadorEstropeadoNavegarInternet extends Predicado {
     public OrdenadorEstropeadoNavegarInternet() {
     }
 
+    public OrdenadorEstropeadoNavegarInternet(Energia energia, Diversion diversion) {
+        this.energia = energia;
+        this.diversion = diversion;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

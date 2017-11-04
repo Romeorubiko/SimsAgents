@@ -13,6 +13,7 @@ import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.InteraccionSocial;
 import ontologia.conceptos.necesidades.Necesidad;
+import ontologia.predicados.CamaraEstropeadaSacarFotoRetrato;
 
 public class SacarFotoRetratoPlan extends Plan {
     public SacarFotoRetratoPlan() {
@@ -24,49 +25,57 @@ public class SacarFotoRetratoPlan extends Plan {
         SacarFotoRetrato content = (SacarFotoRetrato) peticion.getContent();
 
         Retrato retrato = content.getRetrato();
-
         Diversion diversion = content.getDiversion();
         Energia energia = content.getEnergia();
         InteraccionSocial interaccionSocial = content.getInteraccionSocial();
         Fotografia fotografia = content.getFotografia();
 
-        if(retrato.getFotoSize()== Foto.FotoSize.LARGE && fotografia.getNivel()>=4){
+        // Disminuye en uno la cantidad de usos restantes hasta el deterioro de la cámara.
+        Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact() - 1;
 
-            diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-            content.setDiversion(diversion);
+        if (obsolescencia <= 0) {
+            IMessageEvent respuesta = createMessageEvent("camara_estropeada_sacar_foto_retrato");
+            CamaraEstropeadaSacarFotoRetrato camaraEstropeadaSacarFotoRetrato = new CamaraEstropeadaSacarFotoRetrato(energia, diversion, interaccionSocial, fotografia);
+            respuesta.setContent(camaraEstropeadaSacarFotoRetrato);
+            sendMessage(respuesta);
+        } else {
+            getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia);
 
-            energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-            content.setEnergia(energia);
+            if (retrato.getFotoSize() == Foto.FotoSize.LARGE && fotografia.getNivel() >= 4) {
+                diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
+                content.setDiversion(diversion);
 
-            interaccionSocial.setGrado(interaccionSocial.getGrado()+ Habilidad.HB_NORMAL);
-            content.setInteraccionSocial(interaccionSocial);
+                energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
+                content.setEnergia(energia);
 
-            fotografia.setExperiencia((fotografia.getExperiencia()+ Habilidad.HB_NORMAL));
-            content.setFotografia(fotografia);
+                interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
+                content.setInteraccionSocial(interaccionSocial);
+
+                fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
+                content.setFotografia(fotografia);
+            }
+            if ((retrato.getFiltro() == Foto.Filtro.SEPIA || retrato.getFiltro() == Foto.Filtro.VIGNETTE) && fotografia.getNivel() >= 3) {
+                diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
+                content.setDiversion(diversion);
+
+                energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
+                content.setEnergia(energia);
+
+                interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
+                content.setInteraccionSocial(interaccionSocial);
+
+                fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
+                content.setFotografia(fotografia);
+            }
+
+            try {
+                wait(Accion.TIEMPO_MEDIO);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+            IMessageEvent respuesta = createMessageEvent("foto_retrato_realizada");
+            respuesta.setContent(content);
+            sendMessage(respuesta);
         }
-        if((retrato.getFiltro()==Foto.Filtro.SEPIA || retrato.getFiltro()==Foto.Filtro.VIGNETTE) && fotografia.getNivel()>=3){
-
-            diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-            content.setDiversion(diversion);
-
-            energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-            content.setEnergia(energia);
-
-            interaccionSocial.setGrado(interaccionSocial.getGrado()+ Habilidad.HB_NORMAL);
-            content.setInteraccionSocial(interaccionSocial);
-
-            fotografia.setExperiencia((fotografia.getExperiencia()+ Habilidad.HB_NORMAL));
-            content.setFotografia(fotografia);
-        }
-
-        try {
-            wait(Accion.TIEMPO_MEDIO);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
-        IMessageEvent respuesta = createMessageEvent("foto_retrato_realizada");
-        respuesta.setContent(content);
-        sendMessage(respuesta);
-
     }
 }

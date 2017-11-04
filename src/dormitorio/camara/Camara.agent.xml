@@ -1,44 +1,63 @@
 <agent name="Camara"
        package="dormitorio.camara">
-<plans>
-    <plan name="SacarFotoPlan">
-        <body class="dormitorio.camara.SacarFotoPlan"/>
-        <trigger>
-            <messageevent ref="request_foto"/>
-        </trigger>
-    </plan>
+
+    <beliefs>
+        <belief name="obsolescencia" class="Integer">
+            <fact>new Integer(100)</fact>
+        </belief>
+    </beliefs>
+    <plans>
+        <plan name="SacarFotoPlan">
+            <body class="dormitorio.camara.SacarFotoPlan"/>
+            <trigger>
+                <messageevent ref="request_foto"/>
+            </trigger>
+        </plan>
 
 
-    <plan name="SacarFotoRetratoPlan">
-        <body class="dormitorio.camara.SacarFotoRetratoPlan"/>
-        <trigger>
-            <messageevent ref="request_foto_retrato"/>
-        </trigger>
-    </plan>
+        <plan name="SacarFotoRetratoPlan">
+            <body class="dormitorio.camara.SacarFotoRetratoPlan"/>
+            <trigger>
+                <messageevent ref="request_foto_retrato"/>
+            </trigger>
+        </plan>
 
-</plans>
-<events>
-    <messageevent name="request_foto" direction="receive" type="fipa">
-        <parameter name="performative" class="String" direction="fixed">
-            <value>jadex.adapter.fipa.SFipa.REQUEST</value>
-        </parameter>
-    </messageevent>
-    <messageevent name="foto_realizada" direction="send" type="fipa">
-    <parameter name="performative" class="String" direction="fixed">
-        <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
-    </parameter>
-    </messageevent>
+    </plans>
+    <events>
+        <messageevent name="request_foto" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="foto_realizada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+        </messageevent>
 
-    <messageevent name="request_foto_retrato" direction="receive" type="fipa">
-        <parameter name="performative" class="String" direction="fixed">
-            <value>jadex.adapter.fipa.SFipa.REQUEST</value>
-        </parameter>
-    </messageevent>
-    <messageevent name="foto_retrato_realizada" direction="send" type="fipa">
-        <parameter name="performative" class="String" direction="fixed">
-            <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
-        </parameter>
-    </messageevent>
+        <messageevent name="request_foto_retrato" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="foto_retrato_realizada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+        </messageevent>
 
-</events>
+        <messageevent name="camara_estropeada_sacar_foto" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.CamaraEstropeadaSacarFoto"/>
+        </messageevent>
+
+        <messageevent name="camara_estropeada_sacar_foto_retrato" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.CamaraEstropeadaSacarFotoRetrato"/>
+        </messageevent>
+    </events>
 </agent>

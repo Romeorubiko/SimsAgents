@@ -91,5 +91,25 @@
             <parameter name="content" class="ontologia.predicados.AparatoEstropeadoJugar"/>
         </messageevent>
 
+        <messageevent name="ordenador_estropeado_chatear" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.OrdenadorEstropeadoChatear"/>
+        </messageevent>
+
+        <messageevent name="ordenador_estropeado_escribir" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.OrdenadorEstropeadoEscribir"/>
+        </messageevent>
+
+        <messageevent name="ordenador_estropeado_navegar_internet" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.OrdenadorEstropeadoNavegarInternet"/>
+        </messageevent>
     </events>
 </agent>

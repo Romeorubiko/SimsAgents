@@ -8,6 +8,7 @@ import ontologia.acciones.NavegarPorInternet;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Necesidad;
+import ontologia.predicados.OrdenadorEstropeadoNavegarInternet;
 
 public class NavegarPorInternetPlan extends Plan {
     public NavegarPorInternetPlan() {
@@ -16,14 +17,26 @@ public class NavegarPorInternetPlan extends Plan {
 
     @Override
     public void body() {
-            RMessageEvent peticion = ((RMessageEvent) getInitialEvent());
-            NavegarPorInternet content = (NavegarPorInternet) peticion.getContent();
+        RMessageEvent peticion = ((RMessageEvent) getInitialEvent());
+        NavegarPorInternet content = (NavegarPorInternet) peticion.getContent();
 
-            Energia energia = content.getEnergia();
+        Energia energia = content.getEnergia();
+        Diversion diversion = content.getDiversion();
+
+        // Disminuye en uno la cantidad de usos restantes hasta el deterioro del ordenador.
+        Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact() - 1;
+
+        if (obsolescencia <= 0) {
+            IMessageEvent respuesta = createMessageEvent("ordenador_estropeado_navegar_internet");
+            OrdenadorEstropeadoNavegarInternet ordenadorEstropeadoNavegarInternet = new OrdenadorEstropeadoNavegarInternet();
+            respuesta.setContent(ordenadorEstropeadoNavegarInternet);
+            sendMessage(respuesta);
+        } else {
+            getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia);
+
             energia.setGrado(energia.getGrado() - Necesidad.NC_POCO);
             content.setEnergia(energia);
 
-            Diversion diversion = content.getDiversion();
             diversion.setGrado(diversion.getGrado() + Necesidad.NC_NORMAL);
             content.setDiversion(diversion);
 
@@ -35,6 +48,6 @@ public class NavegarPorInternetPlan extends Plan {
             IMessageEvent respuesta = createMessageEvent("navegacion_por_internet_realizada");
             respuesta.setContent(content);
             sendMessage(respuesta);
-
+        }
     }
 }
