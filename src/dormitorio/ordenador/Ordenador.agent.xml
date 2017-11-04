@@ -1,5 +1,6 @@
 <agent name="Ordenador"
        package="dormitorio.ordenador">
+    <plans>
     <plan name="NavegarPorInternetPlan">
         <body class="dormitorio.ordenador.NavegarPorInternetPlan"/>
         <trigger>
@@ -25,5 +26,6 @@
             <messageevent ref="request_escribir"/>
         </trigger>
     </plan>
+    </plans>
 
 </agent>

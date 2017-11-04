@@ -1,0 +1,17 @@
+<agent name="Camara"
+       package="dormitorio.camara">
+<plans>
+    <plan name="SacarFotoPlan">
+        <body class="dormitorio.camara.SacarFotoPlan"/>
+        <trigger>
+            <messageevent ref="request_foto"/>
+        </trigger>
+    </plan>
+    <plan name="SacarFotoRetratoPlan">
+        <body class="dormitorio.camara.SacarFotoRetratoPlan"/>
+        <trigger>
+            <messageevent ref="request_foto_retrato"/>
+        </trigger>
+    </plan>
+</plans>
+</agent>
