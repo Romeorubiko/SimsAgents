@@ -3,7 +3,25 @@
     <plan name="LeerLibroPlan">
         <body class="dormitorio.estanteria.LeerLibroPlan"/>
         <trigger>
-            <messageevent ref="libro_leido"/>
+            <messageevent ref="request_leer_libro"/>
         </trigger>
     </plan>
+
+    <events>
+        <messageevent name="request_leer_libro" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="libro_leido" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="libro_terminado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+        </messageevent>
+    </events>
 </agent>

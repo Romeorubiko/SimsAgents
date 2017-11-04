@@ -1,6 +1,9 @@
 package ontologia.conceptos;
 
-import ontologia.Concepto; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Concepto;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
+import ontologia.conceptos.*;
 import jadex.runtime.*;
 
 public class Libro extends Concepto {
@@ -10,8 +13,10 @@ public class Libro extends Concepto {
     }
 
     private GenerosLiterarios genero;
+    private int tiempoLectura;
 
     public Libro() {
+        tiempoLectura = 4500;
     }
 
     public GenerosLiterarios getGenero() {
@@ -20,5 +25,13 @@ public class Libro extends Concepto {
 
     public void setGenero(GenerosLiterarios genero) {
         this.genero = genero;
+    }
+
+    public int getTiempoLectura() {
+        return tiempoLectura;
+    }
+
+    public void setTiempoLectura(int tiempoLectura) {
+        this.tiempoLectura = tiempoLectura;
     }
 }
