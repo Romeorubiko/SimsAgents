@@ -19,6 +19,9 @@ public class PintarNuevoCuadroPlan extends Plan {
     private Energia energia;
     private Pintura pintura;
 
+    public PintarNuevoCuadroPlan() {
+    }
+
     @Override
     public void body() {
         RMessageEvent peticion = ((RMessageEvent) getInitialEvent());
