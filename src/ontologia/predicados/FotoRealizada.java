@@ -11,6 +11,12 @@ public class FotoRealizada extends Predicado {
     public FotoRealizada() {
     }
 
+    public FotoRealizada(Energia energia, Diversion diversion, Fotografia fotografia) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.fotografia = fotografia;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

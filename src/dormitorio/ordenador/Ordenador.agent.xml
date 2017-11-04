@@ -40,48 +40,62 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
+            <parameter name="content" class="ontologia.acciones.NavegarPorInternet"/>
         </messageevent>
 
         <messageevent name="navegacion_por_internet_realizada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+            <parameter name="content" class="ontologia.predicados.NavegacionPorInternetRealizada"/>
+
         </messageevent>
 
         <messageevent name="request_chatear" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
+            <parameter name="content" class="ontologia.acciones.Chatear"/>
+
         </messageevent>
 
         <messageevent name="chat_finalizado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+            <parameter name="content" class="ontologia.predicados.ChatFinalizado"/>
+
         </messageevent>
 
         <messageevent name="request_jugar" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
+            <parameter name="content" class="ontologia.acciones.JugarVideojuego"/>
+
         </messageevent>
 
         <messageevent name="juego_finalizado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+            <parameter name="content" class="ontologia.predicados.JuegoFinalizado"/>
         </messageevent>
 
         <messageevent name="request_escribir" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
+            <parameter name="content" class="ontologia.acciones.Escribir"/>
+
         </messageevent>
 
         <messageevent name="escritura_realizada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+            <parameter name="content" class="ontologia.predicados.EscrituraRealizada"/>
+
         </messageevent>
 
         <messageevent name="aparato_estropeado" direction="send" type="fipa">

@@ -14,16 +14,20 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
+            <parameter name="content" class="ontologia.acciones.LeerLibro"/>
         </messageevent>
         <messageevent name="libro_leido" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+            <parameter name="content" class="ontologia.predicados.LibroLeido"/>
+
         </messageevent>
         <messageevent name="libro_terminado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+            <parameter name="content" class="ontologia.predicados.LibroTerminado"/>
         </messageevent>
     </events>
 </agent>

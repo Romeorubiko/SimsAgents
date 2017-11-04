@@ -11,6 +11,7 @@ import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.OrdenadorEstropeadoEscribir;
+import ontologia.predicados.EscrituraRealizada;
 
 public class EscribirPlan extends Plan {
     public EscribirPlan() {
@@ -52,12 +53,10 @@ public class EscribirPlan extends Plan {
             }
 
             IMessageEvent respuesta = createMessageEvent("escritura_realizada");
-            respuesta.setContent(content);
-
+            EscrituraRealizada escrituraRealizada = new EscrituraRealizada(energia, diversion, escritura);
+            respuesta.setContent(escrituraRealizada);
             sendMessage(respuesta);
-
         }
-
-
     }
 }
+

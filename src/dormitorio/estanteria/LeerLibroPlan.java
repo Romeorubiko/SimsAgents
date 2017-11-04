@@ -8,6 +8,8 @@ import ontologia.acciones.LeerLibro;
 import ontologia.conceptos.Libro;
 import ontologia.conceptos.habilidades.*;
 import ontologia.conceptos.necesidades.*;
+import ontologia.predicados.LibroLeido;
+import ontologia.predicados.LibroTerminado;
 
 public class LeerLibroPlan extends Plan {
 
@@ -28,6 +30,8 @@ public class LeerLibroPlan extends Plan {
         int incrementoDiversion = Necesidad.NC_NORMAL;
 
         IMessageEvent respuesta = createMessageEvent("libro_leido");
+        LibroLeido libroLeido= new LibroLeido(energia,diversion,habilidad);
+        respuesta.setContent(libroLeido);
 
         /*
          * La cantidad de recursos y habilidades modificadas depende del tiempo que se haya estado leyendo el libro, de
@@ -43,6 +47,8 @@ public class LeerLibroPlan extends Plan {
                     incrementoHabilidad = Habilidad.HB_POCO;
                     incrementoDiversion = Necesidad.NC_POCO;
                     respuesta = createMessageEvent("libro_terminado");
+                    LibroTerminado libroTerminado= new LibroTerminado(energia,diversion,habilidad);
+                    respuesta.setContent(libroTerminado);
                     break;
                 }
                 millis++;

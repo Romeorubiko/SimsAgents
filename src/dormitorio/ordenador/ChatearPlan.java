@@ -10,6 +10,7 @@ import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.InteraccionSocial;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.OrdenadorEstropeadoChatear;
+import ontologia.predicados.ChatFinalizado;
 
 public class ChatearPlan extends Plan {
     public ChatearPlan() {
@@ -27,8 +28,9 @@ public class ChatearPlan extends Plan {
         // Disminuye en uno la cantidad de usos restantes hasta el deterioro del ordenador.
         Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact() - 1;
 
+        IMessageEvent respuesta;
         if (obsolescencia <= 0) {
-            IMessageEvent respuesta = createMessageEvent("ordenador_estropeado_chatear");
+            respuesta = createMessageEvent("ordenador_estropeado_chatear");
             OrdenadorEstropeadoChatear ordenadorEstropeadoChatear = new OrdenadorEstropeadoChatear(energia, interaccionSocial, diversion);
             respuesta.setContent(ordenadorEstropeadoChatear);
             sendMessage(respuesta);
@@ -49,7 +51,17 @@ public class ChatearPlan extends Plan {
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
             }
-            IMessageEvent respuesta = createMessageEvent("chat_finalizado");
+            respuesta = createMessageEvent("chat_finalizado");
+            ChatFinalizado chatFinalizado = new ChatFinalizado(energia, interaccionSocial, diversion);
+            respuesta.setContent(chatFinalizado);
+            sendMessage(respuesta);
+
+            try {
+                wait(Accion.TIEMPO_MEDIO);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+            respuesta = createMessageEvent("chat_finalizado");
             respuesta.setContent(content);
             sendMessage(respuesta);
         }

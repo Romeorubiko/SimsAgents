@@ -12,6 +12,7 @@ import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.AparatoEstropeadoJugar;
+import ontologia.predicados.JuegoFinalizado;
 
 public class JugarVideojuegoPlan extends Plan {
     public JugarVideojuegoPlan() {
@@ -60,9 +61,10 @@ public class JugarVideojuegoPlan extends Plan {
             }
 
             IMessageEvent respuesta = createMessageEvent("juego_finalizado");
-            respuesta.setContent(content);
-
+            JuegoFinalizado juegoFinalizado = new JuegoFinalizado(energia, diversion, logica);
+            respuesta.setContent(juegoFinalizado);
             sendMessage(respuesta);
+
 
         }
 

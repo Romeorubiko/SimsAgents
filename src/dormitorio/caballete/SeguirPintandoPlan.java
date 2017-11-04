@@ -11,6 +11,8 @@ import ontologia.conceptos.habilidades.Pintura;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Necesidad;
+import ontologia.predicados.CuadroPintado;
+import ontologia.predicados.CuadroTerminado;
 
 public class SeguirPintandoPlan extends Plan {
     private SeguirPintando content;
@@ -39,7 +41,8 @@ public class SeguirPintandoPlan extends Plan {
             int incrementoRecurso = Necesidad.NC_NORMAL;
 
             IMessageEvent respuesta = createMessageEvent("cuadro_pintado");
-
+            CuadroPintado cuadroPintado = new CuadroPintado(energia,diversion,pintura);
+            respuesta.setContent(cuadroPintado);
             try {
                 int millis = 0;
                 while (millis < Accion.TIEMPO_MEDIO) {
@@ -49,6 +52,8 @@ public class SeguirPintandoPlan extends Plan {
                         incrementoPintura = Habilidad.HB_POCO;
                         incrementoRecurso = Necesidad.NC_POCO;
                         respuesta = createMessageEvent("cuadro_terminado");
+                        CuadroTerminado cuadroTerminado= new CuadroTerminado(energia,diversion,pintura);
+                        respuesta.setContent(cuadroTerminado);
                         getBeliefbase().getBelief("cuadro_instalado").setFact(null);
                         break;
                     }

@@ -14,7 +14,6 @@
             </trigger>
         </plan>
 
-
         <plan name="SacarFotoRetratoPlan">
             <body class="dormitorio.camara.SacarFotoRetratoPlan"/>
             <trigger>
@@ -28,22 +27,26 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
+            <parameter name="content" class="ontologia.acciones.SacarFoto"/>
         </messageevent>
         <messageevent name="foto_realizada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+            <parameter name="content" class="ontologia.predicados.FotoRealizada"/>
         </messageevent>
 
         <messageevent name="request_foto_retrato" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
+            <parameter name="content" class="ontologia.acciones.SacarFotoRetrato"/>
         </messageevent>
         <messageevent name="foto_retrato_realizada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+            <parameter name="content" class="ontologia.predicados.FotoRealizada"/>
         </messageevent>
 
         <messageevent name="camara_estropeada_sacar_foto" direction="send" type="fipa">

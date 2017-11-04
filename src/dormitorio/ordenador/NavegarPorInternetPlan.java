@@ -9,6 +9,7 @@ import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.OrdenadorEstropeadoNavegarInternet;
+import ontologia.predicados.NavegacionPorInternetRealizada;
 
 public class NavegarPorInternetPlan extends Plan {
     public NavegarPorInternetPlan() {
@@ -46,8 +47,10 @@ public class NavegarPorInternetPlan extends Plan {
                 e1.printStackTrace();
             }
             IMessageEvent respuesta = createMessageEvent("navegacion_por_internet_realizada");
-            respuesta.setContent(content);
+            NavegacionPorInternetRealizada navegacionPorInternetRealizada = new NavegacionPorInternetRealizada(energia, diversion);
+            respuesta.setContent(navegacionPorInternetRealizada);
             sendMessage(respuesta);
+
         }
     }
 }

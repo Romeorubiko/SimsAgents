@@ -24,21 +24,26 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
+            <parameter name="content" class="ontologia.acciones.PintarNuevoCuadro"/>
         </messageevent>
         <messageevent name="request_seguir_pintando" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
+            <parameter name="content" class="ontologia.acciones.SeguirPintando"/>
         </messageevent>
         <messageevent name="cuadro_pintado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+            <parameter name="content" class="ontologia.predicados.CuadroPintado"/>
+
         </messageevent>
         <messageevent name="cuadro_terminado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
+            <parameter name="content" class="ontologia.predicados.CuadroTerminado"/>
         </messageevent>
     </events>
 </agent>

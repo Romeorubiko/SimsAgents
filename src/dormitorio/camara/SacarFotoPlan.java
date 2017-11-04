@@ -11,6 +11,7 @@ import ontologia.conceptos.habilidades.Habilidad;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Necesidad;
+import ontologia.predicados.FotoRealizada;
 import ontologia.predicados.CamaraEstropeadaSacarFoto;
 
 public class SacarFotoPlan extends Plan {
@@ -42,6 +43,9 @@ public class SacarFotoPlan extends Plan {
                 energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
                 content.setEnergia(energia);
 
+                diversion.setGrado(diversion.getGrado() + Necesidad.NC_NORMAL);
+                content.setDiversion(diversion);
+
                 fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
                 content.setFotografia(fotografia);
             }
@@ -49,12 +53,18 @@ public class SacarFotoPlan extends Plan {
                 energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
                 content.setEnergia(energia);
 
+                diversion.setGrado(diversion.getGrado() + Necesidad.NC_NORMAL);
+                content.setDiversion(diversion);
+
                 fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
                 content.setFotografia(fotografia);
             }
             if ((foto.getFiltro() == Foto.Filtro.SEPIA || foto.getFiltro() == Foto.Filtro.VIGNETTE) && fotografia.getNivel() >= 3) {
                 energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
                 content.setEnergia(energia);
+
+                diversion.setGrado(diversion.getGrado() + Necesidad.NC_NORMAL);
+                content.setDiversion(diversion);
 
                 fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
                 content.setFotografia(fotografia);
@@ -66,8 +76,10 @@ public class SacarFotoPlan extends Plan {
                 e1.printStackTrace();
             }
             IMessageEvent respuesta = createMessageEvent("foto_realizada");
-            respuesta.setContent(content);
+            FotoRealizada fotoRealizada = new FotoRealizada(energia, diversion, fotografia);
+            respuesta.setContent(fotoRealizada);
             sendMessage(respuesta);
+
         }
     }
 }

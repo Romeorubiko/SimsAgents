@@ -14,6 +14,7 @@ import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.InteraccionSocial;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.CamaraEstropeadaSacarFotoRetrato;
+import ontologia.predicados.FotoRealizada;
 
 public class SacarFotoRetratoPlan extends Plan {
     public SacarFotoRetratoPlan() {
@@ -73,9 +74,11 @@ public class SacarFotoRetratoPlan extends Plan {
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
             }
-            IMessageEvent respuesta = createMessageEvent("foto_retrato_realizada");
-            respuesta.setContent(content);
+            IMessageEvent respuesta = createMessageEvent("foto_realizada");
+            FotoRealizada fotoRealizada = new FotoRealizada(energia, diversion, fotografia);
+            respuesta.setContent(fotoRealizada);
             sendMessage(respuesta);
+
         }
     }
 }
