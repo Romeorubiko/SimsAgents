@@ -12,7 +12,7 @@ public class Musica extends Concepto {
 		ROCK, POP, CLASICA
 	}
 
-	private TiposMusica tipo;
+	public TiposMusica tipo;
 
 	public Musica() {
 		;
