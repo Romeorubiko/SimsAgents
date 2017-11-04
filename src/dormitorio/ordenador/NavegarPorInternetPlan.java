@@ -32,7 +32,7 @@ public class NavegarPorInternetPlan extends Plan {
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
             }
-            IMessageEvent respuesta = createMessageEvent("Navegacion por internet realizada");
+            IMessageEvent respuesta = createMessageEvent("navegacion_por_internet_realizada");
             respuesta.setContent(content);
             sendMessage(respuesta);
 

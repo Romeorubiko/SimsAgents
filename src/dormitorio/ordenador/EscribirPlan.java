@@ -39,7 +39,7 @@ public class EscribirPlan extends Plan {
             e1.printStackTrace();
         }
 
-        IMessageEvent respuesta = createMessageEvent("escritura_finalizada");
+        IMessageEvent respuesta = createMessageEvent("escritura_realizada");
         respuesta.setContent(content);
 
         sendMessage(respuesta);
