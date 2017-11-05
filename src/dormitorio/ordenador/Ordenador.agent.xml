@@ -1,4 +1,8 @@
-<agent name="Ordenador"
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="Ordenador"
        package="dormitorio.ordenador">
     <beliefs>
         <belief name="obsolescencia" class="Integer">

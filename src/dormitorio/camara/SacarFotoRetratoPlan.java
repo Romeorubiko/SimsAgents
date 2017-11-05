@@ -1,5 +1,6 @@
 package dormitorio.camara;
 
+import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
@@ -42,43 +43,49 @@ public class SacarFotoRetratoPlan extends Plan {
         } else {
             getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia);
 
-            if (retrato.getFotoSize() == Foto.FotoSize.LARGE && fotografia.getNivel() >= 4) {
-                diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-                content.setDiversion(diversion);
+            IMessageEvent posar = createMessageEvent("posar");
+            IMessageEvent respuestaOtroSim = sendMessageAndWait(posar);
+            if (respuestaOtroSim.getParameter("performative").getValue().equals(SFipa.AGREE)) {
+                if (retrato.getFotoSize() == Foto.FotoSize.LARGE && fotografia.getNivel() >= 4) {
+                    diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
+                    content.setDiversion(diversion);
 
-                energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-                content.setEnergia(energia);
+                    energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
+                    content.setEnergia(energia);
 
-                interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
-                content.setInteraccionSocial(interaccionSocial);
+                    interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
+                    content.setInteraccionSocial(interaccionSocial);
 
-                fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
-                content.setFotografia(fotografia);
+                    fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
+                    content.setFotografia(fotografia);
+                }
+                if ((retrato.getFiltro() == Foto.Filtro.SEPIA || retrato.getFiltro() == Foto.Filtro.VIGNETTE) && fotografia.getNivel() >= 3) {
+                    diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
+                    content.setDiversion(diversion);
+
+                    energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
+                    content.setEnergia(energia);
+
+                    interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
+                    content.setInteraccionSocial(interaccionSocial);
+
+                    fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
+                    content.setFotografia(fotografia);
+                }
+
+                try {
+                    wait(Accion.TIEMPO_MEDIO);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+                IMessageEvent respuesta = createMessageEvent("foto_realizada");
+                FotoRealizada fotoRealizada = new FotoRealizada(energia, diversion, fotografia);
+                respuesta.setContent(fotoRealizada);
+                sendMessage(respuesta);
+            } else {
+                IMessageEvent refuse = createMessageEvent("sim_no_posa");
+                sendMessage(refuse);
             }
-            if ((retrato.getFiltro() == Foto.Filtro.SEPIA || retrato.getFiltro() == Foto.Filtro.VIGNETTE) && fotografia.getNivel() >= 3) {
-                diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-                content.setDiversion(diversion);
-
-                energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-                content.setEnergia(energia);
-
-                interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
-                content.setInteraccionSocial(interaccionSocial);
-
-                fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
-                content.setFotografia(fotografia);
-            }
-
-            try {
-                wait(Accion.TIEMPO_MEDIO);
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
-            IMessageEvent respuesta = createMessageEvent("foto_realizada");
-            FotoRealizada fotoRealizada = new FotoRealizada(energia, diversion, fotografia);
-            respuesta.setContent(fotoRealizada);
-            sendMessage(respuesta);
-
         }
     }
 }

@@ -1,4 +1,8 @@
-<agent name="Camara"
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="Camara"
        package="dormitorio.camara">
 
     <beliefs>
@@ -61,6 +65,17 @@
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
             <parameter name="content" class="ontologia.predicados.CamaraEstropeadaSacarFotoRetrato"/>
+        </messageevent>
+        <messageevent name="posar" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.Posar"/>
+        </messageevent>
+        <messageevent name="sim_no_posa" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
         </messageevent>
     </events>
 </agent>

@@ -1,5 +1,13 @@
-<agent name="Caballete"
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="Caballete"
        package="dormitorio.caballete">
+
+    <beliefs>
+        <belief name="cuadro_instalado" class="src.ontologia.conceptos.Cuadro"/>
+    </beliefs>
     <plans>
         <plan name="PintarNuevoCuadroPlan">
             <body class="dormitorio.caballete.PintarNuevoCuadroPlan"/>
@@ -14,10 +22,6 @@
             </trigger>
         </plan>
     </plans>
-
-    <beliefs>
-        <belief name="cuadro_instalado" class="Cuadro"/>
-    </beliefs>
 
     <events>
         <messageevent name="request_pintar_nuevo_cuadro" direction="receive" type="fipa">
