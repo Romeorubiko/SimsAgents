@@ -55,15 +55,6 @@ public class ChatearPlan extends Plan {
             ChatFinalizado chatFinalizado = new ChatFinalizado(energia, interaccionSocial, diversion);
             respuesta.setContent(chatFinalizado);
             sendMessage(respuesta);
-
-            try {
-                wait(Accion.TIEMPO_MEDIO);
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
-            respuesta = createMessageEvent("chat_finalizado");
-            respuesta.setContent(content);
-            sendMessage(respuesta);
         }
     }
 }
