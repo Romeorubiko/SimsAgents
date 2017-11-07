@@ -10,6 +10,12 @@ public class JuegoFinalizado extends Predicado {
     public JuegoFinalizado() {
     }
 
+    public JuegoFinalizado(Energia energia, Diversion diversion, Logica logica) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.logica = logica;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

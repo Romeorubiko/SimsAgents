@@ -1,0 +1,37 @@
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="Estanteria"
+       package="dormitorio.estanteria">
+    <plans>
+        <plan name="LeerLibroPlan">
+            <body class="dormitorio.estanteria.LeerLibroPlan"/>
+            <trigger>
+                <messageevent ref="request_leer_libro"/>
+            </trigger>
+        </plan>
+    </plans>
+
+    <events>
+        <messageevent name="request_leer_libro" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.LeerLibro"/>
+        </messageevent>
+        <messageevent name="libro_leido" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.LibroLeido"/>
+
+        </messageevent>
+        <messageevent name="libro_terminado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.LibroTerminado"/>
+        </messageevent>
+    </events>
+</agent>

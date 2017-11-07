@@ -1,0 +1,53 @@
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="Caballete"
+       package="dormitorio.caballete">
+
+    <beliefs>
+        <belief name="cuadro_instalado" class="src.ontologia.conceptos.Cuadro"/>
+    </beliefs>
+    <plans>
+        <plan name="PintarNuevoCuadroPlan">
+            <body class="dormitorio.caballete.PintarNuevoCuadroPlan"/>
+            <trigger>
+                <messageevent ref="request_pintar_nuevo_cuadro"/>
+            </trigger>
+        </plan>
+        <plan name="SeguirPintandoPlan">
+            <body class="dormitorio.caballete.SeguirPintandoPlan"/>
+            <trigger>
+                <messageevent ref="request_seguir_pintando"/>
+            </trigger>
+        </plan>
+    </plans>
+
+    <events>
+        <messageevent name="request_pintar_nuevo_cuadro" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.PintarNuevoCuadro"/>
+        </messageevent>
+        <messageevent name="request_seguir_pintando" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.SeguirPintando"/>
+        </messageevent>
+        <messageevent name="cuadro_pintado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.CuadroPintado"/>
+
+        </messageevent>
+        <messageevent name="cuadro_terminado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.CuadroTerminado"/>
+        </messageevent>
+    </events>
+</agent>

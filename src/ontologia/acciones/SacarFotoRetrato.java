@@ -7,6 +7,7 @@ public class SacarFotoRetrato extends Accion {
     private InteraccionSocial interaccionSocial;
     private Diversion diversion;
     private Fotografia fotografia;
+    private Energia energia;
 
     public SacarFotoRetrato() {
     }
@@ -39,7 +40,17 @@ public class SacarFotoRetrato extends Accion {
         return fotografia;
     }
 
+    public Energia getEnergia() {
+        return energia;
+    }
+
+    public void setEnergia(Energia energia) {
+        this.energia = energia;
+    }
+
     public void setFotografia(Fotografia fotografia) {
         this.fotografia = fotografia;
+
+
     }
 }

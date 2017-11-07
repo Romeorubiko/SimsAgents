@@ -1,0 +1,81 @@
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="Camara"
+       package="dormitorio.camara">
+
+    <beliefs>
+        <belief name="obsolescencia" class="Integer">
+            <fact>new Integer(100)</fact>
+        </belief>
+    </beliefs>
+    <plans>
+        <plan name="SacarFotoPlan">
+            <body class="dormitorio.camara.SacarFotoPlan"/>
+            <trigger>
+                <messageevent ref="request_foto"/>
+            </trigger>
+        </plan>
+
+        <plan name="SacarFotoRetratoPlan">
+            <body class="dormitorio.camara.SacarFotoRetratoPlan"/>
+            <trigger>
+                <messageevent ref="request_foto_retrato"/>
+            </trigger>
+        </plan>
+
+    </plans>
+    <events>
+        <messageevent name="request_foto" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.SacarFoto"/>
+        </messageevent>
+        <messageevent name="foto_realizada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.FotoRealizada"/>
+        </messageevent>
+
+        <messageevent name="request_foto_retrato" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.SacarFotoRetrato"/>
+        </messageevent>
+        <messageevent name="foto_retrato_realizada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.FotoRealizada"/>
+        </messageevent>
+
+        <messageevent name="camara_estropeada_sacar_foto" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.CamaraEstropeadaSacarFoto"/>
+        </messageevent>
+
+        <messageevent name="camara_estropeada_sacar_foto_retrato" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.CamaraEstropeadaSacarFotoRetrato"/>
+        </messageevent>
+        <messageevent name="posar" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.Posar"/>
+        </messageevent>
+        <messageevent name="sim_no_posa" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+        </messageevent>
+    </events>
+</agent>

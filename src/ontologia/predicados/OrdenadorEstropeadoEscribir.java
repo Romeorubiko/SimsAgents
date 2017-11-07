@@ -10,6 +10,12 @@ public class OrdenadorEstropeadoEscribir extends Predicado {
     public OrdenadorEstropeadoEscribir() {
     }
 
+    public OrdenadorEstropeadoEscribir(Energia energia, Diversion diversion, Escritura escritura) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.escritura = escritura;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

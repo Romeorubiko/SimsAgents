@@ -11,6 +11,13 @@ public class CamaraEstropeadaSacarFotoRetrato extends Predicado {
     public CamaraEstropeadaSacarFotoRetrato() {
     }
 
+    public CamaraEstropeadaSacarFotoRetrato(Energia energia, Diversion diversion, InteraccionSocial interaccionSocial, Fotografia fotografia) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.interaccionSocial = interaccionSocial;
+        this.fotografia = fotografia;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

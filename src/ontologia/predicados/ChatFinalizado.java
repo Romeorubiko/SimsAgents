@@ -11,6 +11,12 @@ public class ChatFinalizado extends Predicado {
     public ChatFinalizado() {
     }
 
+    public ChatFinalizado(Energia energia, InteraccionSocial interaccionSocial, Diversion diversion) {
+        this.energia = energia;
+        this.interaccionSocial = interaccionSocial;
+        this.diversion = diversion;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

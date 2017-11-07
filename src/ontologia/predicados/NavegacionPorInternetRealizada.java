@@ -10,6 +10,11 @@ public class NavegacionPorInternetRealizada extends Predicado {
     public NavegacionPorInternetRealizada() {
     }
 
+    public NavegacionPorInternetRealizada(Energia energia, Diversion diversion) {
+        this.energia = energia;
+        this.diversion = diversion;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

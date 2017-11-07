@@ -10,6 +10,12 @@ public class LibroTerminado extends Predicado {
     public LibroTerminado() {
     }
 
+    public LibroTerminado(Energia energia, Diversion diversion, Habilidad habilidad) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.habilidad = habilidad;
+    }
+
     public Energia getEnergia() {
         return energia;
     }
