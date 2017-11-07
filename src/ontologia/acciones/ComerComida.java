@@ -1,7 +1,8 @@
 package ontologia.acciones;
 
-import jadex.runtime.*;
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Accion;
+import ontologia.conceptos.necesidades.*;
+
 public class ComerComida extends Accion {
     
 
@@ -9,7 +10,8 @@ private Energia energia;
 private Hambre hambre;
 
 	  public ComerComida()
-      {;}
+      {
+      }
 
        public Energia getEnergia() {
            return energia;

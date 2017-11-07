@@ -1,7 +1,5 @@
 package ontologia.conceptos;
-import ontologia.Concepto; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-
-import jadex.runtime.*;
+import ontologia.Concepto;
 
 public class Descanso extends Concepto {
 
@@ -11,8 +9,6 @@ public class Descanso extends Concepto {
     private tipoDescanso tipo;
 
     public Descanso() {
-
-    ;
 
     }
 

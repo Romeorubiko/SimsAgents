@@ -1,7 +1,6 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
 
 public class LlamadaFallida extends Predicado {
     
@@ -10,7 +9,8 @@ public class LlamadaFallida extends Predicado {
 	private Carisma carisma;
       
 	public LlamadaFallida()
-    {;}
+    {
+    }
 	   
 	public Energia getEnergia() {
         return energia;

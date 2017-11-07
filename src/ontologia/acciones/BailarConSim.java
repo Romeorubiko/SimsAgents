@@ -1,7 +1,6 @@
 package ontologia.acciones;
 
 import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
 
 public class BailarConSim extends Accion {
 	
@@ -14,7 +13,8 @@ public class BailarConSim extends Accion {
 	private Deporte fisico;
 	   
    	public BailarConSim()
-       	{;}
+       	{
+        }
 	   
    	public Musica getMusica() {
    		return que;

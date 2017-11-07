@@ -1,7 +1,7 @@
 package ontologia.acciones;
 
-import jadex.runtime.*;
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Accion;
+import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
 
 
 public class Beber extends Accion {
@@ -12,7 +12,8 @@ private Vejiga vejiga;
 private Diversion diversion;
        
 	   public Beber()
-      {;}
+      {
+      }
 
        public Bebida getTipo() {
            return tipo;

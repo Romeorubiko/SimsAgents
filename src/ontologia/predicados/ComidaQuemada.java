@@ -1,7 +1,6 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
 
 
 public class ComidaQuemada extends Predicado {
@@ -10,7 +9,8 @@ private Energia energia;
 private Cocina cocina;
 private Hambre hambre;
 	  public ComidaQuemada()
-      {;}
+      {
+      }
 
       public Energia getEnergia() {
            return energia;

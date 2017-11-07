@@ -1,5 +1,6 @@
 package ontologia.acciones;
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
+
 /**
  * Created by eldgb on 26-Oct-17.
  */
@@ -15,7 +16,8 @@ public class EntrenarMaquinaEjercicios {
 
     public EntrenarMaquinaEjercicios()
 
-    {;}
+    {
+    }
 
 
 

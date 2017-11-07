@@ -1,8 +1,7 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-
+import ontologia.Predicado;
+import ontologia.conceptos.necesidades.*;
 
 
 public class CafeteraEstropeada extends Predicado {
@@ -11,7 +10,8 @@ public class CafeteraEstropeada extends Predicado {
     private Diversion diversion;
 
   public CafeteraEstropeada()
-      {;}
+      {
+      }
     
 
     public Energia getEnergia() {

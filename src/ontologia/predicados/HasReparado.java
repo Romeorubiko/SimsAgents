@@ -1,7 +1,6 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
 
 public class HasReparado extends Predicado {
     
@@ -10,7 +9,8 @@ private Higiene higiene;
 private Mecanica mecanica;
 
       public HasReparado()
-      {;}
+      {
+      }
 
       public Higiene getHigiene() {
            return higiene;

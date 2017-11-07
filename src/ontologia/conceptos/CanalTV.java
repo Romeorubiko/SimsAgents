@@ -1,7 +1,6 @@
 package ontologia.conceptos;
 
-import ontologia.Concepto; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Concepto; import ontologia.conceptos.habilidades.*;
 
 public class CanalTV extends Concepto {
 
@@ -11,7 +10,8 @@ public class CanalTV extends Concepto {
 	private Carisma carisma;
 	   
 	public CanalTV()
-    {;}
+    {
+    }
        
     public Canales getCanal() {
         return canal;

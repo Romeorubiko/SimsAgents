@@ -12,5 +12,6 @@ public class Accion extends Object{
 	public static final int TIEMPO_MEDIO = 1000;
 	public static final int TIEMPO_LARGO = 2000;
 	public Accion ()
-	{ ; }
+	{
+    }
 }

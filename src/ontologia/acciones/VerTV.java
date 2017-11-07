@@ -1,7 +1,7 @@
 package ontologia.acciones;
 
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Accion;
+import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
 
 public class VerTV extends Accion {
 	
@@ -16,7 +16,8 @@ public class VerTV extends Accion {
 	   private Energia energia;
 
 	   public VerTV()
-       {;}
+       {
+       }
 	   
        public CanalTV getCanalTV() {
            return que;

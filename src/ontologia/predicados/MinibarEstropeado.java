@@ -1,6 +1,6 @@
 package ontologia.predicados;
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Predicado;
+import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
 
 public class MinibarEstropeado extends Predicado {
 
@@ -10,7 +10,8 @@ public class MinibarEstropeado extends Predicado {
     private Diversion diversion;
 
   public MinibarEstropeado()
-      {;}
+      {
+      }
 
    public Bebida getTipo() {
            return tipo;

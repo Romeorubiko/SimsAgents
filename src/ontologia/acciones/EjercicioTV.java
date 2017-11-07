@@ -1,7 +1,6 @@
 package ontologia.acciones;
 
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
 
 public class EjercicioTV extends Accion {
 
@@ -12,7 +11,8 @@ public class EjercicioTV extends Accion {
 	private Deporte fisico;
 	   
 	public EjercicioTV()
-    {;}
+    {
+    }
        
     public Diversion getDiversion() {
         return diversion;

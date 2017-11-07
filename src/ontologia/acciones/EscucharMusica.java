@@ -1,7 +1,7 @@
 package ontologia.acciones;
 
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Accion;
+import ontologia.conceptos.necesidades.*;
 
 public class EscucharMusica extends Accion {
 	
@@ -13,7 +13,8 @@ public class EscucharMusica extends Accion {
 	   private Energia energia;
 
 	   public EscucharMusica()
-       {;}
+       {
+       }
 	   
        public Diversion getDiversion() {
            return diversion;

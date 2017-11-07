@@ -1,7 +1,7 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Predicado;
+import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
 
 public class TVEstropeada extends Predicado {
     
@@ -10,7 +10,8 @@ public class TVEstropeada extends Predicado {
 	private Diversion diversion;
       
 	public TVEstropeada()
-    {;}
+    {
+    }
 	
 	public CanalTV getCanalTV() {
         return canal;

@@ -1,7 +1,6 @@
 package ontologia.predicados;
 
 import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
 
 public class HasBailadoSim extends Predicado {
     
@@ -14,7 +13,8 @@ public class HasBailadoSim extends Predicado {
 	private Deporte fisico;
       
 	public HasBailadoSim()
-    	{;}
+    	{
+        }
 	
 	public Musica getMusica() {
         	return musica;

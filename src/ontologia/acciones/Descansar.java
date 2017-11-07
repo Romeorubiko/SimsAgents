@@ -1,6 +1,6 @@
 package ontologia.acciones;
-import jadex.runtime.*;
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Accion;
+import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
 
 public class Descansar extends Accion {
 
@@ -11,7 +11,8 @@ private Energia energia;
     
 	   public Descansar()
 
-      {;}
+      {
+      }
 
 
 

@@ -1,7 +1,7 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Predicado;
+import ontologia.conceptos.necesidades.*;
 
 public class PlatosLavados extends Predicado {
     
@@ -10,7 +10,8 @@ private Diversion diversion;
 private Higiene higiene;
 
   public PlatosLavados()
-      {;}
+      {
+      }
 
       public Energia getEnergia() {
            return energia;

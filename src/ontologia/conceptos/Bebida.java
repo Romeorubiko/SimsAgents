@@ -1,7 +1,6 @@
 package ontologia.conceptos;
 
-import ontologia.Concepto; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Concepto;
 
 public class Bebida extends Concepto {
     public enum tipoBebida {
@@ -9,7 +8,6 @@ public class Bebida extends Concepto {
     }
     private tipoBebida tipo;
     public Bebida() {
-    ;
     }
 
      public tipoBebida getTipoBebida() {

@@ -1,7 +1,8 @@
 package ontologia.acciones;
 
-import jadex.runtime.*;
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Accion;
+import ontologia.conceptos.necesidades.*;
+
 public class RetarAjedrez extends Accion {
 
 	private Energia energia;
@@ -9,7 +10,8 @@ public class RetarAjedrez extends Accion {
 
 
 	 public RetarAjedrez()
-      {;}
+      {
+      }
 
       public Energia getEnergia() {
            return energia;

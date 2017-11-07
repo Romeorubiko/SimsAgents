@@ -1,7 +1,7 @@
 package ontologia.acciones;
 
-import jadex.runtime.*;
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Accion;
+import ontologia.conceptos.necesidades.*;
 
 public class OrinarSuelo extends Accion {
   
@@ -10,7 +10,8 @@ public class OrinarSuelo extends Accion {
   private Diversion diversion;
 
 	 public OrinarSuelo()
-      {;}
+      {
+      }
 
       public Vejiga getVejiga() {
            return vejiga;

@@ -1,8 +1,7 @@
 
 package ontologia.acciones;
 
-import jadex.runtime.*;
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
 
 
 public class Reparar extends Accion {
@@ -12,7 +11,6 @@ public class Reparar extends Accion {
     private Mecanica mecanica;
 
     public Reparar() {
-      ;
     }
 
 

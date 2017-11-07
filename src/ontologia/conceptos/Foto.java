@@ -1,8 +1,5 @@
 package ontologia.conceptos;
 
-import ontologia.Concepto; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
-
 public class Foto {
     public enum TiposFoto {PAISAJE, PANORAMICA}
     public enum FotoSize {SMALL, MEDIUM, LARGE}

@@ -1,7 +1,6 @@
 package ontologia.acciones;
 
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
 
 public class Hablar extends Accion {
 	private InteraccionSocial interaccion;
@@ -10,7 +9,8 @@ public class Hablar extends Accion {
 	private Higiene higiene;
 
 	public Hablar()
-       	{;}
+       	{
+        }
 
        	public InteraccionSocial getInteraccionSocial() {
            return interaccion;
