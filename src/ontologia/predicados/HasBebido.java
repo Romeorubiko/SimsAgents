@@ -10,33 +10,32 @@ public class HasBebido extends Predicado {
     private Vejiga vejiga;
     private Diversion diversion;
 
-    public HasBebido()
-      {
-      }
- 
+    public HasBebido() {
+    }
+
 
     public Energia getEnergia() {
-           return energia;
-       }
+        return energia;
+    }
 
-     public void setEnergia(Energia e) {
-           energia=e;
-       }
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
 
-     public Vejiga getVejiga() {
-           return vejiga;
-       }
+    public Vejiga getVejiga() {
+        return vejiga;
+    }
 
-      public void setVejiga(Vejiga c) {
-           vejiga=c;
-       }
-  
+    public void setVejiga(Vejiga c) {
+        vejiga = c;
+    }
 
-      public Diversion getDiversion() {
-           return diversion;
-       }
 
-      public void setDiversion(Diversion d) {
-           diversion=d;
-       }
+    public Diversion getDiversion() {
+        return diversion;
+    }
+
+    public void setDiversion(Diversion d) {
+        diversion = d;
+    }
 }

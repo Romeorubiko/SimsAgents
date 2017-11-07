@@ -1,6 +1,8 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 
 public class PerritosQuemados extends Predicado {
@@ -30,12 +32,12 @@ public class PerritosQuemados extends Predicado {
         this.diversion = diversion;
     }
 
-     public Hambre getHambre() {
+    public Hambre getHambre() {
         return hambre;
     }
 
     public void setHambre(Hambre hambre) {
-        this.hambre= hambre;
+        this.hambre = hambre;
     }
 
     public Cocina getCocina() {

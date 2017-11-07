@@ -1,43 +1,49 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 public class AjedrezFallido extends Predicado {
-    
-private Energia energia;
-private Diversion diversion;
-private InteraccionSocial interaccionsocial;
-private Logica logica;
 
-      public AjedrezFallido()
-      {
-      }
+    private Energia energia;
+    private Diversion diversion;
+    private InteraccionSocial interaccionsocial;
+    private Logica logica;
 
-      public Energia getEnergia() {
-           return energia;
-       }
-       public void setEnergia(Energia e) {
-           energia=e;
-       }
-       public Diversion getDiversion() {
-           return diversion;
-       }
-       public void setDiversion(Diversion d) {
-           diversion=d;
-       }
+    public AjedrezFallido() {
+    }
 
-        public InteraccionSocial getInteraccionSocial() {
-           return interaccionsocial;
-       }
-       public void setInteraccionSocial(InteraccionSocial i) {
-           interaccionsocial=i;
-       }
+    public Energia getEnergia() {
+        return energia;
+    }
 
-       public Logica getLogica() {
-           return logica;
-       }
-       public void setLogica(Logica l) {
-           logica=l;
-       }
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
+
+    public Diversion getDiversion() {
+        return diversion;
+    }
+
+    public void setDiversion(Diversion d) {
+        diversion = d;
+    }
+
+    public InteraccionSocial getInteraccionSocial() {
+        return interaccionsocial;
+    }
+
+    public void setInteraccionSocial(InteraccionSocial i) {
+        interaccionsocial = i;
+    }
+
+    public Logica getLogica() {
+        return logica;
+    }
+
+    public void setLogica(Logica l) {
+        logica = l;
+    }
 
 }

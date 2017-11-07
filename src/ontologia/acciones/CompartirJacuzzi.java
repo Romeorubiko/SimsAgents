@@ -7,10 +7,10 @@ public class CompartirJacuzzi extends Accion {
     private Energia energia;
     private InteraccionSocial interaccion;
     private Higiene higiene;
-    
+
     public CompartirJacuzzi() {
     }
-    
+
     public Energia getEnergia() {
         return energia;
     }
@@ -20,13 +20,14 @@ public class CompartirJacuzzi extends Accion {
     }
 
     public InteraccionSocial getInteraccionSocial() {
-           return interaccion;
-       }
+        return interaccion;
+    }
+
     public void setInteraccionSocial(InteraccionSocial interaccion) {
-           this.interaccion=interaccion;
-       }
-  
-   public Higiene getHigiene() {
+        this.interaccion = interaccion;
+    }
+
+    public Higiene getHigiene() {
         return higiene;
     }
 

@@ -1,6 +1,8 @@
 package ontologia.acciones;
 
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
+import ontologia.Accion;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 
 public class NadarPiscina extends Accion {
@@ -20,12 +22,12 @@ public class NadarPiscina extends Accion {
         this.energia = energia;
     }
 
-     public Higiene getHigiene() {
+    public Higiene getHigiene() {
         return higiene;
     }
 
     public void setHigiene(Higiene higiene) {
-        this.higiene= higiene;
+        this.higiene = higiene;
     }
 
     public Diversion getDiversion() {

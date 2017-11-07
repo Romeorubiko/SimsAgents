@@ -19,7 +19,7 @@ public class VaterUsado extends Predicado {
         this.energia = energia;
     }
 
-   public Vejiga getVejiga() {
+    public Vejiga getVejiga() {
         return vejiga;
     }
 

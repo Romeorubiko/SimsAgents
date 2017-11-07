@@ -1,6 +1,8 @@
 package ontologia.acciones;
 
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
+import ontologia.Accion;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 
 public class RecogerFrutos extends Accion {
@@ -19,12 +21,12 @@ public class RecogerFrutos extends Accion {
         this.energia = energia;
     }
 
-     public Hambre getHambre() {
+    public Hambre getHambre() {
         return hambre;
     }
 
     public void setHambre(Hambre hambre) {
-        this.hambre= hambre;
+        this.hambre = hambre;
     }
 
     public Jardineria getJardineria() {

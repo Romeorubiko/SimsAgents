@@ -20,14 +20,15 @@ public class HasCompartidoJacuzzi extends Predicado {
         this.energia = energia;
     }
 
-   public Higiene getHigiene() {
+    public Higiene getHigiene() {
         return higiene;
     }
 
     public void setHigiene(Higiene higiene) {
         this.higiene = higiene;
     }
-  public InteraccionSocial getInteraccionSocial() {
+
+    public InteraccionSocial getInteraccionSocial() {
         return interaccionSocial;
     }
 

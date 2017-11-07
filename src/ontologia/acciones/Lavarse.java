@@ -1,10 +1,11 @@
 package ontologia.acciones;
+
 import ontologia.Accion;
 import ontologia.conceptos.necesidades.*;
 
 public class Lavarse extends Accion {
     private Energia energia;
-    private Higiene higiene; 
+    private Higiene higiene;
 
     public Lavarse() {
     }
@@ -18,7 +19,7 @@ public class Lavarse extends Accion {
         this.energia = energia;
     }
 
-      public Higiene getHigiene() {
+    public Higiene getHigiene() {
         return higiene;
     }
 

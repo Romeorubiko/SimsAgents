@@ -1,6 +1,8 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 public class HasRecogidoFrutos extends Predicado {
     private Energia energia;
@@ -18,7 +20,7 @@ public class HasRecogidoFrutos extends Predicado {
         this.energia = energia;
     }
 
-   public Hambre getHambre() {
+    public Hambre getHambre() {
         return hambre;
     }
 

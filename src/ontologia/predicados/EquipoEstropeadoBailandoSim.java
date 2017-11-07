@@ -1,28 +1,30 @@
 package ontologia.predicados;
 
 import ontologia.Predicado;
-import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.conceptos.necesidades.*;
+import ontologia.conceptos.*;
 
 public class EquipoEstropeadoBailandoSim extends Predicado {
-     
-	private Musica musica;
-	private InteraccionSocial interaccion;
-      
-	public EquipoEstropeadoBailandoSim()
-    {
+
+    private Musica musica;
+    private InteraccionSocial interaccion;
+
+    public EquipoEstropeadoBailandoSim() {
     }
-	
-	public Musica getMusica() {
+
+    public Musica getMusica() {
         return musica;
     }
+
     public void setMusica(Musica m) {
-        musica=m;
+        musica = m;
     }
-	
-	public InteraccionSocial getInteraccionSocial() {
+
+    public InteraccionSocial getInteraccionSocial() {
         return interaccion;
     }
+
     public void setInteraccionSocial(InteraccionSocial i) {
-        interaccion=i;
+        interaccion = i;
     }
 }

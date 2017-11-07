@@ -1,4 +1,5 @@
 package ontologia.predicados;
+
 import ontologia.Predicado;
 import ontologia.conceptos.necesidades.*;
 
@@ -37,7 +38,6 @@ public class ConsolaEstropeadaPartida extends Predicado {
         this.interaccion = interaccion;
 
     }
-
 
 
 }

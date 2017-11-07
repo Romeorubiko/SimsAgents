@@ -4,59 +4,34 @@ import ontologia.Predicado;
 import ontologia.conceptos.necesidades.*;
 
 public class HasDormidoSuelo extends Predicado {
-    
-private Energia energia;
+    private Energia energia;
+    private Higiene higiene;
+    private Diversion diversion;
 
-  private Higiene higiene;
+    public HasDormidoSuelo() {
+    }
 
-  private Diversion diversion;
+    public Energia getEnergia() {
+        return energia;
+    }
 
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
 
+    public Diversion getDiversion() {
+        return diversion;
+    }
 
-	 public HasDormidoSuelo()
+    public void setDiversion(Diversion d) {
+        diversion = d;
+    }
 
-      {
-      }
+    public Higiene getHigiene() {
+        return higiene;
+    }
 
-
-
-      public Energia getEnergia() {
-
-           return energia;
-
-       }
-
-       public void setEnergia(Energia e) {
-
-           energia=e;
-
-       }
-
-
-
-       public Diversion getDiversion() {
-
-           return diversion;
-
-       }
-
-       public void setDiversion(Diversion d) {
-
-           diversion=d;
-
-       }
-
-
-
-        public Higiene getHigiene() {
-
-           return higiene;
-
-       }
-
-       public void setHigiene(Higiene h) {
-
-           higiene=h;
-
-       }    
+    public void setHigiene(Higiene h) {
+        higiene = h;
+    }
 }

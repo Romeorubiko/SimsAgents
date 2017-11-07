@@ -1,6 +1,8 @@
 package ontologia.predicados;
+
 import ontologia.Predicado;
-import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.conceptos.necesidades.*;
+import ontologia.conceptos.*;
 
 public class MinibarEstropeado extends Predicado {
 
@@ -9,43 +11,42 @@ public class MinibarEstropeado extends Predicado {
     private Vejiga vejiga;
     private Diversion diversion;
 
-  public MinibarEstropeado()
-      {
-      }
+    public MinibarEstropeado() {
+    }
 
-   public Bebida getTipo() {
-           return tipo;
-       }
+    public Bebida getTipo() {
+        return tipo;
+    }
 
 
     public void setTipo(Bebida c) {
-           tipo=c;
-       }
+        tipo = c;
+    }
 
     public Energia getEnergia() {
-           return energia;
-       }
+        return energia;
+    }
 
-     public void setEnergia(Energia e) {
-           energia=e;
-       }
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
 
-     public Vejiga getVejiga() {
-           return vejiga;
-       }
+    public Vejiga getVejiga() {
+        return vejiga;
+    }
 
-      public void setVejiga(Vejiga c) {
-           vejiga=c;
-      }
- 
-      public Diversion getDiversion() {
-           return diversion;
-       }
+    public void setVejiga(Vejiga c) {
+        vejiga = c;
+    }
 
-      public void setDiversion(Diversion d) {
-          diversion=d;
+    public Diversion getDiversion() {
+        return diversion;
+    }
 
-       }
+    public void setDiversion(Diversion d) {
+        diversion = d;
+
+    }
 
 
 }

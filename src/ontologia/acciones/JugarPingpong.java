@@ -1,51 +1,57 @@
 package ontologia.acciones;
 
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
+import ontologia.Accion;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 public class JugarPingpong extends Accion {
-  
-	private Energia energia;
-	private Diversion diversion;
-	private InteraccionSocial interaccionsocial;
-  private Higiene higiene;
-  private Deporte deporte;
 
-	 public JugarPingpong()
-      {
-      }
+    private Energia energia;
+    private Diversion diversion;
+    private InteraccionSocial interaccionsocial;
+    private Higiene higiene;
+    private Deporte deporte;
 
-      public Energia getEnergia() {
-           return energia;
-       }
-       public void setEnergia(Energia e) {
-           energia=e;
-       }
+    public JugarPingpong() {
+    }
 
-       public Diversion getDiversion() {
-           return diversion;
-       }
-       public void setDiversion(Diversion d) {
-           diversion=d;
-       }
+    public Energia getEnergia() {
+        return energia;
+    }
 
-        public InteraccionSocial getInteraccionSocial() {
-           return interaccionsocial;
-       }
-       public void setInteraccionSocial(InteraccionSocial i) {
-           interaccionsocial=i;
-       }
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
 
-        public Higiene getHigiene() {
-           return higiene;
-       }
-       public void setHigiene(Higiene h) {
-           higiene=h;
-       }
+    public Diversion getDiversion() {
+        return diversion;
+    }
 
-       public Deporte getDeporte() {
-           return deporte;
-       }
-       public void setDeporte(Deporte s) {
-           deporte=s;
-       }
+    public void setDiversion(Diversion d) {
+        diversion = d;
+    }
+
+    public InteraccionSocial getInteraccionSocial() {
+        return interaccionsocial;
+    }
+
+    public void setInteraccionSocial(InteraccionSocial i) {
+        interaccionsocial = i;
+    }
+
+    public Higiene getHigiene() {
+        return higiene;
+    }
+
+    public void setHigiene(Higiene h) {
+        higiene = h;
+    }
+
+    public Deporte getDeporte() {
+        return deporte;
+    }
+
+    public void setDeporte(Deporte s) {
+        deporte = s;
+    }
 }

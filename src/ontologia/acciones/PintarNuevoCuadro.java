@@ -1,6 +1,9 @@
 package ontologia.acciones;
 
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Accion;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
+import ontologia.conceptos.*;
 
 public class PintarNuevoCuadro extends Accion {
     private Cuadro cuadro;

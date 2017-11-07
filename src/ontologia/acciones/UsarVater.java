@@ -22,7 +22,7 @@ public class UsarVater extends Accion {
         return vejiga;
     }
 
-    public void setVejiga (Vejiga vejiga) {
+    public void setVejiga(Vejiga vejiga) {
         this.vejiga = vejiga;
     }
 

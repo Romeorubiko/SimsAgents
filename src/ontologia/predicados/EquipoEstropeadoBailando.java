@@ -4,17 +4,17 @@ import ontologia.Predicado;
 import ontologia.conceptos.*;
 
 public class EquipoEstropeadoBailando extends Predicado {
-	
- 	private Musica musica;
-      
-	public EquipoEstropeadoBailando()
-    {
+
+    private Musica musica;
+
+    public EquipoEstropeadoBailando() {
     }
-	
-	public Musica getMusica() {
+
+    public Musica getMusica() {
         return musica;
     }
+
     public void setMusica(Musica m) {
-        musica=m;
+        musica = m;
     }
 }

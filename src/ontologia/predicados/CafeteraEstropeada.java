@@ -9,56 +9,30 @@ public class CafeteraEstropeada extends Predicado {
     private Vejiga vejiga;
     private Diversion diversion;
 
-  public CafeteraEstropeada()
-      {
-      }
-    
+    public CafeteraEstropeada() {
+    }
 
     public Energia getEnergia() {
+        return energia;
+    }
 
-           return energia;
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
 
-       }
+    public Vejiga getVejiga() {
+        return vejiga;
+    }
 
+    public void setVejiga(Vejiga c) {
+        vejiga = c;
+    }
 
+    public Diversion getDiversion() {
+        return diversion;
+    }
 
-     public void setEnergia(Energia e) {
-
-           energia=e;
-
-       }
-
-
-
-     public Vejiga getVejiga() {
-
-           return vejiga;
-
-       }
-
-
-
-      public void setVejiga(Vejiga c) {
-
-           vejiga=c;
-
-       }
-
-      
-
-      public Diversion getDiversion() {
-
-           return diversion;
-
-       }
-
-
-
-      public void setDiversion(Diversion d) {
-
-           diversion=d;
-
-       }
-
-
+    public void setDiversion(Diversion d) {
+        diversion = d;
+    }
 }

@@ -4,20 +4,20 @@ import ontologia.Concepto;
 
 public class Musica extends Concepto {
 
-	public enum TiposMusica {
-		ROCK, POP, CLASICA
-	}
+    public enum TiposMusica {
+        ROCK, POP, CLASICA
+    }
 
-	private TiposMusica tipo;
+    private TiposMusica tipo;
 
-	public Musica() {
-	}
+    public Musica() {
+    }
 
-	public TiposMusica getTipo() {
-		return tipo;
-	}
+    public TiposMusica getTipo() {
+        return tipo;
+    }
 
-	public void setTipo(TiposMusica tipo) {
-		this.tipo = tipo;
-	}
+    public void setTipo(TiposMusica tipo) {
+        this.tipo = tipo;
+    }
 }

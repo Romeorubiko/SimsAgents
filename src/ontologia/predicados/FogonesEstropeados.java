@@ -1,34 +1,40 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 
 public class FogonesEstropeados extends Predicado {
-    
-private Energia energia;
-private Cocina cocina;
-private Hambre hambre;
 
-  public FogonesEstropeados()
-      {
-      }
+    private Energia energia;
+    private Cocina cocina;
+    private Hambre hambre;
 
-      public Energia getEnergia() {
-           return energia;
-       }
-       public void setEnergia(Energia e) {
-           energia=e;
-       }
-       public Cocina getCocina() {
-           return cocina;
-       }
-       	public Hambre getHambre() {
-           return hambre;
-       }
-       public void setHambre(Hambre h) {
-           hambre=h;
-       }
-       public void setCocina(Cocina c) {
-           cocina=c;
-       }
+    public FogonesEstropeados() {
+    }
+
+    public Energia getEnergia() {
+        return energia;
+    }
+
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
+
+    public Cocina getCocina() {
+        return cocina;
+    }
+
+    public Hambre getHambre() {
+        return hambre;
+    }
+
+    public void setHambre(Hambre h) {
+        hambre = h;
+    }
+
+    public void setCocina(Cocina c) {
+        cocina = c;
+    }
 }

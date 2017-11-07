@@ -1,37 +1,40 @@
 package ontologia.predicados;
 
 import ontologia.Predicado;
-import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.conceptos.necesidades.*;
+import ontologia.conceptos.*;
 
 public class TVEstropeada extends Predicado {
-    
-	private CanalTV canal;
-	private Energia energia;
-	private Diversion diversion;
-      
-	public TVEstropeada()
-    {
+
+    private CanalTV canal;
+    private Energia energia;
+    private Diversion diversion;
+
+    public TVEstropeada() {
     }
-	
-	public CanalTV getCanalTV() {
+
+    public CanalTV getCanalTV() {
         return canal;
     }
+
     public void setCanalTV(CanalTV c) {
-        canal=c;
+        canal = c;
     }
-	   
-	public Energia getEnergia() {
+
+    public Energia getEnergia() {
         return energia;
     }
+
     public void setEnergia(Energia e) {
-        energia=e;
+        energia = e;
     }
-	
-	public Diversion getDiversion() {
+
+    public Diversion getDiversion() {
         return diversion;
     }
+
     public void setDiversion(Diversion d) {
-        diversion=d;
+        diversion = d;
     }
-    
+
 }
