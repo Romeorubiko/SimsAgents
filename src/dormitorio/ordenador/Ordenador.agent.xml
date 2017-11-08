@@ -4,6 +4,12 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
        name="Ordenador"
        package="dormitorio.ordenador">
+    <imports>
+        <import>jadex.planlib.*</import>
+    </imports>
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
     <beliefs>
         <belief name="obsolescencia" class="Integer">
             <fact>new Integer(100)</fact>
@@ -12,6 +18,29 @@
             <fact>new Boolean(false)</fact>
         </belief>
     </beliefs>
+    <goals>
+        <maintaingoalref name="df_diversion_chatear">
+            <concrete ref="dfcap.df_diversion_chatear"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_interaccion_social_chatear">
+            <concrete ref="dfcap.df_interaccion_social_chatear"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_escribir">
+            <concrete ref="dfcap.df_diversion_escribir"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_escritura_escribir">
+            <concrete ref="dfcap.df_escritura_escribir"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_jugar_videojuego">
+            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_logica_jugar_videojuego">
+            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_navegar_internet">
+            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
+        </maintaingoalref>
+    </goals>
     <plans>
         <plan name="NavegarPorInternetPlan">
             <body class="dormitorio.ordenador.NavegarPorInternetPlan"/>
@@ -52,7 +81,6 @@
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
             <parameter name="content" class="ontologia.predicados.NavegacionPorInternetRealizada"/>
-
         </messageevent>
 
         <messageevent name="request_chatear" direction="receive" type="fipa">
@@ -68,7 +96,6 @@
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
             <parameter name="content" class="ontologia.predicados.ChatFinalizado"/>
-
         </messageevent>
 
         <messageevent name="request_jugar" direction="receive" type="fipa">
@@ -91,7 +118,6 @@
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
             <parameter name="content" class="ontologia.acciones.Escribir"/>
-
         </messageevent>
 
         <messageevent name="escritura_realizada" direction="send" type="fipa">
@@ -130,4 +156,68 @@
             <parameter name="content" class="ontologia.predicados.OrdenadorEstropeadoNavegarInternet"/>
         </messageevent>
     </events>
+
+    <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="df_diversion_chatear">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "Chatear"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_interaccion_social_chatear">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("InteraccionSocial", "Chatear"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_escribir">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "Escribir"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_escritura_escribir">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Escritura", "Escribir"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_jugar_videojuego">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "JugarVideojuego"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_logica_jugar_videojuego">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Logica", "JugarVideojuego"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_navegar_internet">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "NavegarInternet"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <endgoal ref="df_deregister"/>
+            </goals>
+        </configuration>
+    </configurations>
 </agent>

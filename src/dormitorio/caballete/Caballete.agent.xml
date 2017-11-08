@@ -8,32 +8,23 @@
         <import>jadex.planlib.*</import>
     </imports>
     <capabilities>
-        <capability name="dfcap" file=" jadex.planlib.DF"/>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
     </capabilities>
     <beliefs>
         <belief name="cuadro_instalado" class="src.ontologia.conceptos.Cuadro"/>
     </beliefs>
     <goals>
-        <maintaingoalref name="df_diversion_chatear">
-            <concrete ref="dfcap.df_diversion_chatear"/>
+        <maintaingoalref name="df_diversion_pintar_nuevo_cuadro">
+            <concrete ref="dfcap.df_diversion_pintar_nuevo_cuadro"/>
         </maintaingoalref>
-        <maintaingoalref name="df_interaccion_social_chatear">
-            <concrete ref="dfcap.df_interaccion_social_chatear"/>
+        <maintaingoalref name="df_pintura_pintar_nuevo_cuadro">
+            <concrete ref="dfcap.df_pintura_pintar_nuevo_cuadro"/>
         </maintaingoalref>
-        <maintaingoalref name="df_diversion_escribir">
-            <concrete ref="dfcap.df_diversion_escribir"/>
+        <maintaingoalref name="df_diversion_seguir_pintando">
+            <concrete ref="dfcap.df_diversion_seguir_pintando"/>
         </maintaingoalref>
-        <maintaingoalref name="df_escritura_escribir">
-            <concrete ref="dfcap.df_escritura_escribir"/>
-        </maintaingoalref>
-        <maintaingoalref name="df_diversion_jugar_videojuego">
-            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
-        </maintaingoalref>
-        <maintaingoalref name="df_logica_jugar_videojuego">
-            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
-        </maintaingoalref>
-        <maintaingoalref name="df_diversion_navegar_internet">
-            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
+        <maintaingoalref name="df_pintura_seguir_pintando">
+            <concrete ref="dfcap.df_pintura_seguir_pintando"/>
         </maintaingoalref>
     </goals>
     <plans>
@@ -80,59 +71,35 @@
     <configurations>
         <configuration name="default">
             <goals>
-                <initialgoal ref="df_diversion_chatear">
+                <initialgoal ref="df_diversion_pintar_nuevo_cuadro">
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "Chatear"))
+                            SFipa.createServiceDescription("Diversion", "PintarNuevoCuadro"))
                         </value>
                     </parameter>
                 </initialgoal>
-                <initialgoal ref="df_interaccion_social_chatear">
+                <initialgoal ref="df_pintura_pintar_nuevo_cuadro">
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("InteraccionSocial", "Chatear"))
+                            SFipa.createServiceDescription("Pintura", "PintarNuevoCuadro"))
                         </value>
                     </parameter>
                 </initialgoal>
-                <initialgoal ref="df_diversion_escribir">
+                <initialgoal ref="df_diversion_seguir_pintando">
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "Escribir"))
+                            SFipa.createServiceDescription("Diversion", "SeguirPintando"))
                         </value>
                     </parameter>
                 </initialgoal>
-                <initialgoal ref="df_escritura_escribir">
+                <initialgoal ref="df_pintura_seguir_pintando">
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Escritura", "Escribir"))
-                        </value>
-                    </parameter>
-                </initialgoal>
-                <initialgoal ref="df_diversion_jugar_videojuego">
-                    <parameter ref="description">
-                        <value>
-                            SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "JugarVideojuego"))
-                        </value>
-                    </parameter>
-                </initialgoal>
-                <initialgoal ref="df_logica_jugar_videojuego">
-                    <parameter ref="description">
-                        <value>
-                            SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Logica", "JugarVideojuego"))
-                        </value>
-                    </parameter>
-                </initialgoal>
-                <initialgoal ref="df_diversion_navegar_internet">
-                    <parameter ref="description">
-                        <value>
-                            SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "NavegarInternet"))
+                            SFipa.createServiceDescription("Pintura", "SeguirPintando"))
                         </value>
                     </parameter>
                 </initialgoal>
