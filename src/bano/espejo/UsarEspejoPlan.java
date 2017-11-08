@@ -20,7 +20,7 @@ public class UsarEspejoPlan extends Plan {
         UsarEspejo content = (UsarEspejo)message.getContent();
         
         Carisma c = content.getCarisma();
-        c.setNivel(content.getCarisma().getNivel() + Habilidad.HB_NORMAL);
+        c.setExperiencia((content.getCarisma().getNivel() + Habilidad.HB_NORMAL));
         content.setCarisma(c);
 
         Energia e = content.getEnergia();
