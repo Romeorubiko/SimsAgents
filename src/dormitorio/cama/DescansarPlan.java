@@ -28,7 +28,7 @@ public class DescansarPlan extends Plan {
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
             getBeliefbase().getBelief("energia").setFact(new Integer(grado_energia));
 
-            end_timer = System.currentTimeMillis() + Accion.TIEMPO_LARGO;
+            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_LARGO;
 
 
         }
