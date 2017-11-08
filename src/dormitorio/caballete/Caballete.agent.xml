@@ -4,10 +4,38 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
        name="Caballete"
        package="dormitorio.caballete">
-
+    <imports>
+        <import>jadex.planlib.*</import>
+    </imports>
+    <capabilities>
+        <capability name="dfcap" file=" jadex.planlib.DF"/>
+    </capabilities>
     <beliefs>
         <belief name="cuadro_instalado" class="src.ontologia.conceptos.Cuadro"/>
     </beliefs>
+    <goals>
+        <maintaingoalref name="df_diversion_chatear">
+            <concrete ref="dfcap.df_diversion_chatear"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_interaccion_social_chatear">
+            <concrete ref="dfcap.df_interaccion_social_chatear"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_escribir">
+            <concrete ref="dfcap.df_diversion_escribir"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_escritura_escribir">
+            <concrete ref="dfcap.df_escritura_escribir"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_jugar_videojuego">
+            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_logica_jugar_videojuego">
+            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_navegar_internet">
+            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
+        </maintaingoalref>
+    </goals>
     <plans>
         <plan name="PintarNuevoCuadroPlan">
             <body class="dormitorio.caballete.PintarNuevoCuadroPlan"/>
@@ -22,7 +50,6 @@
             </trigger>
         </plan>
     </plans>
-
     <events>
         <messageevent name="request_pintar_nuevo_cuadro" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
@@ -50,4 +77,67 @@
             <parameter name="content" class="ontologia.predicados.CuadroTerminado"/>
         </messageevent>
     </events>
+    <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="df_diversion_chatear">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "Chatear"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_interaccion_social_chatear">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("InteraccionSocial", "Chatear"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_escribir">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "Escribir"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_escritura_escribir">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Escritura", "Escribir"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_jugar_videojuego">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "JugarVideojuego"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_logica_jugar_videojuego">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Logica", "JugarVideojuego"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_navegar_internet">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "NavegarInternet"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <endgoal ref="df_deregister"/>
+            </goals>
+        </configuration>
+    </configurations>
 </agent>
