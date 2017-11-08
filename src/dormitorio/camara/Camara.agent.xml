@@ -4,12 +4,31 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
        name="Camara"
        package="dormitorio.camara">
-
+    <imports>
+        <import>jadex.planlib.*</import>
+    </imports>
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
     <beliefs>
         <belief name="obsolescencia" class="Integer">
             <fact>new Integer(100)</fact>
         </belief>
     </beliefs>
+    <goals>
+        <maintaingoalref name="df_fotografia_sacar_foto">
+            <concrete ref="dfcap.df_fotografia_sacar_foto"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_sacar_foto">
+            <concrete ref="dfcap.df_diversion_sacar_foto"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_fotografia_sacar_foto_retrato">
+            <concrete ref="dfcap.df_fotografia_sacar_foto_retrato"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_sacar_foto_retrato">
+            <concrete ref="dfcap.df_diversion_sacar_foto_retrato"/>
+        </maintaingoalref>
+    </goals>
     <plans>
         <plan name="SacarFotoPlan">
             <body class="dormitorio.camara.SacarFotoPlan"/>
@@ -24,7 +43,6 @@
                 <messageevent ref="request_foto_retrato"/>
             </trigger>
         </plan>
-
     </plans>
     <events>
         <messageevent name="request_foto" direction="receive" type="fipa">
@@ -33,6 +51,7 @@
             </parameter>
             <parameter name="content" class="ontologia.acciones.SacarFoto"/>
         </messageevent>
+
         <messageevent name="foto_realizada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
@@ -46,6 +65,7 @@
             </parameter>
             <parameter name="content" class="ontologia.acciones.SacarFotoRetrato"/>
         </messageevent>
+
         <messageevent name="foto_retrato_realizada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
@@ -66,16 +86,57 @@
             </parameter>
             <parameter name="content" class="ontologia.predicados.CamaraEstropeadaSacarFotoRetrato"/>
         </messageevent>
+
         <messageevent name="posar" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
             <parameter name="content" class="ontologia.acciones.Posar"/>
         </messageevent>
+
         <messageevent name="sim_no_posa" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
             </parameter>
         </messageevent>
     </events>
+    <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="df_fotografia_sacar_foto">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Fotografia", "SacarFoto"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_sacar_foto">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "SacarFoto"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_fotografia_sacar_foto_retrato">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Fotografia", "SacarFotoRetrato"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_sacar_foto_retrato">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "SacarFotoRetrato"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <endgoal ref="df_deregister"/>
+            </goals>
+        </configuration>
+    </configurations>
 </agent>

@@ -4,6 +4,38 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
        name="Estanteria"
        package="dormitorio.estanteria">
+    <imports>
+        <import>jadex.planlib.*</import>
+    </imports>
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+    <goals>
+        <maintaingoalref name="df_diversion_leer_libro">
+            <concrete ref="dfcap.df_diversion_leer_libro"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_carisma_leer_libro">
+            <concrete ref="dfcap.df_carisma_leer_libro"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_cocina_leer_libro">
+            <concrete ref="dfcap.df_cocina_leer_libro"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_jardineria_leer_libro">
+            <concrete ref="dfcap.df_jardineria_leer_libro"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_pintura_leer_libro">
+            <concrete ref="dfcap.df_pintura_leer_libro"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_fotografia_leer_libro">
+            <concrete ref="dfcap.df_fotografia_leer_libro"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_logica_leer_libro">
+            <concrete ref="dfcap.df_logica_leer_libro"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_ciencia_leer_libro">
+            <concrete ref="dfcap.df_ciencia_leer_libro"/>
+        </maintaingoalref>
+    </goals>
     <plans>
         <plan name="LeerLibroPlan">
             <body class="dormitorio.estanteria.LeerLibroPlan"/>
@@ -12,7 +44,6 @@
             </trigger>
         </plan>
     </plans>
-
     <events>
         <messageevent name="request_leer_libro" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
@@ -34,4 +65,75 @@
             <parameter name="content" class="ontologia.predicados.LibroTerminado"/>
         </messageevent>
     </events>
+    <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="df_diversion_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "LeerLibro"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_carisma_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Carisma", "LeerLibro"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_cocina_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Cocina", "LeerLibro"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_jardineria_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Jardineria", "LeerLibro"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_pintura_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Pintura", "LeerLibro"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_fotografia_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Fotografia", "LeerLibro"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_logica_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Logica", "LeerLibro"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_ciencia_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Ciencia", "LeerLibro"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <endgoal ref="df_deregister"/>
+            </goals>
+        </configuration>
+    </configurations>
 </agent>
