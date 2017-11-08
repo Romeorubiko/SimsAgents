@@ -1,4 +1,4 @@
-package casa.suelo;
+package casa;
 
 /**
  * Created by eldgb on 08-Nov-17.
