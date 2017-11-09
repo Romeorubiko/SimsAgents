@@ -1,4 +1,4 @@
-package Bano;
+package bano.espejo;
 import ontologia.Accion;
 import ontologia.acciones.*;
 import ontologia.conceptos.habilidades.Carisma;
@@ -6,9 +6,13 @@ import ontologia.conceptos.habilidades.Habilidad;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.conceptos.necesidades.Vejiga;
+import ontologia.predicados.EspejoUsado;
+import ontologia.predicados.VaterEstropeado;
+import ontologia.predicados.VaterUsado;
 
 import java.util.*;
 import jadex.runtime.*;
+import jadex.runtime.impl.RMessageEvent;
 import jadex.adapter.fipa.*;
 
 
@@ -16,24 +20,27 @@ import jadex.adapter.fipa.*;
 public class UsarEspejoPlan extends Plan {
 
     public void body(){
-        IMessageEvent message = waitForMessageEvent("usar_espejo");
-        UsarEspejo content = (UsarEspejo)message.getContent();
+    	RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
+        UsarEspejo content = (UsarEspejo)peticion.getContent();
         
-        Carisma c = content.getCarisma();
-        c.setExperiencia((content.getCarisma().getNivel() + Habilidad.HB_NORMAL));
-        content.setCarisma(c);
+        Carisma carisma = content.getCarisma();
+        Energia energia = content.getEnergia();
+       
+            energia.setGrado(energia.getGrado() - Necesidad.NC_POCO);
+            content.setEnergia(energia);
 
-        Energia e = content.getEnergia();
-        e.setGrado(content.getEnergia().getGrado() + Necesidad.NC_NORMAL);
-        content.setEnergia(e);
-        
+            carisma.setExperiencia(carisma.getExperiencia() + Habilidad.HB_NORMAL);
+            content.setCarisma(carisma);
+            
         try {
-            wait(Accion.TIEMPO_CORTO);
+            wait(Accion.TIEMPO_MEDIO);
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
-        
         IMessageEvent respuesta = createMessageEvent("espejo_usado");
-        respuesta.setContent(content);
+        EspejoUsado espejoUsado = new EspejoUsado(energia, carisma);
+        respuesta.setContent(espejoUsado);
+        sendMessage(respuesta);
     }
 }
+  

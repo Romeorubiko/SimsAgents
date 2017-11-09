@@ -1,4 +1,4 @@
-package Baño;
+package bano.ducha;
 import ontologia.Accion;
 import ontologia.acciones.*;
 import ontologia.conceptos.necesidades.Energia;
