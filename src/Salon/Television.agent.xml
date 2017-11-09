@@ -1,0 +1,109 @@
+<!--
+	<H3>Agente television</H3>
+-->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	name="Television"
+	package="ontologia.acciones">
+	
+	<imports>
+		<import>jadex.runtime.*</import>
+		<import>jadex.planlib.*</import>
+		<import>jadex.util.*</import>
+		<import>jadex.adapter.fipa.*</import>
+		<import>java.util.logging.*</import>
+		<import>java.util.*</import>
+	</imports>
+	<beliefs>
+		<belief name="estado_tv" class="Boolean">
+			<fact> new Boolean(false)</fact>
+		</belief>
+		
+		<belief name="obsolescencia_tv" class="Integer">
+			<fact> new Integer(10)</fact>
+		</belief>
+		
+	</beliefs>
+	<goals>
+	</goals>
+	<plans>
+		<plan name="VerTV">
+			<body>new VerTVPlan()</body>
+			<trigger>
+				<messageevent ref="ver_tv"/>
+			</trigger>
+		</plan>
+		
+		<plan name="EjercicioTV">
+			<body>new EjercicioTVPlan()</body>
+			<trigger>
+				<messageevent ref="ejercicio_tv"/>
+			</trigger>
+		</plan>
+		
+	</plans>
+	<events>
+		<messageevent name="ver_tv" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="VerTV"
+direction="fixed">
+			</parameter>
+
+		</messageevent>
+		
+		<messageevent name="ejercicio_tv" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="EjercicioTV"
+direction="fixed">
+			</parameter>
+
+		</messageevent>
+		
+		<messageevent name="tv_ocupada" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="tv_rota" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="tv_estropeada" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="tv_estropeada_ejercicio" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="tv_no_ocupada" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_visto_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_hecho_ejercicio_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+		
+	</events>
+	
+</agent>

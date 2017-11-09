@@ -13,6 +13,12 @@ public class TVEstropeada extends Predicado {
     public TVEstropeada() {
     }
 
+    public TVEstropeada(CanalTV canal, Energia energia, Diversion diversion) {
+        this.canal = canal;
+        this.energia = energia;
+        this.diversion = diversion;
+    }
+
     public CanalTV getCanalTV() {
         return canal;
     }

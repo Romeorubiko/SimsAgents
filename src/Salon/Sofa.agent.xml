@@ -1,0 +1,62 @@
+<!--
+	<H3>Agente Sofa</H3>
+-->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	name="Sofa"
+	package="ontologia.acciones">
+	
+	<imports>
+		<import>jadex.runtime.*</import>
+		<import>jadex.planlib.*</import>
+		<import>jadex.util.*</import>
+		<import>jadex.adapter.fipa.*</import>
+		<import>java.util.logging.*</import>
+		<import>java.util.*</import>
+	</imports>
+	<beliefs>
+		<belief name="estado_sofa" class="Boolean">
+			<fact> new Boolean(false)</fact>
+		</belief>
+	</beliefs>
+	<goals>
+	</goals>
+	<plans>
+		<plan name="DescansarSofa">
+			<body>new DescansarSofaPlan()</body>
+			<trigger>
+				<messageevent ref="descansar"/>
+			</trigger>
+		</plan>
+	</plans>
+	<events>
+		<messageevent name="descansar" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="Descansar"
+direction="fixed">
+			</parameter>
+
+		</messageevent>
+		
+		<messageevent name="sofa_ocupado" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="sofa_no_ocupado" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_descansado" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+		
+	</events>
+	
+</agent>

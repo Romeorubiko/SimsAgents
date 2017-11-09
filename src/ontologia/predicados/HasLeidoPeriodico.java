@@ -14,6 +14,13 @@ public class HasLeidoPeriodico extends Predicado {
     public HasLeidoPeriodico() {
     }
 
+    public HasLeidoPeriodico(Energia energia, Diversion diversion, Logica logica, Escritura escritura) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.logica = logica;
+        this.escritura = escritura;
+    }
+
     public Energia getEnergia() {
         return energia;
     }
