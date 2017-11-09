@@ -53,7 +53,8 @@
 
             <trigger>
 
-                <messageevent ref="orinar_suelo"/>
+                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
+                </condition>
 
             </trigger>
 
@@ -65,7 +66,7 @@
 
     <events>
 
-        <messageevent name="dormir_suelo" direction="receive" type="fipa">
+        <messageevent name="descansar" direction="receive" type="fipa">
 
             <parameter name="performative" class="String" direction="fixed">
 
@@ -73,23 +74,12 @@
 
             </parameter>
 
-            <parameter name="content" class="ontologia.acciones.DormirSuelo"/>
+            <parameter name="content" class="ontologia.acciones.Descansar"/>
 
         </messageevent>
 
-        <messageevent name="orinar_suelo" direction="receive" type="fipa">
 
-            <parameter name="performative" class="String" direction="fixed">
-
-                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
-
-            </parameter>
-
-            <parameter name="content" class="ontologia.acciones.OrinarSuelo"/>
-
-        </messageevent>
-
-        <messageevent name="has_dormido_suelo" direction="send" type="fipa">
+        <messageevent name="has_descansado" direction="send" type="fipa">
 
             <parameter name="performative" class="String" direction="fixed">
 
@@ -97,21 +87,21 @@
 
             </parameter>
 
-            <parameter name="content" class="ontologia.predicados.HasDormidoSuelo"/>
+            <parameter name="content" class="ontologia.predicados.HasDescansado"/>
 
 
 
         </messageevent>
 
-        <messageevent name="has_orinado_suelo" direction="send" type="fipa">
+        <messageevent name="cama_ocupada" direction="send" type="fipa">
 
             <parameter name="performative" class="String" direction="fixed">
 
-                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
 
             </parameter>
 
-            <parameter name="content" class="ontologia.predicados.HasOrinadoSuelo"/>
+            <parameter name="content" class="ontologia.acciones.Descansar"/>
 
         </messageevent>
 
