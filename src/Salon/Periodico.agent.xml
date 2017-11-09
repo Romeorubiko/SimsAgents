@@ -30,7 +30,8 @@
 			<fact> (int) 0 </fact>
 		</belief>
 
-		<belief name="mensaje_leer_periodico" class="IMessageEvent"/>
+		<belief name="mensaje_periodico" class="IMessageEvent"/>
+
 
 	</beliefs>
 	<goals>

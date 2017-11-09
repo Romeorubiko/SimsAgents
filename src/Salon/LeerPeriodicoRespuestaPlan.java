@@ -23,11 +23,11 @@ public class LeerPeriodicoRespuestaPlan extends Plan {
         RBeliefbase bb;
         bb=(RBeliefbase) getBeliefbase();
         RBelief creenciaOcupado=(RBelief) bb.getBelief("ocupado_periodico");
-        RBelief creenciaMensaje=(RBelief) bb.getBelief("mensaje_leer_periodico");
+        RBelief creenciaMensaje=(RBelief) bb.getBelief("mensaje_periodico");
         IMessageEvent request= (IMessageEvent) creenciaMensaje.getFact();
         RBelief creenciaTiempoPeriodico=(RBelief) bb.getBelief("tiempo_fin_periodico");
         creenciaTiempoPeriodico.setValue(0);
-        getGoalbase().getGoal("tiempo_superado").drop();
+        getGoalbase().getGoal("leer_periodico_tiempo_superado").drop();
 
         LeerPeriodico content = (LeerPeriodico)request.getContent();
         Diversion diversion= content.getDiversion();
