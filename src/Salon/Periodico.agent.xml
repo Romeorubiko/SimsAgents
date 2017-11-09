@@ -22,7 +22,7 @@
 			<fact> new Boolean(false)</fact>
 		</belief>
 
-		<belief name="tiempo_periodico" class="int" updaterate="100">
+		<belief name="tiempo_actual" class="int" updaterate="100">
 			<fact> (int) (System.currentTimeMillis()/1000) </fact>
 		</belief>
 
@@ -37,40 +37,40 @@
 	<goals>
 		<maintaingoal name="leer_periodico_tiempo_superado">
 			<maintaincondition>
-				$beliefbase.tiempo_fin_periodico >= $beliefbase.tiempo_periodico
+				$beliefbase.tiempo_fin_periodico >= $beliefbase.tiempo_actual
 			</maintaincondition>
 		</maintaingoal>
 
 		<maintaingoal name="crucigrama_periodico_tiempo_superado">
 			<maintaincondition>
-				$beliefbase.tiempo_fin_periodico >= $beliefbase.tiempo_periodico
+				$beliefbase.tiempo_fin_periodico >= $beliefbase.tiempo_actual
 			</maintaincondition>
 		</maintaingoal>
 
 	</goals>
 	<plans>
-		<plan name="LeerPeriodicoPregunta">
+		<plan name="LeerPeriodicoPreguntaPlan">
 			<body>new LeerPeriodicoPreguntaPlan()</body>
 			<trigger>
 				<messageevent ref="leer_periodico"/>
 			</trigger>
 		</plan>
 
-		<plan name="LeerPeriodicoRespuesta">
+		<plan name="LeerPeriodicoRespuestaPlan">
 			<body>new LeerPeriodicoRespuestaPlan()</body>
 			<trigger>
 				<goal ref="leer_periodico_tiempo_superado"></goal>
 			</trigger>
 		</plan>
 
-		<plan name="HacerCrucigramaPregunta">
+		<plan name="HacerCrucigramaPreguntaPlan">
 			<body>new HacerCrucigramaPreguntaPlan()</body>
 			<trigger>
 				<messageevent ref="hacer_crucigrama"/>
 			</trigger>
 		</plan>
 
-		<plan name="HacerCrucigramaRespuesta">
+		<plan name="HacerCrucigramaRespuestaPlan">
 			<body>new HacerCrucigramaRespuestaPlan()</body>
 			<trigger>
 				<goal ref="crucigrama_periodico_tiempo_superado"></goal>
@@ -83,7 +83,7 @@
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<parameter name="content" class="LeerPeriodico"
+			<parameter name="content" class="LeerPeriodicoPreguntaPlan"
 					   direction="fixed">
 			</parameter>
 
@@ -93,7 +93,7 @@
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<parameter name="content" class="HacerCrucigrama"
+			<parameter name="content" class="HacerCrucigramaPreguntaPlan"
 					   direction="fixed">
 			</parameter>
 
@@ -130,9 +130,65 @@
 			<goals>
 				<initialgoal ref="leer_peridico_tiempo_superado"/>
 				<initialgoal ref="crucigrama_peridico_tiempo_superado"/>
+
+				<initialgoal ref="df_diversion_leer_periodico">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Diversion", "LeerPeriodico"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+				<initialgoal ref="df_energia_leer_periodico">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Energia", "LeerPeriodico"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+				<initialgoal ref="df_escritura_leer_periodico">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Escritura", "LeerPeriodico"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+				<initialgoal ref="df_diversion_hacer_crucigrama">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Diversion", "HacerCrucigrama"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+				<initialgoal ref="df_energia_hacer_crucigrama">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Energia", "HacerCrucigrama"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+				<initialgoal ref="df_logica_hacer_crucigrama">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Logica", "HacerCrucigrama"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+
+
 			</goals>
 		</configuration>
-
 	</configurations>
 
 </agent>
