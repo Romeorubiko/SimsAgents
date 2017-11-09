@@ -10,7 +10,7 @@ import ontologia.predicados.HasDescansado;
 public class DescansarTerminarPlan extends Plan {
     public void body() {
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-        //getBeliefbase().getBelief("cama_hecha").setFact(Boolean.FALSE);
+        getBeliefbase().getBelief("cama_hecha").setFact(Boolean.FALSE);
         Energia e  = new Energia();
         Integer grado = (Integer)getBeliefbase().getBelief("energia").getFact();
         e.setGrado(grado.intValue()+ Necesidad.NC_MUCHO);

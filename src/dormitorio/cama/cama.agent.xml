@@ -19,6 +19,12 @@
 
         </belief>
 
+        <belief name="cama_hecha" class="Boolean">
+
+            <fact>new Boolean(true)</fact>
+
+        </belief>
+
         <belief name="energia" class="Integer">
 
         </belief>
@@ -78,6 +84,18 @@
 
         </messageevent>
 
+        <messageevent name="hacer_la_cama" direction="receive" type="fipa">
+
+            <parameter name="performative" class="String" direction="fixed">
+
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+
+            </parameter>
+
+            <parameter name="content" class="ontologia.acciones.HacerLaCama"/>
+
+        </messageevent>
+
 
         <messageevent name="has_descansado" direction="send" type="fipa">
 
@@ -93,6 +111,20 @@
 
         </messageevent>
 
+        <messageevent name="cama_hecha" direction="send" type="fipa">
+
+            <parameter name="performative" class="String" direction="fixed">
+
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+
+            </parameter>
+
+            <parameter name="content" class="ontologia.predicados.CamaHecha"/>
+
+
+
+        </messageevent>
+
         <messageevent name="cama_ocupada" direction="send" type="fipa">
 
             <parameter name="performative" class="String" direction="fixed">
@@ -102,6 +134,30 @@
             </parameter>
 
             <parameter name="content" class="ontologia.acciones.Descansar"/>
+
+        </messageevent>
+
+        <messageevent name="hacer_cama_ocupada" direction="send" type="fipa">
+
+            <parameter name="performative" class="String" direction="fixed">
+
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+
+            </parameter>
+
+            <parameter name="content" class="ontologia.acciones.HacerLaCama"/>
+
+        </messageevent>
+
+        <messageevent name="cama_ya_hecha" direction="send" type="fipa">
+
+            <parameter name="performative" class="String" direction="fixed">
+
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+
+            </parameter>
+
+            <parameter name="content" class="ontologia.acciones.HacerLaCama"/>
 
         </messageevent>
 

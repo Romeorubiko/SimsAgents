@@ -73,6 +73,18 @@
 
         </plan>
 
+        <plan name="RepararBarbacoaPlan">
+
+            <body class="jardin.barbacoa.RepararBarbacoaPlan"/>
+
+            <trigger>
+
+                <messageevent ref="reparar"/>
+
+            </trigger>
+
+        </plan>
+
         <plan name="CocinarBarbacoaTerminarPlan">
 
             <body class="jardin.barbacoa.CocinarBarbacoaTerminarPlan"/>
@@ -80,6 +92,24 @@
             <trigger>
 
                 <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
+                </condition>
+                <condition>$beliefbase.ocupado==TRUE
+                </condition>
+
+
+            </trigger>
+
+        </plan>
+
+        <plan name="RepararBarbacoaTerminarPlan">
+
+            <body class="jardin.barbacoa.CocinarBarbacoaTerminarPlan"/>
+
+            <trigger>
+
+                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
+                </condition>
+                <condition>$beliefbase.ocupado==TRUE
                 </condition>
 
             </trigger>
@@ -226,6 +256,13 @@
                     <parameter ref="description">
                         <value>
                             S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Cocina", "CocinarComidaBarbacoa"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_mecanica_reparar">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Mecanica", "Reparar"))
                         </value>
                     </parameter>
                 </initialgoal>
