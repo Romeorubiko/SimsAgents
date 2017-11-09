@@ -11,7 +11,6 @@
 
 
     <imports>
-        <import>java.sql.Time</import>
 
         <import>jadex.runtime.*</import>
 
@@ -39,15 +38,11 @@
 
     <beliefs>
         <belief name="ocupado" class="Boolean">
-
             <fact>new Boolean(false)</fact>
-
         </belief>
 
         <belief name="estropeado" class="Boolean">
-
             <fact>new Boolean(false)</fact>
-
         </belief>
 
         <belief name="obsolescencia" class="Integer">
