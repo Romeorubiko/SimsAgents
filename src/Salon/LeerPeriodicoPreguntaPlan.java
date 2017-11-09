@@ -17,13 +17,13 @@ public class LeerPeriodicoPreguntaPlan extends Plan {
 		bb=(RBeliefbase) getBeliefbase();
 		RBelief creenciaOcupado=(RBelief) bb.getBelief("ocupado_periodico");
 		Boolean ocupado= (Boolean)creenciaOcupado.getFact();
-
+		IMessageEvent	request	= (IMessageEvent)getInitialEvent();
 
 		if(ocupado){
 			IMessageEvent refuse = createMessageEvent("periodico_ocupado");
+			refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 			sendMessage(refuse);
 		}else{
-			IMessageEvent	request	= (IMessageEvent)getInitialEvent();
 			RBelief creenciaMensaje=(RBelief) bb.getBelief("mensaje_leer_periodo");
 			RBelief creenciaTiempoFinPeriodico=(RBelief) bb.getBelief("tiempo_fin_periodico");
 			RBelief creenciaTiempo=(RBelief) bb.getBelief("tiempo_periodico");

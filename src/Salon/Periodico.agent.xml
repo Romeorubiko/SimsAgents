@@ -15,7 +15,6 @@
 		<import>jadex.adapter.fipa.*</import>
 		<import>java.util.logging.*</import>
 		<import>java.util.*</import>
-		<import>ontologia.Accion</import>
 		<import>jadex.model.IMMessageEvent</import>
 	</imports>
 	<beliefs>
