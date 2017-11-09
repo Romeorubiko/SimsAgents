@@ -34,11 +34,18 @@
 
 	</beliefs>
 	<goals>
-		<maintaingoal name="tiempo_superado">
+		<maintaingoal name="leer_periodico_tiempo_superado">
 			<maintaincondition>
 				$beliefbase.tiempo_periodico >= $beliefbase.tiempo_fin_periodico
 			</maintaincondition>
 		</maintaingoal>
+
+		<maintaingoal name="crucigrama_periodico_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempo_periodico >= $beliefbase.tiempo_fin_periodico
+			</maintaincondition>
+		</maintaingoal>
+
 	</goals>
 	<plans>
 		<plan name="LeerPeriodicoPregunta">
@@ -51,14 +58,21 @@
 		<plan name="LeerPeriodicoRespuesta">
 			<body>new LeerPeriodicoRespuestaPlan()</body>
 			<trigger>
-				<goal ref="tiempo_superado"></goal>
+				<goal ref="leer_periodico_tiempo_superado"></goal>
 			</trigger>
 		</plan>
 
-		<plan name="HacerCrucigrama">
-			<body>new HacerCrucigramaPlan()</body>
+		<plan name="HacerCrucigramaPregunta">
+			<body>new HacerCrucigramaPreguntaPlan()</body>
 			<trigger>
 				<messageevent ref="hacer_crucigrama"/>
+			</trigger>
+		</plan>
+
+		<plan name="HacerCrucigramaRespuesta">
+			<body>new HacerCrucigramaRespuestaPlan()</body>
+			<trigger>
+				<goal ref="crucigrama_periodico_tiempo_superado"></goal>
 			</trigger>
 		</plan>
 
@@ -113,7 +127,8 @@
 	<configurations>
 		<configuration name="default">
 			<goals>
-				<initialgoal ref="tiempo_superado"/>
+				<initialgoal ref="leer_peridico_tiempo_superado"/>
+				<initialgoal ref="crucigrama_peridico_tiempo_superado"/>
 			</goals>
 		</configuration>
 
