@@ -23,7 +23,7 @@
         <belief name="tiempo_fin_caballete" class="int">
             <fact>(int) 0</fact>
         </belief>
-        <belief name="mensaje_pintar_nuevo_cuadro" class="IMessageEvent"/>
+        <belief name="mensaje_caballete" class="IMessageEvent"/>
     </beliefs>
     <goals>
         <maintaingoal name="pintar_nuevo_cuadro_tiempo_superado">

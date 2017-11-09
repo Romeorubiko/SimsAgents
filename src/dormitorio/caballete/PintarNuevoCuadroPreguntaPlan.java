@@ -28,7 +28,7 @@ public class PintarNuevoCuadroPreguntaPlan extends Plan {
         } else {
             getBeliefbase().getBelief("cuadro_instalado").setFact(cuadro);
             getBeliefbase().getBelief("ocupado_caballete").setFact(Boolean.TRUE);
-            getBeliefbase().getBelief("mensaje_pintar_nuevo_cuadro").setFact(peticion);
+            getBeliefbase().getBelief("mensaje_caballete").setFact(peticion);
             int tiempo = (int) getBeliefbase().getBelief("tiempo_caballete").getFact();
             getBeliefbase().getBelief("tiempo_fin_caballete").setFact(tiempo + Accion.TIEMPO_MEDIO);
 

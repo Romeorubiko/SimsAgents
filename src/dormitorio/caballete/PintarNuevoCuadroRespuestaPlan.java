@@ -26,7 +26,7 @@ public class PintarNuevoCuadroRespuestaPlan extends Plan {
 
     @Override
     public void body() {
-        IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_pintar_nuevo_cuadro").getFact();
+        IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_caballete").getFact();
         getBeliefbase().getBelief("tiempo_fin_caballete").setFact(0);
         getBeliefbase().getBelief("ocupado_caballete").setFact(Boolean.FALSE);
         getGoalbase().getGoal("pintar_nuevo_cuadro_tiempo_superado").drop();
