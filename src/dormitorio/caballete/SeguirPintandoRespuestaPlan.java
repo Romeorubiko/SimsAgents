@@ -5,6 +5,7 @@ import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import ontologia.Accion;
 import ontologia.acciones.PintarNuevoCuadro;
+import ontologia.acciones.SeguirPintando;
 import ontologia.conceptos.Cuadro;
 import ontologia.conceptos.habilidades.Habilidad;
 import ontologia.conceptos.habilidades.Pintura;
@@ -14,13 +15,13 @@ import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.CuadroPintado;
 import ontologia.predicados.CuadroTerminado;
 
-public class PintarNuevoCuadroRespuestaPlan extends Plan {
+public class SeguirPintandoRespuestaPlan extends Plan {
 
     private Diversion diversion;
     private Energia energia;
     private Pintura pintura;
 
-    public PintarNuevoCuadroRespuestaPlan() {
+    public SeguirPintandoRespuestaPlan() {
     }
 
     @Override
@@ -28,10 +29,10 @@ public class PintarNuevoCuadroRespuestaPlan extends Plan {
         IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_caballete").getFact();
         getBeliefbase().getBelief("tiempo_fin_caballete").setFact(0);
         getBeliefbase().getBelief("ocupado_caballete").setFact(Boolean.FALSE);
-        getGoalbase().getGoal("pintar_nuevo_cuadro_tiempo_superado").drop();
+        getGoalbase().getGoal("seguir_pintando_tiempo_superado").drop();
 
-        PintarNuevoCuadro content = (PintarNuevoCuadro) peticion.getContent();
-        Cuadro cuadro = content.getCuadro();
+        SeguirPintando content = (SeguirPintando) peticion.getContent();
+        Cuadro cuadro = (Cuadro) getBeliefbase().getBelief("cuadro_instalado").getFact();
         diversion = content.getDiversion();
         energia = content.getEnergia();
         pintura = content.getPintura();

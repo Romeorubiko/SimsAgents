@@ -50,16 +50,28 @@
         </maintaingoalref>
     </goals>
     <plans>
-        <plan name="PintarNuevoCuadroPlan">
-            <body class="dormitorio.caballete.PintarNuevoCuadroPlan"/>
+        <plan name="PintarNuevoCuadroPreguntaPlan">
+            <body class="dormitorio.caballete.PintarNuevoCuadroPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_pintar_nuevo_cuadro"/>
             </trigger>
         </plan>
-        <plan name="SeguirPintandoPlan">
-            <body class="dormitorio.caballete.SeguirPintandoPlan"/>
+        <plan name="PintarNuevoCuadroRespuestaPlan">
+            <body class="dormitorio.caballete.PintarNuevoCuadroRespuestaPlan"/>
+            <trigger>
+                <goal ref="pintar_nuevo_cuadro_tiempo_superado"/>
+            </trigger>
+        </plan>
+        <plan name="SeguirPintandoPreguntaPlan">
+            <body class="dormitorio.caballete.SeguirPintandoPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_seguir_pintando"/>
+            </trigger>
+        </plan>
+        <plan name="SeguirPintandoRespuestaPlan">
+            <body class="dormitorio.caballete.SeguirPintandoRespuestaPlan"/>
+            <trigger>
+                <goal ref="seguir_pintando_tiempo_superado"/>
             </trigger>
         </plan>
     </plans>
@@ -93,13 +105,11 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.AGREE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.CuadroTerminado"/>
         </messageevent>
         <messageevent name="refuse_caballete" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.CuadroTerminado"/>
         </messageevent>
     </events>
     <configurations>
