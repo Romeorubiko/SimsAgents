@@ -7,7 +7,6 @@ import ontologia.conceptos.*;
 
 public class HasBailadoSim extends Predicado {
 
-    private Musica musica;
     private InteraccionSocial interaccion;
     private Energia energia;
     private Higiene higiene;
@@ -16,14 +15,6 @@ public class HasBailadoSim extends Predicado {
     private Deporte fisico;
 
     public HasBailadoSim() {
-    }
-
-    public Musica getMusica() {
-        return musica;
-    }
-
-    public void setMusica(Musica m) {
-        musica = m;
     }
 
     public InteraccionSocial getInteraccionSocial() {
