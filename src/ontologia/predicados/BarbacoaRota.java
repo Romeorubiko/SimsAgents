@@ -14,6 +14,13 @@ public class BarbacoaRota extends Predicado {
     public BarbacoaRota() {
     }
 
+    public BarbacoaRota(Higiene h, Hambre hmb, Diversion d, Cocina c) {
+        higiene = h;
+        hambre = hmb;
+        diversion = d;
+        cocina = c;
+    }
+
 
     public Higiene getHigiene() {
         return higiene;

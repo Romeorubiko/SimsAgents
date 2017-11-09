@@ -6,11 +6,14 @@ import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
 import ontologia.acciones.Reparar;
 
+
+
 /**
  * Created by eldgb on 09-Nov-17.
  */
 public class RepararBarbacoaPlan extends Plan {
     public void body() {
+
         RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
         Reparar content = (Reparar) peticion.getContent();
 

@@ -7,10 +7,34 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
 
        name="barbacoa"
-
        package="jardin.barbacoa">
 
 
+    <imports>
+        <import>java.sql.Time</import>
+
+        <import>jadex.runtime.*</import>
+
+        <import>jadex.planlib.*</import>
+
+        <import>jadex.util.*</import>
+
+        <import>jadex.adapter.fipa.*</import>
+
+        <import>java.util.logging.*</import>
+
+        <import>java.util.*</import>
+
+        <import>ontologia.Accion</import>
+
+        <import>jadex.model.IMMessageEvent</import>
+
+    </imports>
+    <capabilities>
+        <!-- this capability provides easy access to "out-of-the-box"-plans
+             allowing - for example - to register at the DF. -->
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
 
     <beliefs>
         <belief name="ocupado" class="Boolean">
@@ -29,95 +53,101 @@
             <fact>new Integer(15)</fact>
         </belief>
 
-        <belief name="hambre" class="Integer">
-        </belief>
-
-        <belief name="higiene" class="Integer">
-        </belief>
-
-        <belief name="energia" class="Integer">
-        </belief>
-
-        <belief name="diversion" class="Integer">
-        </belief>
-
-        <belief name="experiencia_cocina" class="Integer">
-        </belief>
-
-        <belief name="nivel_cocina" class="Integer">
-        </belief>
-
-        <belief name="experiencia_mecanica" class="Integer">
-        </belief>
+        <belief name="mensaje_cocinar_barbacoa" class="IMessageEvent"/>
+        <belief name="mensaje_reparar_barbacoa" class="IMessageEvent"/>
 
         <belief name="time" class="int" updaterate="750">
-            <fact> (int)(System.currentTimeMillis()) </fact>
+            <fact>(int)(System.currentTimeMillis())</fact>
         </belief>
 
-        <belief name="tiempoFinalizacion" class="Time">
-        </belief>
+        <belief name="tiempoFinalizacion" class="Time"></belief>
 
     </beliefs>
+
+
+    <goals>
+        <maintaingoal name="cocinar_barbacoa_tiempo_superado">
+            <maintaincondition>$beliefbase.tiempo_fin_cocinar_barbacoa>=beliefbase.tiempo</maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="reparar_barbacoa_tiempo_superado">
+            <maintaincondition>$beliefbase.tiempo_fin_reparar_barbacoa>=beliefbase.tiempo</maintaincondition>
+        </maintaingoal>
+
+
+        <achievegoalref name="df_hambre_cocinarBarbacoa">
+            <concrete ref="dfcap.df_hambre_cocinarBarbacoa"/>
+        </achievegoalref>
+        <achievegoalref name="df_diversion_cocinarBarbacoa" ><concrete ref="dfcap.df_diversion_cocinarBarbacoa"/></achievegoalref>
+        <achievegoalref name="df_cocina_cocinarBarbacoa"><concrete ref="dfcap.df_cocina_cocinarBarbacoa"/></achievegoalref>
+        <achievegoalref name="df_mecanica_reparar"><concrete ref="dfcap.df_mecanica_reparar"/></achievegoalref>
+    </goals>
 
     <plans>
 
         <plan name="CocinarBarbacoaPlan">
-
-            <body class="jardin.barbacoa.CocinarBarbacoaPlan"/>
-
+            <body class="CocinarBarbacoaPlan"/>
             <trigger>
-
                 <messageevent ref="cocinar_barbacoa"/>
-
             </trigger>
-
         </plan>
 
         <plan name="RepararBarbacoaPlan">
-
             <body class="jardin.barbacoa.RepararBarbacoaPlan"/>
 
+
             <trigger>
+
 
                 <messageevent ref="reparar"/>
 
+
             </trigger>
 
+
         </plan>
+
 
         <plan name="CocinarBarbacoaTerminarPlan">
 
-            <body class="jardin.barbacoa.CocinarBarbacoaTerminarPlan"/>
+
+            <body class="CocinarBarbacoaTerminarPlan"/>
+
 
             <trigger>
 
-                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
-                </condition>
-                <condition>$beliefbase.ocupado==TRUE
+                <condition>
+                    $beliefbase.time>$beliefbase.tiempoFinalizacion
                 </condition>
 
 
             </trigger>
+            <contextcondition>$beliefbase.ocupado==TRUE</contextcondition>
+
 
         </plan>
 
-        <plan name="RepararBarbacoaTerminarPlan">
 
-            <body class="jardin.barbacoa.CocinarBarbacoaTerminarPlan"/>
+        <plan name="RepararBarbacoaTerminar">
+
+            <!--<body class="RepararBarbacoaTerminarPlan"/>-->
+            <body>new RepararBarbacoaTerminarPlan()</body>
+
 
             <trigger>
 
-                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
+                <condition>
+                    $beliefbase.time=$beliefbase.tiempoFinalizacion
                 </condition>
-                <condition>$beliefbase.ocupado==TRUE
-                </condition>
+
 
             </trigger>
+            <contextcondition>$beliefbase.ocupado==TRUE</contextcondition>
+
 
         </plan>
+
 
     </plans>
-
 
 
     <events>
@@ -130,11 +160,10 @@
 
             </parameter>
 
-            <parameter name="content" class="ontologia.acciones.CocinarComidaBarbacoa"/>
 
         </messageevent>
 
-        <messageevent name="reparar_barbacoa" direction="receive" type="fipa">
+        <messageevent name="reparar" direction="receive" type="fipa">
 
             <parameter name="performative" class="String" direction="fixed">
 
@@ -142,7 +171,6 @@
 
             </parameter>
 
-            <parameter name="content" class="ontologia.acciones.Reparar"/>
 
         </messageevent>
 
@@ -154,7 +182,6 @@
 
             </parameter>
 
-            <parameter name="content" class="ontologia.acciones.CocinarComidaBarbacoa"/>
 
         </messageevent>
 
@@ -166,7 +193,6 @@
 
             </parameter>
 
-            <parameter name="content" class="ontologia.acciones.Reparar"/>
 
         </messageevent>
 
@@ -178,7 +204,6 @@
 
             </parameter>
 
-            <parameter name="content" class="ontologia.acciones.Reparar"/>
 
         </messageevent>
 
@@ -189,9 +214,6 @@
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
 
             </parameter>
-
-            <parameter name="content" class="ontologia.predicados.BarbacoaRota"/>
-
 
 
         </messageevent>
@@ -204,7 +226,6 @@
 
             </parameter>
 
-            <parameter name="content" class="ontologia.predicados.HasCocinadoBarbacoa"/>
 
         </messageevent>
 
@@ -216,7 +237,6 @@
 
             </parameter>
 
-            <parameter name="content" class="ontologia.predicados.HasReparado"/>
 
         </messageevent>
 
@@ -228,34 +248,35 @@
 
             </parameter>
 
-            <parameter name="content" class="ontologia.predicados.PerritosQuemados"/>
 
         </messageevent>
 
 
-
     </events>
     <configurations>
-        <configuration name = "default">
+        <configuration name="default">
             <goals>
                 <initialgoal ref="df_hambre_cocinarBarbacoa">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Hambre", "CocinarComidaBarbacoa"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Hambre",
+                            "CocinarComidaBarbacoa"))
                         </value>
                     </parameter>
                 </initialgoal>
                 <initialgoal ref="df_diversion_cocinarBarbacoa">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Diversion", "CocinarComidaBarbacoa"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Diversion",
+                            "CocinarComidaBarbacoa"))
                         </value>
                     </parameter>
                 </initialgoal>
                 <initialgoal ref="df_cocina_cocinarBarbacoa">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Cocina", "CocinarComidaBarbacoa"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Cocina",
+                            "CocinarComidaBarbacoa"))
                         </value>
                     </parameter>
                 </initialgoal>
