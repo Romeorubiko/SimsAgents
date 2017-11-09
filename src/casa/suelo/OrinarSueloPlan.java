@@ -1,4 +1,4 @@
-package casa;
+package casa.suelo;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
 import ontologia.acciones.*;
