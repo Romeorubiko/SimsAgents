@@ -34,6 +34,7 @@ public class PintarNuevoCuadroPreguntaPlan extends Plan {
             sendMessage(refuse);
         } else {
             getBeliefbase().getBelief("cuadro_instalado").setFact(cuadro);
+            getBeliefbase().getBelief("ocupado_caballete").setFact(Boolean.TRUE);
             getBeliefbase().getBelief("mensaje_pintar_nuevo_cuadro").setFact(peticion);
 
             IMessageEvent agree = createMessageEvent("agree_caballete");
