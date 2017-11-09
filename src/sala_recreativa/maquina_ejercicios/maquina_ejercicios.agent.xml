@@ -5,47 +5,71 @@
        name="maquina_ejercicios"
        package="sala_recreativa.maquina_ejercicios">
 
+    <imports>
+        <import>java.sql.Time</import>
+
+        <import>jadex.runtime.*</import>
+
+        <import>jadex.planlib.*</import>
+
+        <import>jadex.util.*</import>
+
+        <import>jadex.adapter.fipa.*</import>
+
+        <import>java.util.logging.*</import>
+
+        <import>java.util.*</import>
+
+        <import>ontologia.Accion</import>
+
+        <import>jadex.model.IMMessageEvent</import>
+
+    </imports>
+
+    <capabilities>
+        <!-- this capability provides easy access to "out-of-the-box"-plans
+             allowing - for example - to register at the DF. -->
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
 
     <beliefs>
         <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
 
-        <belief name="energia" class="Integer">
-        </belief>
+        <belief name="mensaje_entrenar" class="RMessageEvent"/>
 
-        <belief name="higiene" class="Integer">
-        </belief>
-
-        <belief name="hambre" class="Integer">
-        </belief>
-
-        <belief name="deporte" class="Integer">
-        </belief>
-
-        <belief name="time" class="int" updaterate="750">
+        <belief name="tiempo" class="int" updaterate="750">
             <fact> (int)(System.currentTimeMillis()) </fact>
         </belief>
 
-        <belief name="tiempoFinalizacion" class="Time">
+        <belief name="tiempo_fin_entrenar" class="int">
+            <fact> (int) 0 </fact>
         </belief>
 
     </beliefs>
 
-    <plans>
+    <goals>
+        <maintaingoal name="terminar_entrenar">
+            <maintaincondition>$beliefbase.tiempo_fin_entrenar>=beliefbase.tiempo</maintaincondition>
+        </maintaingoal>
+        <achievegoalref name="df_deporte_entrenar">
+            <concrete ref="dfcap.df_deporte_entrenar"/>
+        </achievegoalref>
+    </goals>
 
-        <plan name="EntrenarPlan">
-            <body class="sala_recreativa.maquina_ejercicios.EntrenarPlan"/>
+    <plans>
+        <plan name="Entrenar">
+            <body class="EntrenarPlan"/>
             <trigger>
                 <messageevent ref="entrenar_maquina_ejercicios"/>
             </trigger>
         </plan>
 
-        <plan name="EntrenarTerminarPlan">
-            <body class="sala_recreativa.maquina_ejercicios.EntrenarTerminarPlan"/>
+        <plan name="EntrenarTerminar">
+            <body class="EntrenarTerminarPlan"/>
             <trigger>
-                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
-                </condition>
+                <goal ref="terminar_entrenar"></goal>
             </trigger>
         </plan>
 
@@ -58,34 +82,26 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="ontologia.acciones.Entrenar"/>
+            <parameter name="content" class="EntrenarPlan"/>
         </messageevent>
 
 
         <messageevent name="maquina_ejercicios_ocupada" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
-
             </parameter>
+        </messageevent>
 
-            <parameter name="content" class="ontologia.acciones.Entrenar"/>
-
-
-
+        <messageevent name="maquina_ejercicios_no_ocupada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="has_entrenado" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
-
             </parameter>
-
-            <parameter name="content" class="ontologia.predicados.HasEntrenado"/>
-
         </messageevent>
 
     </events>
@@ -93,6 +109,7 @@
     <configurations>
         <configuration name = "default">
             <goals>
+                <initialgoal ref="terminar_entrenar"/>
                 <initialgoal ref="df_deporte_entrenar">
                     <parameter ref="description">
                         <value>

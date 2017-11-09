@@ -1,7 +1,11 @@
 package sala_recreativa.maquina_ejercicios;
 
+import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
+import jadex.runtime.impl.RMessageEvent;
+import ontologia.acciones.Entrenar;
+import ontologia.acciones.Reparar;
 import ontologia.conceptos.habilidades.Deporte;
 import ontologia.conceptos.habilidades.Habilidad;
 import ontologia.conceptos.necesidades.Energia;
@@ -15,31 +19,30 @@ import ontologia.predicados.HasEntrenado;
  */
 public class EntrenarTerminarPlan extends Plan {
     public void body() {
+
+        getGoalbase().getGoal("terminar_entrenar").drop();
+        getBeliefbase().getBelief("tiempo_fin_entrenar").setFact(new Integer (0));
+        RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_entrenar").getFact();
+        Entrenar contenido = (Entrenar) peticion.getContent();
+
+
+        Energia e = contenido.getEnergia();
+        Higiene h = contenido.getHigiene();
+        Hambre hmb = contenido.getHambre();
+        Deporte d = contenido.getDeporte();
+
+        e.setGrado(e.getGrado()- Necesidad.NC_POCO);
+        h.setGrado(h.getGrado()-Necesidad.NC_POCO);
+        hmb.setGrado(hmb.getGrado()-Necesidad.NC_POCO);
+        d.setExperiencia(d.getExperiencia()+ Habilidad.HB_MUCHO);
+
+        HasEntrenado response = new HasEntrenado(e, h, hmb, d);
+
+        IMessageEvent inform = createMessageEvent("has_entrenado");
+        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+        inform.setContent(response);
+        sendMessage(inform);
+
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-
-        Energia e = new Energia();
-        Higiene h = new Higiene();
-        Hambre hmb = new Hambre();
-        Deporte d = new Deporte();
-
-        Integer grado_e = (Integer)getBeliefbase().getBelief("energia").getFact();
-        Integer grado_h = (Integer)getBeliefbase().getBelief("higiene").getFact();
-        Integer grado_hmb = (Integer)getBeliefbase().getBelief("hambre").getFact();
-        Integer experiencia_d = (Integer)getBeliefbase().getBelief("deporte").getFact();
-
-        e.setGrado(grado_e.intValue()- Necesidad.NC_POCO);
-        h.setGrado(grado_h.intValue()-Necesidad.NC_POCO);
-        hmb.setGrado(grado_hmb.intValue()-Necesidad.NC_POCO);
-        d.setExperiencia(experiencia_d.intValue()+ Habilidad.HB_MUCHO);
-
-        HasEntrenado response = new HasEntrenado();
-        response.setEnergia(e);
-        response.setHigiene(h);
-        response.setHambre(hmb);
-        response.setDeporte(d);
-
-        IMessageEvent respuesta = createMessageEvent("has_entrenado");
-        respuesta.setContent(response);
-        sendMessage(respuesta);
     }
 }

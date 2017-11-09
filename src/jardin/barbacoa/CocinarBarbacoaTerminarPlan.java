@@ -3,6 +3,7 @@ import java.util.Random;
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.*;
+import jadex.runtime.impl.RMessageEvent;
 import ontologia.acciones.CocinarComidaBarbacoa;
 import ontologia.conceptos.habilidades.Cocina;
 import ontologia.conceptos.habilidades.Habilidad;
@@ -22,7 +23,7 @@ public class CocinarBarbacoaTerminarPlan extends Plan {
         getGoalbase().getGoal("terminar_cocinar_barbacoa").drop();
         getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer (0));
 
-        IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_cocinar_barbacoa").getFact();
+        RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_cocinar_barbacoa").getFact();
         CocinarComidaBarbacoa contenido = (CocinarComidaBarbacoa)peticion.getContent();
 
         Higiene h = contenido.getHigiene();

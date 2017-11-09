@@ -30,6 +30,7 @@
         <import>jadex.model.IMMessageEvent</import>
 
     </imports>
+
     <capabilities>
         <!-- this capability provides easy access to "out-of-the-box"-plans
              allowing - for example - to register at the DF. -->
@@ -75,7 +76,7 @@
         <maintaingoal name="terminar_cocinar_barbacoa">
             <maintaincondition>$beliefbase.tiempo_fin_cocinar_barbacoa>=beliefbase.tiempo</maintaincondition>
         </maintaingoal>
-        <maintaingoal name="terminar_barbacoa_tiempo_superado">
+        <maintaingoal name="terminar_reparar_barbacoa">
             <maintaincondition>$beliefbase.tiempo_fin_reparar_barbacoa>=beliefbase.tiempo</maintaincondition>
         </maintaingoal>
 
@@ -98,7 +99,7 @@
         </plan>
 
         <plan name="RepararBarbacoa">
-            <body class="jardin.barbacoa.RepararBarbacoaPlan"/>
+            <body class="RepararBarbacoaPlan"/>
             <trigger>
                 <messageevent ref="reparar"/>
             </trigger>
@@ -110,7 +111,6 @@
             <trigger>
                 <goal ref="terminar_cocinar_barbacoa"></goal>
             </trigger>
-            <contextcondition>$beliefbase.ocupado==TRUE</contextcondition>
         </plan>
 
 
@@ -121,7 +121,6 @@
             <trigger>
                 <goal ref="terminar_reparar_barbacoa"></goal>
             </trigger>
-            <contextcondition>$beliefbase.ocupado==TRUE</contextcondition>
         </plan>
     </plans>
 

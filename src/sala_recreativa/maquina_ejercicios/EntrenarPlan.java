@@ -1,5 +1,7 @@
 package sala_recreativa.maquina_ejercicios;
 
+import jadex.adapter.fipa.SFipa;
+import jadex.runtime.IGoal;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
@@ -17,24 +19,24 @@ public class EntrenarPlan extends Plan{
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
 
         if(ocupado.booleanValue()) {
-            IMessageEvent respuesta = createMessageEvent("maquina_ejercicios_ocupada");
-            respuesta.setContent(content);
-            sendMessage(respuesta);
+            IMessageEvent refuse = createMessageEvent("maquina_ejercicios_ocupada");
+            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            sendMessage(refuse);
         }
         else {
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
 
-            int grado_e = content.getEnergia().getGrado();
-            int grado_h = content.getHigiene().getGrado();
-            int grado_hmb = content.getHambre().getGrado();
-            int experiencia_d = content.getDeporte().getExperiencia();
-            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
+            IMessageEvent agree = createMessageEvent("maquina_ejercicios_no_ocupada");
+            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            sendMessage(agree);
 
-            getBeliefbase().getBelief("energia").setFact(new Integer(grado_e));
-            getBeliefbase().getBelief("higiene").setFact(new Integer(grado_h));
-            getBeliefbase().getBelief("hambre").setFact(new Integer(grado_hmb));
-            getBeliefbase().getBelief("deporte").setFact(new Integer(experiencia_d));
-            getBeliefbase().getBelief("tiempoFinalizacion").setFact(new Integer(end_timer));
+            getBeliefbase().getBelief("mensaje_entrenar").setFact(peticion);
+
+            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
+            getBeliefbase().getBelief("tiempo_fin_entrenar").setFact(new Integer(end_timer));
+
+            IGoal goal= createGoal("terminar_entrenar");
+            dispatchSubgoal(goal);
 
         }
 
