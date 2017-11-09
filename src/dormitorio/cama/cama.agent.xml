@@ -172,6 +172,13 @@
                         </value>
                     </parameter>
                 </initialgoal>
+                <initialgoal ref="df_higiene_descansar">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Higiene", "HacerLaCama"))
+                        </value>
+                    </parameter>
+                </initialgoal>
             </goals>
         </configuration>
     </configurations>

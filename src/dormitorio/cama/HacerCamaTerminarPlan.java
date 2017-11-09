@@ -22,7 +22,7 @@ public class HacerCamaTerminarPlan extends Plan {
         Integer grado_h = (Integer)getBeliefbase().getBelief("higiene").getFact();
 
         e.setGrado(grado_e.intValue()- Necesidad.NC_POCO);
-        h.setGrado(grado_h.intValue()-Necesidad.NC_POCO);
+        h.setGrado(grado_h.intValue()+ Necesidad.NC_POCO);
 
         CamaHecha response = new CamaHecha();
         response.setEnergia(e);
