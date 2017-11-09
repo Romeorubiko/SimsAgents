@@ -37,13 +37,13 @@
 	<goals>
 		<maintaingoal name="leer_periodico_tiempo_superado">
 			<maintaincondition>
-				$beliefbase.tiempo_periodico >= $beliefbase.tiempo_fin_periodico
+				$beliefbase.tiempo_fin_periodico >= $beliefbase.tiempo_periodico
 			</maintaincondition>
 		</maintaingoal>
 
 		<maintaingoal name="crucigrama_periodico_tiempo_superado">
 			<maintaincondition>
-				$beliefbase.tiempo_periodico >= $beliefbase.tiempo_fin_periodico
+				$beliefbase.tiempo_fin_periodico >= $beliefbase.tiempo_periodico
 			</maintaincondition>
 		</maintaingoal>
 
