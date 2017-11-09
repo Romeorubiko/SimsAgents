@@ -53,14 +53,20 @@
             <fact>new Integer(15)</fact>
         </belief>
 
-        <belief name="mensaje_cocinar_barbacoa" class="IMessageEvent"/>
-        <belief name="mensaje_reparar_barbacoa" class="IMessageEvent"/>
+        <belief name="mensaje_cocinar_barbacoa" class="RMessageEvent"/>
+        <belief name="mensaje_reparar_barbacoa" class="RMessageEvent"/>
 
-        <belief name="time" class="int" updaterate="750">
+        <belief name="tiempo" class="int" updaterate="750">
             <fact>(int)(System.currentTimeMillis())</fact>
         </belief>
 
-        <belief name="tiempoFinalizacion" class="Time"></belief>
+        <belief name="tiempo_fin_cocinar_barbacoa" class="int">
+            <fact> (int) 0 </fact>
+        </belief>
+
+        <belief name="tiempo_fin_reparar_barbacoa" class="int">
+            <fact> (int) 0 </fact>
+        </belief>
 
     </beliefs>
 

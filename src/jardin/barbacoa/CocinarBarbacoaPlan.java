@@ -17,6 +17,7 @@ import jadex.adapter.fipa.SFipa;
  */
 public class CocinarBarbacoaPlan extends Plan {
     public void body() {
+
         RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
         CocinarComidaBarbacoa content = (CocinarComidaBarbacoa) peticion.getContent();
         Hambre hmb = content.getHambre();
@@ -27,7 +28,7 @@ public class CocinarBarbacoaPlan extends Plan {
         Boolean estropeado = (Boolean)getBeliefbase().getBelief("estropeado").getFact();
 
         if(ocupado.booleanValue()) {
-            IMessageEvent refuse = createMessageEvent("barbacoa_ocupada_cocinar");
+            IMessageEvent refuse = createMessageEvent("barbacoa_ocupada");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         }
@@ -56,10 +57,10 @@ public class CocinarBarbacoaPlan extends Plan {
             int obsolescencia = ((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1;
             getBeliefbase().getBelief("obsolescencia").setFact(new Integer (obsolescencia));
 
-            getBeliefbase().getBelief("mensaje_cocinar_barbacoa").setFact(content);
+            getBeliefbase().getBelief("mensaje_cocinar_barbacoa").setFact(peticion);
 
             int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
-            getBeliefbase().getBelief("tiempoFinalizacion").setFact(new Integer(end_timer));
+            getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer(end_timer));
 
             IGoal goal= createGoal("terminar_cocinar_barbacoa");
             dispatchSubgoal(goal);

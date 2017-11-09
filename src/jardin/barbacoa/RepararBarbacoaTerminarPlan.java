@@ -1,7 +1,10 @@
 package jardin.barbacoa;
 
+import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
+import ontologia.acciones.CocinarComidaBarbacoa;
+import ontologia.acciones.Reparar;
 import ontologia.conceptos.habilidades.Habilidad;
 import ontologia.conceptos.habilidades.Mecanica;
 import ontologia.conceptos.necesidades.Energia;
@@ -14,29 +17,31 @@ import ontologia.predicados.HasReparado;
  */
 public class RepararBarbacoaTerminarPlan extends Plan {
     public void body() {
-        getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-        getBeliefbase().getBelief("estropeado").setFact(Boolean.FALSE);
+        getGoalbase().getGoal("terminar_reparar_barbacoa").drop();
+        getBeliefbase().getBelief("tiempo_fin_reparar_barbacoa").setFact(new Integer (0));
+
+        IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_reparar_barbacoa").getFact();
+        Reparar contenido = (Reparar) peticion.getContent();
+
+        Higiene h = contenido.getHigiene();
+        Energia e = contenido.getEnergia();
+        Mecanica m = contenido.getMecanica();
+
+        h.setGrado(h.getGrado()- Necesidad.NC_POCO);
+        e.setGrado(e.getGrado()-Necesidad.NC_POCO);
+        m.setExperiencia(m.getExperiencia()+ Habilidad.HB_NORMAL);
+
+        HasReparado response = new HasReparado(e, h, m);
+
         getBeliefbase().getBelief("obsolescencia").setFact(new Integer (15));
-        Higiene h = new Higiene();
-        Energia e = new Energia();
-        Mecanica m = new Mecanica();
+        getBeliefbase().getBelief("estropeado").setFact(Boolean.FALSE);
 
-        Integer grado_h = (Integer)getBeliefbase().getBelief("higiene").getFact();
-        Integer grado_e = (Integer)getBeliefbase().getBelief("energia").getFact();
-        Integer experiencia_m = (Integer)getBeliefbase().getBelief("experiencia_mecanica").getFact();
+        IMessageEvent inform = createMessageEvent("has_reparado");
+        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+        inform.setContent(response);
+        sendMessage(inform);
 
-        h.setGrado(grado_h.intValue()- Necesidad.NC_POCO);
-        e.setGrado(grado_e.intValue()-Necesidad.NC_POCO);
-        m.setExperiencia(experiencia_m.intValue()+ Habilidad.HB_NORMAL);
-
-        HasReparado response = new HasReparado();
-        response.setHigiene(h);
-        response.setEnergia(e);
-        response.setMecanica(m);
-
-        IMessageEvent respuesta = createMessageEvent("has_reparado");
-        respuesta.setContent(response);
-        sendMessage(respuesta);
+        getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
 
     }
 }
