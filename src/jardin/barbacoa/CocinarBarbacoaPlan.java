@@ -1,7 +1,7 @@
 package jardin.barbacoa;
 
 import jadex.runtime.IMessageEvent;
-import jadex.runtime.Plan;
+import jadex.runtime.*;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
 import ontologia.acciones.CocinarComidaBarbacoa;
@@ -49,11 +49,20 @@ public class CocinarBarbacoaPlan extends Plan {
         else {
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
 
+            IMessageEvent agree = createMessageEvent("barbacoa_cocinar_no_ocupada");
+            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            sendMessage(agree);
+
             int obsolescencia = ((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1;
             getBeliefbase().getBelief("obsolescencia").setFact(new Integer (obsolescencia));
 
+            getBeliefbase().getBelief("mensaje_cocinar_barbacoa").setFact(content);
+
             int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
             getBeliefbase().getBelief("tiempoFinalizacion").setFact(new Integer(end_timer));
+
+            IGoal goal= createGoal("terminar_cocinar_barbacoa");
+            dispatchSubgoal(goal);
 
 
         }

@@ -1,8 +1,9 @@
 package jardin.barbacoa;
 import java.util.Random;
-
+import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
-import jadex.runtime.Plan;
+import jadex.runtime.*;
+import ontologia.acciones.CocinarComidaBarbacoa;
 import ontologia.conceptos.habilidades.Cocina;
 import ontologia.conceptos.habilidades.Habilidad;
 import ontologia.conceptos.necesidades.Diversion;
@@ -18,54 +19,50 @@ import ontologia.predicados.PerritosQuemados;
 public class CocinarBarbacoaTerminarPlan extends Plan {
     public void body() {
 
-        getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
+        getGoalbase().getGoal("terminar_cocinar_barbacoa").drop();
+        getBeliefbase().getBelief("tiempoFinalizacion").setFact(new Integer (0));
 
-        Higiene h = new Higiene();
-        Hambre hmb = new Hambre();
-        Diversion d = new Diversion();
-        Cocina c = new Cocina();
+        IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_cocinar_barbacoa").getFact();
+        CocinarComidaBarbacoa contenido = (CocinarComidaBarbacoa)peticion.getContent();
 
-        Integer grado_h = (Integer)getBeliefbase().getBelief("higiene").getFact();
-        Integer grado_hmb = (Integer)getBeliefbase().getBelief("hambre").getFact();
-        Integer grado_d = (Integer)getBeliefbase().getBelief("diversion").getFact();
-        Integer experiencia_c = (Integer)getBeliefbase().getBelief("experiencia_cocina").getFact();
-        Integer nivel_c = (Integer)getBeliefbase().getBelief("nivel_cocina").getFact();
+        Higiene h = contenido.getHigiene();
+        Hambre hmb = contenido.getHambre();
+        Diversion d = contenido.getDiversion();
+        Cocina c = contenido.getCocina();
 
-        boolean val = new Random().nextInt(2*nivel_c.intValue())==0;
+
+        boolean val = new Random().nextInt(2*c.getExperiencia())==0;
 
         //Comida quemada. La probabilidad de que se queme la comida es mas pequeña cuanto más alto es el nivel de cocina
         if (val) {
-            h.setGrado(grado_h.intValue()- Necesidad.NC_POCO);
-            hmb.setGrado(grado_hmb.intValue());
-            d.setGrado(grado_d.intValue()+Necesidad.NC_POCO);
-            c.setExperiencia(experiencia_c.intValue()+ Habilidad.HB_NORMAL);
+            h.setGrado(h.getGrado()- Necesidad.NC_POCO);
+            hmb.setGrado(hmb.getGrado());
+            d.setGrado(d.getGrado()+Necesidad.NC_POCO);
+            c.setExperiencia(c.getExperiencia()+ Habilidad.HB_NORMAL);
 
-            PerritosQuemados response = new PerritosQuemados();
-            response.setCocina(c);
-            response.setDiversion(d);
-            response.setHambre(hmb);
-            response.setHigiene(h);
+            PerritosQuemados response = new PerritosQuemados(h, hmb, d, c);
 
-            IMessageEvent respuesta = createMessageEvent("perritos_quemados");
-            respuesta.setContent(response);
-            sendMessage(respuesta);
+
+            IMessageEvent failure = createMessageEvent("perritos_quemados");
+            failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            failure.setContent(response);
+            sendMessage(failure);
+            getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
 
         }
         else {
-            h.setGrado(grado_h.intValue()- Necesidad.NC_POCO);
-            hmb.setGrado(grado_hmb.intValue()+Necesidad.NC_NORMAL);
-            d.setGrado(grado_d.intValue()+Necesidad.NC_POCO);
-            c.setExperiencia(experiencia_c.intValue()+ Habilidad.HB_NORMAL);
+            h.setGrado(h.getGrado()- Necesidad.NC_POCO);
+            hmb.setGrado(hmb.getGrado()+Necesidad.NC_NORMAL);
+            d.setGrado(d.getGrado()+Necesidad.NC_POCO);
+            c.setExperiencia(c.getExperiencia()+ Habilidad.HB_NORMAL);
 
-            HasCocinadoBarbacoa response = new HasCocinadoBarbacoa();
-            response.setCocina(c);
-            response.setDiversion(d);
-            response.setHambre(hmb);
-            response.setHigiene(h);
+            HasCocinadoBarbacoa response = new HasCocinadoBarbacoa(h, hmb, d, c);
 
-            IMessageEvent respuesta = createMessageEvent("has_cocinado_barbacoa");
-            respuesta.setContent(response);
-            sendMessage(respuesta);
+            IMessageEvent inform = createMessageEvent("has_cocinado_barbacoa");
+            inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            inform.setContent(response);
+            sendMessage(inform);
+            getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
         }
 
     }

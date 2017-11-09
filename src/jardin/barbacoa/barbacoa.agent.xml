@@ -66,10 +66,10 @@
 
 
     <goals>
-        <maintaingoal name="cocinar_barbacoa_tiempo_superado">
+        <maintaingoal name="terminar_cocinar_barbacoa">
             <maintaincondition>$beliefbase.tiempo_fin_cocinar_barbacoa>=beliefbase.tiempo</maintaincondition>
         </maintaingoal>
-        <maintaingoal name="reparar_barbacoa_tiempo_superado">
+        <maintaingoal name="terminar_barbacoa_tiempo_superado">
             <maintaincondition>$beliefbase.tiempo_fin_reparar_barbacoa>=beliefbase.tiempo</maintaincondition>
         </maintaingoal>
 
@@ -84,171 +84,110 @@
 
     <plans>
 
-        <plan name="CocinarBarbacoaPlan">
+        <plan name="CocinarBarbacoa">
             <body class="CocinarBarbacoaPlan"/>
             <trigger>
                 <messageevent ref="cocinar_barbacoa"/>
             </trigger>
         </plan>
 
-        <plan name="RepararBarbacoaPlan">
+        <plan name="RepararBarbacoa">
             <body class="jardin.barbacoa.RepararBarbacoaPlan"/>
-
-
             <trigger>
-
-
                 <messageevent ref="reparar"/>
-
-
             </trigger>
-
-
         </plan>
 
 
-        <plan name="CocinarBarbacoaTerminarPlan">
-
-
+        <plan name="CocinarBarbacoaTerminar">
             <body class="CocinarBarbacoaTerminarPlan"/>
-
-
             <trigger>
-
-                <condition>
-                    $beliefbase.time>$beliefbase.tiempoFinalizacion
-                </condition>
-
-
+                <goal ref="terminar_cocinar_barbacoa"></goal>
             </trigger>
             <contextcondition>$beliefbase.ocupado==TRUE</contextcondition>
-
-
         </plan>
 
 
         <plan name="RepararBarbacoaTerminar">
 
-            <!--<body class="RepararBarbacoaTerminarPlan"/>-->
-            <body>new RepararBarbacoaTerminarPlan()</body>
-
+            <body class="RepararBarbacoaTerminarPlan"/>
 
             <trigger>
-
-                <condition>
-                    $beliefbase.time=$beliefbase.tiempoFinalizacion
-                </condition>
-
-
+                <goal ref="terminar_reparar_barbacoa"></goal>
             </trigger>
             <contextcondition>$beliefbase.ocupado==TRUE</contextcondition>
-
-
         </plan>
-
-
     </plans>
 
 
     <events>
 
         <messageevent name="cocinar_barbacoa" direction="receive" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
-
             </parameter>
-
-
+            <parameter name="content" class="CocinarBarbacoaPlan"
+                       direction="fixed">
+            </parameter>
         </messageevent>
+
 
         <messageevent name="reparar" direction="receive" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
-
             </parameter>
-
-
+            <parameter name="content" class="RepararBarbacoaPlan"
+                       direction="fixed">
+            </parameter>
         </messageevent>
 
-        <messageevent name="barbacoa_ocupada_cocinar" direction="send" type="fipa">
 
+        <messageevent name="barbacoa_ocupada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
-
             </parameter>
-
-
         </messageevent>
 
-        <messageevent name="barbacoa_ocupada_reparar" direction="send" type="fipa">
-
+        <messageevent name="barbacoa_cocinar_no_ocupada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-
-                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
-
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
             </parameter>
-
-
         </messageevent>
 
-        <messageevent name="barbacoa_no_estropeada" direction="send" type="fipa">
-
+        <messageevent name="barbacoa_reparar_no_ocupada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-
-                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
-
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
             </parameter>
-
-
         </messageevent>
 
         <messageevent name="barbacoa_estropeada" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
-
             </parameter>
+        </messageevent>
 
-
+        <messageevent name="barbacoa_no_estropeada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="has_cocinado_barbacoa" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
-
             </parameter>
-
-
         </messageevent>
 
         <messageevent name="has_reparado" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
-
             </parameter>
-
-
         </messageevent>
 
         <messageevent name="perritos_quemados" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
-
             </parameter>
-
-
         </messageevent>
 
 
@@ -256,6 +195,9 @@
     <configurations>
         <configuration name="default">
             <goals>
+                <initialgoal ref="terminar_cocinar_barbacoa"/>
+                <initialgoal ref="terminar_reparar_barbacoa"/>
+
                 <initialgoal ref="df_hambre_cocinarBarbacoa">
                     <parameter ref="description">
                         <value>
