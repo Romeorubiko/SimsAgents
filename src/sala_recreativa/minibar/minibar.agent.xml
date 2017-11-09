@@ -5,45 +5,65 @@
        name="minibar"
        package="sala_recreativa.minibar">
 
+    <imports>
+        <import>java.sql.Time</import>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>ontologia.Accion</import>
+        <import>jadex.model.IMMessageEvent</import>
+    </imports>
+
+    <capabilities>
+        <!-- this capability provides easy access to "out-of-the-box"-plans
+             allowing - for example - to register at the DF. -->
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
 
     <beliefs>
         <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
 
-        <belief name="energia" class="Integer">
-        </belief>
+        <belief name="mensaje_beber_minibar" class="RMessageEvent"/>
 
-        <belief name="diversion" class="Integer">
-        </belief>
-
-        <belief name="vejiga" class="Integer">
-        </belief>
-
-        <belief name="time" class="int" updaterate="750">
+        <belief name="tiempo" class="int" updaterate="750">
             <fact> (int)(System.currentTimeMillis()) </fact>
         </belief>
 
-        <belief name="tiempoFinalizacion" class="Time">
+        <belief name="tiempo_fin_minibar" class="int">
+            <fact> (int) 0 </fact>
         </belief>
 
     </beliefs>
 
+    <goals>
+        <maintaingoal name="terminar_beber_minibar">
+            <maintaincondition>$beliefbase.tiempo_fin_minibar>=beliefbase.tiempo</maintaincondition>
+        </maintaingoal>
+
+        <achievegoalref name="df_df_diversion_beber">
+            <concrete ref="dfcap.df_diversion_beber"/>
+        </achievegoalref>
+    </goals>
+
     <plans>
 
-        <plan name="BeberPlan">
-            <body class="sala_recreativa.minibar.BeberPlan"/>
+        <plan name="BeberMinibar">
+            <body class="BeberMinibarPlan"/>
             <trigger>
                 <messageevent ref="beber"/>
             </trigger>
         </plan>
 
-        <plan name="BeberTerminarPlan">
-            <body class="sala_recreativa.minibar.BeberTerminarPlan"/>
-            <trigger>               
-                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
-                </condition>
-           </trigger>
+        <plan name="BeberMinibarTerminar">
+            <body class="BeberMinibarTerminarPlan"/>
+            <trigger>
+                <goal ref="terminar_beber_minibar"></goal>
+            </trigger>
         </plan>
 
     </plans>
@@ -55,41 +75,33 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="ontologia.acciones.Beber"/>
+            <parameter name="content" class="BeberMinibarPlan"/>
         </messageevent>
 
 
         <messageevent name="minibar_ocupado" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
-
             </parameter>
+        </messageevent>
 
-            <parameter name="content" class="ontologia.acciones.Beber"/>
-
-
-
+        <messageevent name="minibar_no_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="has_bebido" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
-
             </parameter>
-
-            <parameter name="content" class="ontologia.predicados.HasBebido"/>
-
         </messageevent>
-
     </events>
 
     <configurations>
         <configuration name = "default">
             <goals>
+                <initialgoal ref="terminar_beber_minibar"/>
                 <initialgoal ref="df_diversion_beber">
                     <parameter ref="description">
                         <value>
