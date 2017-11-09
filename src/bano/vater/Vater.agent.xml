@@ -8,39 +8,43 @@
         <belief name="obsolescencia" class="Integer">
             <fact>new Integer(100)</fact>
         </belief>
-        <belief name="sim_lavando" class="Boolean">
+        <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
+		<belief name="time" class="int" updaterate="750">
+            <fact> (int)(System.currentTimeMillis()) </fact>
+        </belief>
+		  <belief name="tiempoFinalizacion" class="Time"></belief>
     </beliefs>
     <plans>
         <plan name="Lavarse">
-            <body class="Baño.Ducha.LavarseDuchaPlan"/>
+            <body class="bano.Vater.UsarVaterPlan"/>
             <trigger>
                 <messageevent ref="request_lavarse"/>
             </trigger>
         </plan>
     </plans>
     <events>
-        <messageevent name="request_lavarse" direction="receive" type="fipa">
+        <messageevent name="request_usar_vater" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="ontologia.acciones.Lavarse"/>
+            <parameter name="content" class="ontologia.acciones.UsarVater"/>
         </messageevent>
 
-        <messageevent name="lavarse_realizado" direction="send" type="fipa">
+        <messageevent name="vater_usado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.TeHasLavado"/>
+            <parameter name="content" class="ontologia.predicados.VaterUsado"/>
 
         </messageevent>
 
-        <messageevent name="ducha_estropeada" direction="send" type="fipa">
+        <messageevent name="vater_estropeado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.DuchaEstropeada"/>
+            <parameter name="content" class="ontologia.predicados.VaterEstropeado"/>
         </messageevent>
     </events>
 </agent>

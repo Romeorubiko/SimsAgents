@@ -8,13 +8,17 @@
         <belief name="obsolescencia" class="Integer">
             <fact>new Integer(100)</fact>
         </belief>
-        <belief name="sim_lavando" class="Boolean">
+        <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
+		<belief name="time" class="int" updaterate="750">
+            <fact> (int)(System.currentTimeMillis()) </fact>
+        </belief>
+		  <belief name="tiempoFinalizacion" class="Time"></belief>
     </beliefs>
     <plans>
         <plan name="Lavarse">
-            <body class="Baño.Ducha.LavarseDuchaPlan"/>
+            <body class="bano.Lavabo.LavarseLavaboPlan"/>
             <trigger>
                 <messageevent ref="request_lavarse"/>
             </trigger>
@@ -28,7 +32,7 @@
             <parameter name="content" class="ontologia.acciones.Lavarse"/>
         </messageevent>
 
-        <messageevent name="lavarse_realizado" direction="send" type="fipa">
+        <messageevent name="te_has_lavado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
@@ -36,11 +40,11 @@
 
         </messageevent>
 
-        <messageevent name="ducha_estropeada" direction="send" type="fipa">
+        <messageevent name="lavabo_estropeado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.DuchaEstropeada"/>
+            <parameter name="content" class="ontologia.predicados.LavaboEstropeado"/>
         </messageevent>
     </events>
 </agent>
