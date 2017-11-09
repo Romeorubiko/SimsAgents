@@ -16,9 +16,26 @@
         <belief name="ocupado_caballete" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
+        <belief name="tiempo_caballete" class="int" updaterate="100">
+            <fact>(int) (System.currentTimeMillis()/1000)</fact>
+        </belief>
+
+        <belief name="tiempo_fin_caballete" class="int">
+            <fact>(int) 0</fact>
+        </belief>
         <belief name="mensaje_pintar_nuevo_cuadro" class="IMessageEvent"/>
     </beliefs>
     <goals>
+        <maintaingoal name="pintar_nuevo_cuadro_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_caballete >= $beliefbase.tiempo_caballete
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="seguir_pintando_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_caballete >= $beliefbase.tiempo_caballete
+            </maintaincondition>
+        </maintaingoal>
         <maintaingoalref name="df_diversion_pintar_nuevo_cuadro">
             <concrete ref="dfcap.df_diversion_pintar_nuevo_cuadro"/>
         </maintaingoalref>
@@ -120,7 +137,6 @@
                         </value>
                     </parameter>
                 </initialgoal>
-                <endgoal ref="df_deregister"/>
             </goals>
         </configuration>
     </configurations>

@@ -1,19 +1,12 @@
 package dormitorio.caballete;
 
 import jadex.adapter.fipa.SFipa;
+import jadex.runtime.IGoal;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
-import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
 import ontologia.acciones.PintarNuevoCuadro;
 import ontologia.conceptos.Cuadro;
-import ontologia.conceptos.habilidades.Habilidad;
-import ontologia.conceptos.habilidades.Pintura;
-import ontologia.conceptos.necesidades.Diversion;
-import ontologia.conceptos.necesidades.Energia;
-import ontologia.conceptos.necesidades.Necesidad;
-import ontologia.predicados.CuadroPintado;
-import ontologia.predicados.CuadroTerminado;
 
 public class PintarNuevoCuadroPreguntaPlan extends Plan {
 
@@ -36,10 +29,15 @@ public class PintarNuevoCuadroPreguntaPlan extends Plan {
             getBeliefbase().getBelief("cuadro_instalado").setFact(cuadro);
             getBeliefbase().getBelief("ocupado_caballete").setFact(Boolean.TRUE);
             getBeliefbase().getBelief("mensaje_pintar_nuevo_cuadro").setFact(peticion);
+            int tiempo = (int) getBeliefbase().getBelief("tiempo_caballete").getFact();
+            getBeliefbase().getBelief("tiempo_fin_caballete").setFact(tiempo + Accion.TIEMPO_MEDIO);
 
             IMessageEvent agree = createMessageEvent("agree_caballete");
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
+
+            IGoal goal = createGoal("pintar_nuevo_cuadro_tiempo_superado");
+            dispatchTopLevelGoal(goal);
         }
     }
 }
