@@ -71,7 +71,7 @@
 
 
         <maintaingoalref name="df_hambre_cocinarBarbacoa">
-            <concrete ref="dfcap.df_hambre_cocinarBarbacoa"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_diversion_cocinarBarbacoa" >
             <concrete ref="dfcap.df_keep_registered"/>

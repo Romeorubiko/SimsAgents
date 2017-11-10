@@ -62,7 +62,7 @@
         <maintaingoalref name="df_energia_descansar">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
-        <maintaingoalref name="df_df_higiene_hacer_cama" >
+        <maintaingoalref name="df_higiene_hacer_cama" >
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
 
