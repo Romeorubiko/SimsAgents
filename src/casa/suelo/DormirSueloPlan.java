@@ -1,13 +1,8 @@
 package casa.suelo;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
-import ontologia.acciones.*;
+import jadex.adapter.fipa.SFipa;
 import jadex.runtime.*;
-import ontologia.conceptos.necesidades.Diversion;
-import ontologia.conceptos.necesidades.Energia;
-import ontologia.conceptos.necesidades.Higiene;
-import ontologia.conceptos.necesidades.Necesidad;
-import ontologia.predicados.HasDormidoSuelo;
 
 
 /**
@@ -17,32 +12,18 @@ public class DormirSueloPlan extends Plan {
 
     public void body(){
         RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
-        DormirSuelo content = (DormirSuelo)peticion.getContent();
-        HasDormidoSuelo response = new HasDormidoSuelo();
 
-        Higiene h = content.getHigiene();
-        h.setGrado(content.getHigiene().getGrado() - Necesidad.NC_MUCHO);
-        response.setHigiene(h);
+        IMessageEvent agree = createMessageEvent("suelo_no_ocupado");
+        agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+        sendMessage(agree);
+        
+        getBeliefbase().getBelief("mensaje_dormir_suelo").setFact(peticion);
 
-        Diversion d = content.getDiversion();
-        d.setGrado(content.getDiversion().getGrado() - Necesidad.NC_NORMAL);
-        response.setDiversion(d);
+        int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_LARGO;
+        getBeliefbase().getBelief("tiempo_fin_dormir_suelo").setFact(new Integer(end_timer));
 
-        Energia e = content.getEnergia();
-        e.setGrado(content.getEnergia().getGrado() + Necesidad.NC_NORMAL);
-        response.setEnergia(e);
-
-
-        try {
-            wait(Accion.TIEMPO_LARGO);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
-
-        IMessageEvent respuesta = createMessageEvent("has_dormido_suelo");
-        respuesta.setContent(response);
-        sendMessage(respuesta);
-
+        IGoal goal= createGoal("terminar_dormir_suelo");
+        dispatchSubgoal(goal);
 
     }
 }

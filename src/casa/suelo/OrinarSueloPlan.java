@@ -1,47 +1,32 @@
 package casa.suelo;
+
+import jadex.adapter.fipa.SFipa;
+import jadex.runtime.IGoal;
+import jadex.runtime.IMessageEvent;
+import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
-import ontologia.acciones.*;
-import jadex.runtime.*;
-import ontologia.conceptos.necesidades.Diversion;
-import ontologia.conceptos.necesidades.Vejiga;
-import ontologia.conceptos.necesidades.Higiene;
-import ontologia.conceptos.necesidades.Necesidad;
-import ontologia.predicados.HasOrinadoSuelo;
 
 /**
  * Created by eldgb on 02-Nov-17.
  */
 public class OrinarSueloPlan extends Plan {
 
-    public void body() {
-        RMessageEvent peticion = ((RMessageEvent) getInitialEvent());
-        OrinarSuelo content = (OrinarSuelo) peticion.getContent();
-        HasOrinadoSuelo response = new HasOrinadoSuelo();
+	@Override
+	public void body() {
+		RMessageEvent peticion = ((RMessageEvent) getInitialEvent());
 
-        Higiene h = content.getHigiene();
-        h.setGrado(content.getHigiene().getGrado() - Necesidad.NC_MUCHO);
-        response.setHigiene(h);
+		IMessageEvent agree = createMessageEvent("suelo_no_ocupado");
+		agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+		sendMessage(agree);
 
-        Diversion d = content.getDiversion();
-        d.setGrado(content.getDiversion().getGrado() - Necesidad.NC_NORMAL);
-        response.setDiversion(d);
+		getBeliefbase().getBelief("mensaje_orinar_suelo").setFact(peticion);
 
-        Vejiga v = content.getVejiga();
-        v.setGrado(content.getVejiga().getGrado() + Necesidad.NC_NORMAL);
-        response.setVejiga(v);
+		int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_LARGO;
+		getBeliefbase().getBelief("tiempo_fin_orinar_suelo").setFact(new Integer(end_timer));
 
+		IGoal goal = createGoal("terminar_orinar_suelo");
+		dispatchSubgoal(goal);
 
-
-
-        try {
-            wait(Accion.TIEMPO_LARGO);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
-
-        IMessageEvent respuesta = createMessageEvent("has_dormido_suelo");
-        respuesta.setContent(response);
-        sendMessage(respuesta);
-    }
+	}
 }
