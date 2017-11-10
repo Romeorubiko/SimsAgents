@@ -14,7 +14,9 @@
         <import>java.util.logging.*</import>
         <import>java.util.*</import>
         <import>ontologia.Accion</import>
+        <import>ontologia.*</import>
         <import>jadex.model.IMMessageEvent</import>
+        <import>jadex.runtime.impl.RMessageEvent</import>
     </imports>
 
     <capabilities>

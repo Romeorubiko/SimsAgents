@@ -32,41 +32,48 @@ public class CocinarBarbacoaPlan extends Plan {
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         }
-        else if (estropeado.booleanValue()) {
-            IMessageEvent failure = createMessageEvent("barbacoa_estropeada");
-            BarbacoaRota response = new BarbacoaRota (h, hmb, d, c);
-            failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
-            failure.setContent(response);
-            sendMessage(failure);
-        }
-        else if (((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1<=0){
-            getBeliefbase().getBelief("estropeado").setFact(Boolean.TRUE);
-            IMessageEvent failure = createMessageEvent("barbacoa_estropeada");
-            failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
-            BarbacoaRota response = new BarbacoaRota (h, hmb, d, c);
-            failure.setContent(response);
-            sendMessage(failure);
-        }
-        else {
+        else{
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
 
             IMessageEvent agree = createMessageEvent("barbacoa_cocinar_no_ocupada");
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 
-            int obsolescencia = ((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1;
-            getBeliefbase().getBelief("obsolescencia").setFact(new Integer (obsolescencia));
+            if (estropeado.booleanValue()) {
+                IMessageEvent failure = createMessageEvent("barbacoa_estropeada");
+                BarbacoaRota response = new BarbacoaRota (h, hmb, d, c);
+                failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+                failure.setContent(response);
+                sendMessage(failure);
+                getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
+        }
+            else if (((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1<=0){
+                getBeliefbase().getBelief("estropeado").setFact(Boolean.TRUE);
+                IMessageEvent failure = createMessageEvent("barbacoa_estropeada");
+                failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+                BarbacoaRota response = new BarbacoaRota (h, hmb, d, c);
+                failure.setContent(response);
+                sendMessage(failure);
+                getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
+            }
 
-            getBeliefbase().getBelief("mensaje_cocinar_barbacoa").setFact(peticion);
+            else {
+                int obsolescencia = ((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1;
+                getBeliefbase().getBelief("obsolescencia").setFact(new Integer (obsolescencia));
 
-            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
-            getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer(end_timer));
+                getBeliefbase().getBelief("mensaje_cocinar_barbacoa").setFact(peticion);
 
-            IGoal goal= createGoal("terminar_cocinar_barbacoa");
-            dispatchSubgoal(goal);
+                int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
+                getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer(end_timer));
+
+                IGoal goal= createGoal("terminar_cocinar_barbacoa");
+                dispatchSubgoal(goal);
+            }
 
 
         }
+
+
 
     }
 }
