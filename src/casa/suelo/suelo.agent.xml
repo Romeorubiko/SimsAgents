@@ -54,6 +54,9 @@
 				$beliefbase.tiempo_fin_orinar_suelo >= $beliefbase.tiempo
 			</maintaincondition>
         </maintaingoal>
+
+        <maintaingoalref name="df_energia_dormir_suelo"><concrete ref="dfcap.df_energia_dormir_suelo"/></maintaingoalref>
+        <maintaingoalref name="df_vejiga_orinar_suelo"><concrete ref="dfcap.df_vejiga_orinar_suelo"/></maintaingoalref>
 		
     </goals>
 
@@ -122,6 +125,21 @@
             <goals>
                 <initialgoal ref="terminar_dormir_suelo"/>
 				<initialgoal ref="terminar_orinar_suelo"/>
+                <initialgoal ref="df_energia_dormir_suelo">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "DormirSuelo"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_vejiga_orinar_suelo">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Vajiga", "OrinarSuelo"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <endgoal ref="df_deregister"/>
             </goals>
         </configuration>
     </configurations>

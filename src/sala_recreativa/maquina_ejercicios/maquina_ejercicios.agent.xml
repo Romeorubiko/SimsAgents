@@ -46,9 +46,9 @@
         <maintaingoal name="terminar_entrenar">
             <maintaincondition>$beliefbase.tiempo_fin_entrenar>=beliefbase.tiempo</maintaincondition>
         </maintaingoal>
-        <achievegoalref name="df_deporte_entrenar">
+        <maintaingoalref name="df_deporte_entrenar">
             <concrete ref="dfcap.df_deporte_entrenar"/>
-        </achievegoalref>
+        </maintaingoalref>
     </goals>
 
     <plans>
@@ -110,6 +110,7 @@
                         </value>
                     </parameter>
                 </initialgoal>
+                <endgoal ref="df_deregister"/>
             </goals>
         </configuration>
     </configurations>

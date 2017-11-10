@@ -70,12 +70,12 @@
         </maintaingoal>
 
 
-        <achievegoalref name="df_hambre_cocinarBarbacoa">
+        <maintaingoalref name="df_hambre_cocinarBarbacoa">
             <concrete ref="dfcap.df_hambre_cocinarBarbacoa"/>
-        </achievegoalref>
-        <achievegoalref name="df_diversion_cocinarBarbacoa" ><concrete ref="dfcap.df_diversion_cocinarBarbacoa"/></achievegoalref>
-        <achievegoalref name="df_cocina_cocinarBarbacoa"><concrete ref="dfcap.df_cocina_cocinarBarbacoa"/></achievegoalref>
-        <achievegoalref name="df_mecanica_reparar"><concrete ref="dfcap.df_mecanica_reparar"/></achievegoalref>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_cocinarBarbacoa" ><concrete ref="dfcap.df_diversion_cocinarBarbacoa"/></maintaingoalref>
+        <maintaingoalref name="df_cocina_cocinarBarbacoa"><concrete ref="dfcap.df_cocina_cocinarBarbacoa"/></maintaingoalref>
+        <maintaingoalref name="df_mecanica_reparar"><concrete ref="dfcap.df_mecanica_reparar"/></maintaingoalref>
     </goals>
 
     <plans>
@@ -223,6 +223,7 @@
                         </value>
                     </parameter>
                 </initialgoal>
+                <endgoal ref="df_deregister"/>
             </goals>
         </configuration>
     </configurations>

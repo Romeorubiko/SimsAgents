@@ -47,9 +47,9 @@
             <maintaincondition>$beliefbase.tiempo_fin_minibar>=beliefbase.tiempo</maintaincondition>
         </maintaingoal>
 
-        <achievegoalref name="df_df_diversion_beber">
+        <maintaingoalref name="df_diversion_beber">
             <concrete ref="dfcap.df_diversion_beber"/>
-        </achievegoalref>
+        </maintaingoalref>
     </goals>
 
     <plans>
@@ -111,6 +111,7 @@
                         </value>
                     </parameter>
                 </initialgoal>
+                <endgoal ref="df_deregister"/>
             </goals>
         </configuration>
     </configurations>

@@ -59,8 +59,8 @@
             <maintaincondition>$beliefbase.tiempo_fin_hacer_cama>=beliefbase.tiempo</maintaincondition>
         </maintaingoal>
 
-        <achievegoalref name="df_energia_descansar"><concrete ref="dfcap.df_energia_descansar"/></achievegoalref>
-        <achievegoalref name="df_df_higiene_hacer_cama" ><concrete ref="dfcap.df_higiene_hacer_cama"/></achievegoalref>
+        <maintaingoalref name="df_energia_descansar"><concrete ref="dfcap.df_energia_descansar"/></maintaingoalref>
+        <maintaingoalref name="df_df_higiene_hacer_cama" ><concrete ref="dfcap.df_higiene_hacer_cama"/></maintaingoalref>
 
     </goals>
 
@@ -167,6 +167,7 @@
                         </value>
                     </parameter>
                 </initialgoal>
+                <endgoal ref="df_deregister"/>
             </goals>
         </configuration>
     </configurations>
