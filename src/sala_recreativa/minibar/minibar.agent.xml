@@ -21,7 +21,7 @@
 
 
     <capabilities>
-        <capability name="dfcap" file="jadex.planlib.DF"/>
+        <capability name="dfcap" file="jadex.bdi.planlib.df.DF"/>
     </capabilities>
 
     <beliefs>
