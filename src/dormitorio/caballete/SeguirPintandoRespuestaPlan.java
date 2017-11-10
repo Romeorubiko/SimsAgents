@@ -53,6 +53,7 @@ public class SeguirPintandoRespuestaPlan extends Plan {
         } else {
             cuadro.setTiempoPintado(tiempoRestante);
         }
+        getBeliefbase().getBelief("cuadro_instalado").setFact(cuadro);
 
         switch (cuadro.getArte()) {
             case POP:

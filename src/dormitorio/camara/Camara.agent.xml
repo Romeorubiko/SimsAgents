@@ -62,7 +62,7 @@
         <plan name="SacarFotoRespuestaPlan">
             <body class="dormitorio.camara.SacarFotoRespuestaPlan"/>
             <trigger>
-                <messageevent ref="sacar_foto_tiempo_superado"/>
+                <goal ref="sacar_foto_tiempo_superado"/>
             </trigger>
         </plan>
 
@@ -76,7 +76,7 @@
         <plan name="SacarFotoRetratoRespuestaPlan">
             <body class="dormitorio.camara.SacarFotoRetratoPreguntaPlan"/>
             <trigger>
-                <messageevent ref="sacar_foto_retrato_tiempo_superado"/>
+                <goal ref="sacar_foto_retrato_tiempo_superado"/>
             </trigger>
         </plan>
     </plans>
