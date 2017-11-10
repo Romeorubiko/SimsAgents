@@ -82,7 +82,6 @@ public class VerTVPreguntaPlan extends Plan {
             RBelief creenciaHaciendoEjercicioTV=(RBelief) bb.getBelief("viendo_tv");
             Boolean haciendoEjercicioTV= (Boolean) creenciaSimViendoTV.getFact();
 
-
             if(!simViendoTV && !haciendoEjercicioTV){
                 IGoal goal= createGoal("ver_tv_tiempo_superado");
                 dispatchTopLevelGoal(goal);
