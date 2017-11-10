@@ -20,14 +20,13 @@ public class VerTVPreguntaPlan extends Plan {
      */
     public void body() {
         IMessageEvent request = (IMessageEvent) getInitialEvent();
-        /*
-        Se realiza agree siempre ya que la TV nunca se encuentra ocupada
-         */
+
+        /* Se realiza agree siempre ya que la TV nunca se encuentra ocupada*/
         IMessageEvent agree = createMessageEvent("tv_no_ocupada");
         agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
         sendMessage(agree);
 
-		/* Creencias */
+		/* Se obtiene la obsolescencia de creencia obsolescencia_tv */
         RBeliefbase bb = (RBeliefbase) getBeliefbase();
         RBelief creenciaObsolescencia = (RBelief) bb.getBelief("obsolescencia_tv");
         Integer obsolescenciaTV = (Integer) creenciaObsolescencia.getFact();
@@ -52,8 +51,10 @@ public class VerTVPreguntaPlan extends Plan {
             creenciaObsolescencia.setFact(obsolescenciaTV);
 
             RBelief creenciaMensajes=(RBelief) bb.getBelief("mensajes_tv");
+            @SuppressWarnings("unchecked")
             ArrayList<IMessageEvent> arrayMensajes= (ArrayList<IMessageEvent>)creenciaMensajes.getFact();
             RBelief creenciaTiemposFinTV=(RBelief) bb.getBelief("tiempos_fin_tv");
+            @SuppressWarnings("unchecked")
             ArrayList<Integer> arrayTiempos = (ArrayList<Integer>)creenciaTiemposFinTV.getFact();
 
             RBelief creenciaTiempo=(RBelief) bb.getBelief("tiempo_actual");
@@ -65,16 +66,28 @@ public class VerTVPreguntaPlan extends Plan {
             arrayMensajes.add(request);
             creenciaMensajes.setFact(arrayMensajes);
 
+
+
             /*
             Se actualiza el array de tiempos de finalización de las TV añadiendo la ultima
              */
             arrayTiempos.add(tiempo+ Accion.TIEMPO_MEDIO);
             creenciaTiemposFinTV.setFact(arrayTiempos);
 
-            if(arrayMensajes.isEmpty()){
-                IGoal goal= createGoal("leer_periodico_tiempo_superado");
+             /*
+            Se obtiene la creencia  que indica que un sim esta viendo la TV
+             */
+            RBelief creenciaSimViendoTV=(RBelief) bb.getBelief("viendo_tv");
+            Boolean simViendoTV= (Boolean) creenciaSimViendoTV.getFact();
+            RBelief creenciaHaciendoEjercicioTV=(RBelief) bb.getBelief("viendo_tv");
+            Boolean haciendoEjercicioTV= (Boolean) creenciaSimViendoTV.getFact();
+
+
+            if(!simViendoTV && !haciendoEjercicioTV){
+                IGoal goal= createGoal("ver_tv_tiempo_superado");
                 dispatchTopLevelGoal(goal);
             }
+            creenciaSimViendoTV.setFact(true);
         }
     }
 }
