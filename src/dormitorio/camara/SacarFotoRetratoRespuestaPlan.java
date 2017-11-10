@@ -3,8 +3,7 @@ package dormitorio.camara;
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
-import jadex.runtime.impl.RMessageEvent;
-import ontologia.Accion;
+
 import ontologia.acciones.SacarFotoRetrato;
 import ontologia.conceptos.Foto;
 import ontologia.conceptos.Retrato;
@@ -14,38 +13,28 @@ import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.InteraccionSocial;
 import ontologia.conceptos.necesidades.Necesidad;
-import ontologia.predicados.CamaraEstropeadaSacarFotoRetrato;
 import ontologia.predicados.FotoRealizada;
 
-public class SacarFotoRetratoPlan extends Plan {
-    public SacarFotoRetratoPlan() {
+public class SacarFotoRetratoRespuestaPlan extends Plan {
+
+    public SacarFotoRetratoRespuestaPlan() {
     }
 
     @Override
     public void body() {
-        RMessageEvent peticion = ((RMessageEvent) getInitialEvent());
-        SacarFotoRetrato content = (SacarFotoRetrato) peticion.getContent();
-
-        Retrato retrato = content.getRetrato();
+      IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_camaraFoto").getFact();
+            getBeliefbase().getBelief("tiempo_fin_foto").setFact(0);
+            getBeliefbase().getBelief("ocupado_camaraFoto").setFact(Boolean.FALSE);
+            getGoalbase().getGoal("sacar_foto_tiempo_superado").drop();
+            SacarFotoRetrato content = (SacarFotoRetrato) peticion.getContent();
+            Retrato retrato = content.getRetrato();
         Diversion diversion = content.getDiversion();
         Energia energia = content.getEnergia();
         InteraccionSocial interaccionSocial = content.getInteraccionSocial();
         Fotografia fotografia = content.getFotografia();
+            IMessageEvent respuesta =createMessageEvent("foto_realizada");
+            respuesta.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
 
-        // Disminuye en uno la cantidad de usos restantes hasta el deterioro de la cámara.
-        Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact() - 1;
-
-        if (obsolescencia <= 0) {
-            IMessageEvent respuesta = createMessageEvent("camara_estropeada_sacar_foto_retrato");
-            CamaraEstropeadaSacarFotoRetrato camaraEstropeadaSacarFotoRetrato = new CamaraEstropeadaSacarFotoRetrato(energia, diversion, interaccionSocial, fotografia);
-            respuesta.setContent(camaraEstropeadaSacarFotoRetrato);
-            sendMessage(respuesta);
-        } else {
-            getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia);
-
-            IMessageEvent posar = createMessageEvent("posar");
-            IMessageEvent respuestaOtroSim = sendMessageAndWait(posar);
-            if (respuestaOtroSim.getParameter("performative").getValue().equals(SFipa.AGREE)) {
                 if (retrato.getFotoSize() == Foto.FotoSize.LARGE && fotografia.getNivel() >= 4) {
                     diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
                     content.setDiversion(diversion);
@@ -73,19 +62,11 @@ public class SacarFotoRetratoPlan extends Plan {
                     content.setFotografia(fotografia);
                 }
 
-                try {
-                    wait(Accion.TIEMPO_MEDIO);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }
-                IMessageEvent respuesta = createMessageEvent("foto_realizada");
-                FotoRealizada fotoRealizada = new FotoRealizada(energia, diversion, fotografia);
+                //CREO UN SEGUNDO CONSTRUCTOR EN FOTO REALIZADA CON LOS ATRIBUTOS DE FOTO RETRATO
+                FotoRealizada fotoRealizada = new FotoRealizada(diversion, energia, interaccionSocial, fotografia);
                 respuesta.setContent(fotoRealizada);
                 sendMessage(respuesta);
-            } else {
-                IMessageEvent refuse = createMessageEvent("sim_no_posa");
-                sendMessage(refuse);
-            }
-        }
+
+
     }
 }
