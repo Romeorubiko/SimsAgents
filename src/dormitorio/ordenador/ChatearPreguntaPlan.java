@@ -21,18 +21,18 @@ public class ChatearPreguntaPlan extends Plan {
     public void body() {
         IMessageEvent peticion = ((IMessageEvent) getInitialEvent());
 
-        if (getBeliefbase().getBelief("ocupado_ordenador").getFact().equals(Boolean.TRUE)) {
-            IMessageEvent refuse = createMessageEvent("refuse_ordenador");
+        if (getBeliefbase().getBelief("ocupado").getFact().equals(Boolean.TRUE)) {
+            IMessageEvent refuse = createMessageEvent("refuse");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         } else {
-            getBeliefbase().getBelief("ocupado_ordenador").setFact(Boolean.TRUE);
-            getBeliefbase().getBelief("mensaje_ordenador").setFact(peticion);
-            int tiempo = (int) getBeliefbase().getBelief("tiempo_ordenador").getFact();
-            getBeliefbase().getBelief("tiempo_fin_ordenador").setFact(tiempo + Accion.TIEMPO_MEDIO);
-            Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia_ordenador").getFact();
+            getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
+            getBeliefbase().getBelief("mensaje").setFact(peticion);
+            int tiempo = (int) getBeliefbase().getBelief("tiempo").getFact();
+            getBeliefbase().getBelief("tiempo_fin").setFact(tiempo + Accion.TIEMPO_MEDIO);
+            Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact();
 
-            IMessageEvent agree = createMessageEvent("agree_ordenador");
+            IMessageEvent agree = createMessageEvent("agree");
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 
@@ -48,7 +48,7 @@ public class ChatearPreguntaPlan extends Plan {
                 failure.getParameterSet(SFipa.RECEIVERS).addValue(failure.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(failure);
             } else {
-                getBeliefbase().getBelief("obsolescencia_ordenador").setFact(obsolescencia - 1);
+                getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia - 1);
 
                 IGoal goal = createGoal("chatear_tiempo_superado");
                 dispatchTopLevelGoal(goal);

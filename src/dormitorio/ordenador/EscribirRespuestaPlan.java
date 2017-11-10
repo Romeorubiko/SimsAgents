@@ -19,9 +19,9 @@ public class EscribirRespuestaPlan extends Plan {
 
     @Override
     public void body() {
-        IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_ordenador").getFact();
-        getBeliefbase().getBelief("tiempo_fin_ordenador").setFact(0);
-        getBeliefbase().getBelief("ocupado_ordenador").setFact(Boolean.FALSE);
+        IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje").getFact();
+        getBeliefbase().getBelief("tiempo_fin").setFact(0);
+        getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
         getGoalbase().getGoal("escribir_tiempo_superado").drop();
         Escribir content = (Escribir) peticion.getContent();
 

@@ -4,15 +4,23 @@ import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IGoal;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
+import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
-import ontologia.acciones.Escribir;
-import ontologia.conceptos.habilidades.Escritura;
+import ontologia.acciones.Chatear;
+import ontologia.acciones.JugarVideojuego;
+import ontologia.conceptos.Juego;
+import ontologia.conceptos.habilidades.Habilidad;
+import ontologia.conceptos.habilidades.Logica;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
-import ontologia.predicados.OrdenadorEstropeadoEscribir;
+import ontologia.conceptos.necesidades.InteraccionSocial;
+import ontologia.conceptos.necesidades.Necesidad;
+import ontologia.predicados.AparatoEstropeadoJugar;
+import ontologia.predicados.JuegoFinalizado;
+import ontologia.predicados.OrdenadorEstropeadoChatear;
 
-public class EscribirPreguntaPlan extends Plan {
-    public EscribirPreguntaPlan() {
+public class JugarVideojuegoPreguntaPlan extends Plan {
+    public JugarVideojuegoPreguntaPlan() {
     }
 
     @Override
@@ -35,23 +43,22 @@ public class EscribirPreguntaPlan extends Plan {
             sendMessage(agree);
 
             if (obsolescencia <= 0) {
-                Escribir content = (Escribir) peticion.getContent();
+                JugarVideojuego content = (JugarVideojuego) peticion.getContent();
                 Energia energia = content.getEnergia();
                 Diversion diversion = content.getDiversion();
-                Escritura escritura = content.getEscritura();
+                Logica logica = content.getLogica();
 
-                IMessageEvent failure = createMessageEvent("ordenador_estropeado_escribir");
-                OrdenadorEstropeadoEscribir ordenadorEstropeadoEscribir = new OrdenadorEstropeadoEscribir(energia, diversion, escritura);
-                failure.setContent(ordenadorEstropeadoEscribir);
+                IMessageEvent failure = createMessageEvent("aparato_estropeado_jugar");
+                AparatoEstropeadoJugar aparatoEstropeadoJugar = new AparatoEstropeadoJugar(energia, diversion, logica);
+                failure.setContent(aparatoEstropeadoJugar);
                 failure.getParameterSet(SFipa.RECEIVERS).addValue(failure.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(failure);
             } else {
                 getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia - 1);
 
-                IGoal goal = createGoal("escribir_tiempo_superado");
+                IGoal goal = createGoal("jugar_videojuego_tiempo_superado");
                 dispatchTopLevelGoal(goal);
             }
         }
     }
 }
-

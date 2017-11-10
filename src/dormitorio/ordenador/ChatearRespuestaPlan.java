@@ -18,9 +18,9 @@ public class ChatearRespuestaPlan extends Plan {
 
     @Override
     public void body() {
-        IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_ordenador").getFact();
-        getBeliefbase().getBelief("tiempo_fin_ordenador").setFact(0);
-        getBeliefbase().getBelief("ocupado_ordenador").setFact(Boolean.FALSE);
+        IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje").getFact();
+        getBeliefbase().getBelief("tiempo_fin").setFact(0);
+        getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
         getGoalbase().getGoal("chatear_tiempo_superado").drop();
 
         Chatear content = (Chatear) peticion.getContent();
