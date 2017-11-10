@@ -28,32 +28,32 @@
     <goals>
         <maintaingoal name="leer_libro_tiempo_superado">
             <maintaincondition>
-                $beliefbase.tiempo_fin_estanteria[0] >= $beliefbase.tiempo_estanteria
+                $beliefbase.tiempo_fin_estanteria.get(0) >= $beliefbase.tiempo_estanteria
             </maintaincondition>
         </maintaingoal>
         <maintaingoalref name="df_diversion_leer_libro">
-            <concrete ref="dfcap.df_diversion_leer_libro"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_carisma_leer_libro">
-            <concrete ref="dfcap.df_carisma_leer_libro"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_cocina_leer_libro">
-            <concrete ref="dfcap.df_cocina_leer_libro"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_jardineria_leer_libro">
-            <concrete ref="dfcap.df_jardineria_leer_libro"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_pintura_leer_libro">
-            <concrete ref="dfcap.df_pintura_leer_libro"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_fotografia_leer_libro">
-            <concrete ref="dfcap.df_fotografia_leer_libro"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_logica_leer_libro">
-            <concrete ref="dfcap.df_logica_leer_libro"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_ciencia_leer_libro">
-            <concrete ref="dfcap.df_ciencia_leer_libro"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
     </goals>
     <plans>
