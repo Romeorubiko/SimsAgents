@@ -9,6 +9,7 @@
         <import>java.sql.Time</import>
         <import>jadex.runtime.*</import>
         <import>jadex.planlib.*</import>
+        <import>jadex.bdi.planlib.*</import>
         <import>jadex.util.*</import>
         <import>jadex.adapter.fipa.*</import>
         <import>java.util.logging.*</import>
