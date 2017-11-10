@@ -1,0 +1,175 @@
+<!--
+	<H3>Agente Teléfono </H3>
+-->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	name="Telefono"
+	package="Salon.Telefono">
+	
+	<imports>
+		<import>jadex.runtime.*</import>
+		<import>jadex.planlib.*</import>
+		<import>ontologia.acciones.*</import>
+		<import>ontologia.conceptos.*</import>
+		<import>ontologia.predicados.*</import>
+	</imports>
+	
+	<capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+	
+	<beliefs>
+		<!-- Si el teléfono está ocupado o libre -->
+		<belief name="telefono_ocupado" class="Boolean">
+			<fact> new Boolean(false)</fact>
+		</belief>
+		<!-- Tiempo transcurrido desde que se activa el agente -->
+		<belief name="tiempo_actual" class="int" updaterate="100">
+			<fact> (int) (System.currentTimeMillis()/1000) </fact>
+		</belief>
+	    <!-- Tiempo en el que termina una llamada  -->
+		<belief name="tiempo_fin_llamada" class="int">
+			<fact> (int) 0 </fact>
+		</belief>
+		<!-- Tiempo en el que termina una broma  -->
+		<belief name="tiempo_fin_broma" class="int">
+			<fact> (int) 0 </fact>
+		</belief>
+		<!-- Contenido del request que le llega al agente, necesario para ejecutar segundo plan  -->
+		<belief name="mensaje" class="IMessageEvent"/>
+	</beliefs>
+	
+	<goals>
+		<!-- Objetivos para registrar los servicios que ofrece el agente en el DF-->
+		<maintaingoalref name="df_llamar_sim">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		<maintaingoalref name="df_gastar_broma_telefonica">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		<!-- Objetivo para que cuando termina el tiempo de llamada se ejecute el segundo plan -->
+		<maintaingoal name="llamar_sim_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempo_actual >= $beliefbase.tiempo_fin_llamada
+			</maintaincondition>
+		</maintaingoal>
+
+		<!-- Objetivo para que cuando termina el tiempo que dura la broma se ejecute el segundo plan -->
+		<maintaingoal name="gastar_broma_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempo_actual >= $beliefbase.tiempo_fin_broma
+			</maintaincondition>
+		</maintaingoal>
+	</goals>
+	
+	<plans>
+		<!-- Primer plan para llamar a un sim. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		<plan name="LlamarSimPregunta">
+			<body>new LlamarSimPreguntaPlan()</body>
+			<trigger>
+				<messageevent ref="llamar_sim"/>
+			</trigger>
+		</plan>
+
+		<!-- Segundo plan para llamar a un sim. Se ejecuta cuando termina el tiempo de llamada y modifica los recursos del Sim-->
+		<plan name="LlamarSimRespuesta">
+			<body>new LlamarSimRespuestaPlan()</body>
+			<trigger>
+				<goal ref="llamar_sim_tiempo_superado"></goal>
+			</trigger>
+		</plan>
+
+		<!-- Primer plan para gastar una broma telefónica. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		<plan name="GastarBromaPregunta">
+			<body>new GastarBromaPreguntaPlan()</body>
+			<trigger>
+				<messageevent ref="gastar_broma"/>
+			</trigger>
+		</plan>
+
+		<!-- Segundo plan para gastar una broma telefónica. Se ejecuta cuando termina el tiempo que dura la broma y modifica los recursos del Sim-->
+		<plan name="GastarBromaRespuesta">
+			<body>new GastarBromaRespuestaPlan()</body>
+			<trigger>
+				<goal ref="gastar_broma_tiempo_superado"></goal>
+			</trigger>
+		</plan>
+	</plans>
+	
+	<events>
+		<messageevent name="llamar_sim" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="LlamarSimPreguntaPlan" direction="fixed">
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="gastar_broma" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="GastarBromaPreguntaPlan" direction="fixed">
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="peticion_aceptada" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="peticion_rechazada" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="llamada_fallida" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="broma_fallida" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="has_llamado" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM_REF</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_gastado_broma" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM_REF</value>
+			</parameter>
+		</messageevent>
+	</events>
+	
+	  <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="df_llamar_sim">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("LlamarSim", "Telefono", ""))
+                        </value>
+                    </parameter>
+                </initialgoal>
+				<initialgoal ref="df_gastar_broma_telefonica">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("GastarBromaTel", "Telefono", ""))
+                        </value>
+                    </parameter>
+                </initialgoal>
+            </goals>
+        </configuration>
+    </configurations>
+	
+</agent>
