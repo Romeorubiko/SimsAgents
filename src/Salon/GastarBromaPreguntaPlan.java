@@ -1,60 +1,67 @@
 package Salon.Telefono;
+
 import java.util.Random;
 
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.*;
 import jadex.runtime.impl.RBelief;
+import jadex.runtime.impl.RBeliefbase;
 import ontologia.Accion;
+import ontologia.acciones.GastarBromaTel;
 import ontologia.acciones.LlamarSim;
 import ontologia.conceptos.habilidades.Carisma;
+import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.InteraccionSocial;
+import ontologia.predicados.BromaFallida;
 import ontologia.predicados.LlamadaFallida;
 
-public class LlamarSimPreguntaPlan extends Plan {
+public class GastarBromaPreguntaPlan extends Plan {
 
 	/**
-	 *  Plan body.
+	 * Plan body.
 	 */
-	public void body()
-	{
+	public void body() {
 		/* Obtención del request que inicia el plan */
-		IMessageEvent	request	= (IMessageEvent)getInitialEvent();
-		LlamarSim content = (LlamarSim) request.getContent();
-		InteraccionSocial interaccion = content.getInteraccionSocial();
+		IMessageEvent request = (IMessageEvent) getInitialEvent();
+		GastarBromaTel content = (GastarBromaTel) request.getContent();
 		Energia energia = content.getEnergia();
-		Carisma carisma = content.getCarisma();
-		
-		/* Obtención de las creencias del agente */
-		RBelief creenciaMensaje=(RBelief) getBeliefbase().getBelief("mensaje");
-		RBelief creenciaTiempoFin=(RBelief) getBeliefbase().getBelief("tiempo_fin_llamada");
-		RBelief creenciaOcupado=(RBelief) getBeliefbase().getBelief("telefono_ocupado");
-		Boolean ocupado= (Boolean)creenciaOcupado.getFact();
+		Diversion diversion = content.getDiversion();
 
-		/* Si el teléfono está ocupado se rechaza la petición, si no se acepta*/
-		if(ocupado){
+		/* Obtención de las creencias del agente */
+		RBeliefbase bb;
+		bb = (RBeliefbase) getBeliefbase();
+		RBelief creenciaOcupado = (RBelief) bb.getBelief("telefono_ocupado");
+		RBelief creenciaMensaje = (RBelief) bb.getBelief("mensaje");
+		RBelief creenciaTiempoFin = (RBelief) bb.getBelief("tiempo_fin_broma");
+		Boolean ocupado = (Boolean) creenciaOcupado.getFact();
+
+		/* Si el teléfono está ocupado se rechaza la petición, si no se acepta */
+		if (ocupado) {
 			/* Envío del refuse */
 			IMessageEvent refuse = createMessageEvent("peticion_rechazada");
 			refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 			sendMessage(refuse);
-		}else{
+		} else {
 			/* Envío del agree */
 			IMessageEvent agree = createMessageEvent("peticion_aceptada");
 			agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 			sendMessage(agree);
-			
-			/* Probabilidad de que la llamada falle */
-			Boolean falloLlamada = new Random().nextInt(20) == 0;
-			
-			/* Si la llamada falla se envía un failure. Si no, pasará a ejecutarse el plan de LlamarSimRespuestaPlan */
-			if(falloLlamada) {
-				IMessageEvent failure = createMessageEvent("llamada_fallida");
-				LlamadaFallida llamadaFallida = new LlamadaFallida(energia, interaccion, carisma);
-				failure.setContent(llamadaFallida);
+
+			/* Probabilidad de que la broma falle */
+			Boolean falloBroma = new Random().nextInt(20) == 0;
+
+			/*
+			 * Si la llamada falla se envía un failure. Si no, pasará a ejecutarse el plan
+			 * de GastarBromaRespuestaPlan
+			 */
+			if (falloBroma) {
+				IMessageEvent failure = createMessageEvent("broma_fallida");
+				BromaFallida bromaFallida = new BromaFallida(energia, diversion);
+				failure.setContent(bromaFallida);
 				failure.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 				sendMessage(failure);
-			}
-			else {
+			} else {
 				/* Se guarda el contenido del request en una creencia para que el segundo plan pueda acceder a dicho contenido */
 				creenciaMensaje.setFact(request);
 				
@@ -64,11 +71,11 @@ public class LlamarSimPreguntaPlan extends Plan {
 				/* Obtención del tiempo que lleva ejecutándose el agente */
 				int tiempo=(int) getBeliefbase().getBelief("tiempo_actual").getFact();
 				
-				/* Se guarda en una creencia el tiempo en el que se va a terminar la llamada*/
+				/* Se guarda en una creencia el tiempo en el que se va a terminar la broma*/
 				creenciaTiempoFin.setFact(tiempo + Accion.TIEMPO_CORTO);
-				
+
 				/* Lanzamiento del objetivo */
-				IGoal goal= createGoal("llamar_sim_tiempo_superado");
+				IGoal goal = createGoal("gastar_broma_tiempo_superado");
 				dispatchTopLevelGoal(goal);
 			}
 		}
