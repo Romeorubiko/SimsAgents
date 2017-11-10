@@ -5,16 +5,14 @@ import jadex.runtime.IGoal;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import ontologia.Accion;
-import ontologia.acciones.Chatear;
+import ontologia.acciones.Escribir;
+import ontologia.conceptos.habilidades.Escritura;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
-import ontologia.conceptos.necesidades.InteraccionSocial;
-import ontologia.predicados.OrdenadorEstropeadoChatear;
+import ontologia.predicados.OrdenadorEstropeadoEscribir;
 
-import java.util.ArrayList;
-
-public class ChatearPreguntaPlan extends Plan {
-    public ChatearPreguntaPlan() {
+public class EscribirPreguntaPlan extends Plan {
+    public EscribirPreguntaPlan() {
     }
 
     @Override
@@ -37,22 +35,23 @@ public class ChatearPreguntaPlan extends Plan {
             sendMessage(agree);
 
             if (obsolescencia <= 0) {
-                Chatear content = (Chatear) peticion.getContent();
+                Escribir content = (Escribir) peticion.getContent();
                 Energia energia = content.getEnergia();
-                InteraccionSocial interaccionSocial = content.getInteraccionSocial();
                 Diversion diversion = content.getDiversion();
+                Escritura escritura = content.getEscritura();
 
-                IMessageEvent failure = createMessageEvent("ordenador_estropeado_chatear");
-                OrdenadorEstropeadoChatear ordenadorEstropeadoChatear = new OrdenadorEstropeadoChatear(energia, interaccionSocial, diversion);
-                failure.setContent(ordenadorEstropeadoChatear);
+                IMessageEvent failure = createMessageEvent("ordenador_estropeado_escribir");
+                OrdenadorEstropeadoEscribir ordenadorEstropeadoEscribir = new OrdenadorEstropeadoEscribir(energia, diversion, escritura);
+                failure.setContent(ordenadorEstropeadoEscribir);
                 failure.getParameterSet(SFipa.RECEIVERS).addValue(failure.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(failure);
             } else {
                 getBeliefbase().getBelief("obsolescencia_ordenador").setFact(obsolescencia - 1);
 
-                IGoal goal = createGoal("chatear_tiempo_superado");
+                IGoal goal = createGoal("escribir_tiempo_superado");
                 dispatchTopLevelGoal(goal);
             }
         }
     }
 }
+
