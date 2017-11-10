@@ -6,6 +6,13 @@
        package="dormitorio.caballete">
     <imports>
         <import>jadex.planlib.*</import>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>jadex.runtime.IMessageEvent</import>
         <import>ontologia.conceptos.Cuadro</import>
     </imports>
     <capabilities>
@@ -37,16 +44,16 @@
             </maintaincondition>
         </maintaingoal>
         <maintaingoalref name="df_diversion_pintar_nuevo_cuadro">
-            <concrete ref="dfcap.df_diversion_pintar_nuevo_cuadro"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_pintura_pintar_nuevo_cuadro">
-            <concrete ref="dfcap.df_pintura_pintar_nuevo_cuadro"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_diversion_seguir_pintando">
-            <concrete ref="dfcap.df_diversion_seguir_pintando"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_pintura_seguir_pintando">
-            <concrete ref="dfcap.df_pintura_seguir_pintando"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
     </goals>
     <plans>
@@ -119,7 +126,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "PintarNuevoCuadro"))
+                            SFipa.createServiceDescription("Diversion", "PintarNuevoCuadro", ""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -127,7 +134,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Pintura", "PintarNuevoCuadro"))
+                            SFipa.createServiceDescription("Pintura", "PintarNuevoCuadro", ""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -135,7 +142,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "SeguirPintando"))
+                            SFipa.createServiceDescription("Diversion", "SeguirPintando", ""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -143,7 +150,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Pintura", "SeguirPintando"))
+                            SFipa.createServiceDescription("Pintura", "SeguirPintando", ""))
                         </value>
                     </parameter>
                 </initialgoal>

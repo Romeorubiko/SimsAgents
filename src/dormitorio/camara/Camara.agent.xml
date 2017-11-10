@@ -6,13 +6,18 @@
        package="dormitorio.camara">
     <imports>
         <import>jadex.planlib.*</import>
-        <import>ontologia.conceptos.Foto</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>jadex.runtime.IMessageEvent</import>
     </imports>
     <capabilities>
         <capability name="dfcap" file="jadex.planlib.DF"/>
     </capabilities>
     <beliefs>
-        <belief name="ocupado_camara" class="Foto">
+        <belief name="ocupado_camaraFoto" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
         <belief name="tiempo_foto" class="int" updaterate="100">
@@ -22,33 +27,36 @@
         <belief name="tiempo_fin_foto" class="int">
             <fact>(int) 0</fact>
         </belief>
-        <belief name="mensaje_camara" class="IMessageEvent"/>
-        <belief name="obsolescencia_camara" class="Integer">
+        <belief name="mensaje_camaraFoto" class="IMessageEvent"/>
+        <belief name="obsolescencia" class="Integer">
             <fact>new Integer(100)</fact>
         </belief>
     </beliefs>
     <goals>
         <maintaingoal name="sacar_foto_tiempo_superado">
             <maintaincondition>
-                $beliefbase.tiempo_foto >= $beliefbase.tiempo_fin_foto
+                $beliefbase.tiempo_fin_foto >= $beliefbase.tiempo_foto
             </maintaincondition>
         </maintaingoal>
         <maintaingoal name="sacar_foto_retrato_tiempo_superado">
             <maintaincondition>
-                $beliefbase.tiempo_foto >= $beliefbase.tiempo_fin_foto
+                $beliefbase.tiempo_fin_foto >= $beliefbase.tiempo_foto
             </maintaincondition>
         </maintaingoal>
         <maintaingoalref name="df_fotografia_sacar_foto">
-            <concrete ref="dfcap.df_fotografia_sacar_foto"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_diversion_sacar_foto">
-            <concrete ref="dfcap.df_diversion_sacar_foto"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_fotografia_sacar_foto_retrato">
-            <concrete ref="dfcap.df_fotografia_sacar_foto_retrato"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_diversion_sacar_foto_retrato">
-            <concrete ref="dfcap.df_diversion_sacar_foto_retrato"/>
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_interaccionSocial_sacar_foto_retrato">
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
     </goals>
     <plans>
@@ -155,7 +163,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Fotografia", "SacarFoto"))
+                            SFipa.createServiceDescription("Fotografia", "SacarFoto",""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -163,7 +171,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "SacarFoto"))
+                            SFipa.createServiceDescription("Diversion", "SacarFoto",""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -171,7 +179,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Fotografia", "SacarFotoRetrato"))
+                            SFipa.createServiceDescription("Fotografia", "SacarFotoRetrato",""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -179,11 +187,19 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "SacarFotoRetrato"))
+                            SFipa.createServiceDescription("Diversion", "SacarFotoRetrato",""))
                         </value>
                     </parameter>
                 </initialgoal>
-                <endgoal ref="df_deregister"/>
+                <initialgoal ref="df_interaccionSocial_sacar_foto_retrato">
+
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("InteraccionSocial", "SacarFotoRetrato",""))
+                        </value>
+                    </parameter>
+                </initialgoal>
             </goals>
         </configuration>
     </configurations>
