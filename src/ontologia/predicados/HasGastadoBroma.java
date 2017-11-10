@@ -1,48 +1,36 @@
 package ontologia.predicados;
 
 import ontologia.Predicado;
-import ontologia.conceptos.habilidades.*;
 import ontologia.conceptos.necesidades.*;
 
 public class HasGastadoBroma extends Predicado {
 
-    private Energia energia;
-    private Diversion diversion;
-    private InteraccionSocial interaccion;
-    private Carisma carisma;
+	private Energia energia;
+	private Diversion diversion;
 
-    public HasGastadoBroma() {
-    }
+	public HasGastadoBroma() {
+		;
+	}
+	
+	public HasGastadoBroma(Energia energia, Diversion diversion) {
+		this.energia = energia;
+		this.diversion = diversion;
+	}
 
-    public Energia getEnergia() {
-        return energia;
-    }
+	public Energia getEnergia() {
+		return energia;
+	}
 
-    public void setEnergia(Energia e) {
-        energia = e;
-    }
+	public void setEnergia(Energia e) {
+		energia = e;
+	}
 
-    public InteraccionSocial getInteraccionSocial() {
-        return interaccion;
-    }
+	public Diversion getDiversion() {
+		return diversion;
+	}
 
-    public void setInteraccionSocial(InteraccionSocial i) {
-        interaccion = i;
-    }
+	public void setDiversion(Diversion d) {
+		diversion = d;
+	}
 
-    public Diversion getDiversion() {
-        return diversion;
-    }
-
-    public void setDiversion(Diversion d) {
-        diversion = d;
-    }
-
-    public Carisma getCarisma() {
-        return carisma;
-    }
-
-    public void setCarisma(Carisma c) {
-        carisma = c;
-    }
 }
