@@ -30,10 +30,10 @@ public class SacarFotoRetratoPreguntaPlan extends Plan {
         SacarFotoRetrato content = (SacarFotoRetrato) peticion.getContent();
         Retrato retrato = content.getRetrato();
 
-        Boolean ocupado = (Boolean) getBeliefbase().getBelief("ocupado_camaraFoto").getFact();
+        Boolean ocupado = (Boolean) getBeliefbase().getBelief("ocupado_camara").getFact();
 
         // Disminuye en uno la cantidad de usos restantes hasta el deterioro de la cámara.
-        Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact();
+        Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia_camara").getFact();
 
         if (obsolescencia <= 0) {
             IMessageEvent refuse = createMessageEvent("camara_estropeada_sacar_foto_retrato");
@@ -42,7 +42,7 @@ public class SacarFotoRetratoPreguntaPlan extends Plan {
         } else {
             if (ocupado) {
                 //Camara ocupada
-                IMessageEvent refuse = createMessageEvent("refuse_Camara");
+                IMessageEvent refuse = createMessageEvent("refuse_camara");
                 refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(refuse);
             } else {
@@ -50,8 +50,8 @@ public class SacarFotoRetratoPreguntaPlan extends Plan {
                 IMessageEvent posar = createMessageEvent("posar");
                 IMessageEvent respuestaOtroSim = sendMessageAndWait(posar);
                 if (respuestaOtroSim.getParameter("performative").getValue().equals(SFipa.AGREE)) {
-                    getBeliefbase().getBelief("ocupado_camaraFoto").setFact(Boolean.TRUE);
-                    getBeliefbase().getBelief("mensaje_camaraFoto").setFact(peticion);
+                    getBeliefbase().getBelief("ocupado_camara").setFact(Boolean.TRUE);
+                    getBeliefbase().getBelief("mensaje_camara").setFact(peticion);
                     int tiempo = (int) getBeliefbase().getBelief("tiempo_foto").getFact();
                     getBeliefbase().getBelief("tiempo_fin_foto").setFact(tiempo + Accion.TIEMPO_MEDIO);
                     IMessageEvent agree = createMessageEvent("agree_camara");

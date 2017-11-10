@@ -12,7 +12,7 @@
         <capability name="dfcap" file="jadex.planlib.DF"/>
     </capabilities>
     <beliefs>
-        <belief name="ocupado_camaraFoto" class="Foto">
+        <belief name="ocupado_camara" class="Foto">
             <fact>new Boolean(false)</fact>
         </belief>
         <belief name="tiempo_foto" class="int" updaterate="100">
@@ -22,8 +22,8 @@
         <belief name="tiempo_fin_foto" class="int">
             <fact>(int) 0</fact>
         </belief>
-        <belief name="mensaje_camaraFoto" class="IMessageEvent"/>
-        <belief name="obsolescencia" class="Integer">
+        <belief name="mensaje_camara" class="IMessageEvent"/>
+        <belief name="obsolescencia_camara" class="Integer">
             <fact>new Integer(100)</fact>
         </belief>
     </beliefs>

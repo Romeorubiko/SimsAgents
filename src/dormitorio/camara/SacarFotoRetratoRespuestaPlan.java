@@ -22,50 +22,52 @@ public class SacarFotoRetratoRespuestaPlan extends Plan {
 
     @Override
     public void body() {
-      IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_camaraFoto").getFact();
-            getBeliefbase().getBelief("tiempo_fin_foto").setFact(0);
-            getBeliefbase().getBelief("ocupado_camaraFoto").setFact(Boolean.FALSE);
-            getGoalbase().getGoal("sacar_foto_tiempo_superado").drop();
-            SacarFotoRetrato content = (SacarFotoRetrato) peticion.getContent();
-            Retrato retrato = content.getRetrato();
+        IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_camara").getFact();
+        getBeliefbase().getBelief("tiempo_fin_foto").setFact(0);
+        getBeliefbase().getBelief("ocupado_camara").setFact(Boolean.FALSE);
+        getGoalbase().getGoal("sacar_foto_tiempo_superado").drop();
+
+        SacarFotoRetrato content = (SacarFotoRetrato) peticion.getContent();
+        Retrato retrato = content.getRetrato();
         Diversion diversion = content.getDiversion();
         Energia energia = content.getEnergia();
         InteraccionSocial interaccionSocial = content.getInteraccionSocial();
         Fotografia fotografia = content.getFotografia();
-            IMessageEvent respuesta =createMessageEvent("foto_realizada");
-            respuesta.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
 
-                if (retrato.getFotoSize() == Foto.FotoSize.LARGE && fotografia.getNivel() >= 4) {
-                    diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-                    content.setDiversion(diversion);
+        IMessageEvent respuesta = createMessageEvent("foto_realizada");
+        respuesta.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
 
-                    energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-                    content.setEnergia(energia);
+        if (retrato.getFotoSize() == Foto.FotoSize.LARGE && fotografia.getNivel() >= 4) {
+            diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
+            content.setDiversion(diversion);
 
-                    interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
-                    content.setInteraccionSocial(interaccionSocial);
+            energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
+            content.setEnergia(energia);
 
-                    fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
-                    content.setFotografia(fotografia);
-                }
-                if ((retrato.getFiltro() == Foto.Filtro.SEPIA || retrato.getFiltro() == Foto.Filtro.VIGNETTE) && fotografia.getNivel() >= 3) {
-                    diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-                    content.setDiversion(diversion);
+            interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
+            content.setInteraccionSocial(interaccionSocial);
 
-                    energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-                    content.setEnergia(energia);
+            fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
+            content.setFotografia(fotografia);
+        }
+        if ((retrato.getFiltro() == Foto.Filtro.SEPIA || retrato.getFiltro() == Foto.Filtro.VIGNETTE) && fotografia.getNivel() >= 3) {
+            diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
+            content.setDiversion(diversion);
 
-                    interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
-                    content.setInteraccionSocial(interaccionSocial);
+            energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
+            content.setEnergia(energia);
 
-                    fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
-                    content.setFotografia(fotografia);
-                }
+            interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
+            content.setInteraccionSocial(interaccionSocial);
 
-                //CREO UN SEGUNDO CONSTRUCTOR EN FOTO REALIZADA CON LOS ATRIBUTOS DE FOTO RETRATO
-                FotoRealizada fotoRealizada = new FotoRealizada(diversion, energia, interaccionSocial, fotografia);
-                respuesta.setContent(fotoRealizada);
-                sendMessage(respuesta);
+            fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
+            content.setFotografia(fotografia);
+        }
+
+        //CREO UN SEGUNDO CONSTRUCTOR EN FOTO REALIZADA CON LOS ATRIBUTOS DE FOTO RETRATO
+        FotoRealizada fotoRealizada = new FotoRealizada(diversion, energia, interaccionSocial, fotografia);
+        respuesta.setContent(fotoRealizada);
+        sendMessage(respuesta);
 
 
     }

@@ -17,18 +17,19 @@ import ontologia.predicados.FotoRealizada;
 import ontologia.predicados.CamaraEstropeadaSacarFoto;
 
 public class SacarFotoPreguntaPlan extends Plan {
+
     public SacarFotoPreguntaPlan() {
     }
 
-    //TENER EN CUENTA DONDE RESTAMOS LA OBSOLESCENCIA !.
     @Override
     public void body() {
         IMessageEvent peticion = ((IMessageEvent) getInitialEvent());
         SacarFoto content = (SacarFoto) peticion.getContent();
+
         Foto foto = content.getFoto();
-        Boolean ocupado = (Boolean) getBeliefbase().getBelief("ocupado_camaraFoto").getFact();
+        Boolean ocupado = (Boolean) getBeliefbase().getBelief("ocupado_camara").getFact();
         // Disminuye en uno la cantidad de usos restantes hasta el deterioro de la cámara.
-        Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact();
+        Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia_camara").getFact();
 
         if (obsolescencia <= 0) {
             IMessageEvent refuse = createMessageEvent("camara_estropeada_sacar_foto");
@@ -36,12 +37,12 @@ public class SacarFotoPreguntaPlan extends Plan {
             sendMessage(refuse);
         } else {
             if (ocupado) {
-                IMessageEvent refuse = createMessageEvent("refuse_Camara");
+                IMessageEvent refuse = createMessageEvent("refuse_camara");
                 refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(refuse);
             } else {
-                getBeliefbase().getBelief("ocupado_camaraFoto").setFact(Boolean.TRUE);
-                getBeliefbase().getBelief("mensaje_camaraFoto").setFact(peticion);
+                getBeliefbase().getBelief("ocupado_camara").setFact(Boolean.TRUE);
+                getBeliefbase().getBelief("mensaje_camara").setFact(peticion);
                 int tiempo = (int) getBeliefbase().getBelief("tiempo_foto").getFact();
                 getBeliefbase().getBelief("tiempo_fin_foto").setFact(tiempo + Accion.TIEMPO_MEDIO);
 

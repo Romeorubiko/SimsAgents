@@ -16,16 +16,17 @@ import ontologia.predicados.FotoRealizada;
 import ontologia.predicados.CamaraEstropeadaSacarFoto;
 
 public class SacarFotoRespuestaPlan extends Plan {
-    //TENER EN CUENTA DONDE RESTAMOS LA OBSOLESCENCIA !.
+
     public SacarFotoRespuestaPlan() {
     }
 
     @Override
     public void body() {
-        IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_camaraFoto").getFact();
+        IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_camara").getFact();
         getBeliefbase().getBelief("tiempo_fin_foto").setFact(0);
-        getBeliefbase().getBelief("ocupado_camaraFoto").setFact(Boolean.FALSE);
+        getBeliefbase().getBelief("ocupado_camara").setFact(Boolean.FALSE);
         getGoalbase().getGoal("sacar_foto_tiempo_superado").drop();
+
         SacarFoto content = (SacarFoto) peticion.getContent();
         Foto foto = content.getFoto();
         Diversion diversion = content.getDiversion();
