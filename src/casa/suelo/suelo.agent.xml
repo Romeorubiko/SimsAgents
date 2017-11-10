@@ -55,8 +55,12 @@
 			</maintaincondition>
         </maintaingoal>
 
-        <maintaingoalref name="df_energia_dormir_suelo"><concrete ref="dfcap.df_energia_dormir_suelo"/></maintaingoalref>
-        <maintaingoalref name="df_vejiga_orinar_suelo"><concrete ref="dfcap.df_vejiga_orinar_suelo"/></maintaingoalref>
+        <maintaingoalref name="df_energia_dormir_suelo">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_vejiga_orinar_suelo">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
         <achievegoalref name="df_deregister">
             <concrete ref="dfcap.df_deregister"/>
         </achievegoalref>

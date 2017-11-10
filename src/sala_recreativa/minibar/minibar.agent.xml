@@ -9,7 +9,6 @@
         <import>java.sql.Time</import>
         <import>jadex.runtime.*</import>
         <import>jadex.planlib.*</import>
-        <import>jadex.bdi.planlib.*</import>
         <import>jadex.util.*</import>
         <import>jadex.adapter.fipa.*</import>
         <import>java.util.logging.*</import>
@@ -22,7 +21,7 @@
 
 
     <capabilities>
-        <capability name="dfcap" file="jadex.bdi.planlib.df.DF"/>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
     </capabilities>
 
     <beliefs>
@@ -48,7 +47,7 @@
         </maintaingoal>
 
         <maintaingoalref name="df_diversion_beber">
-            <concrete ref="dfcap.df_diversion_beber"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
 
         <achievegoalref name="df_deregister">

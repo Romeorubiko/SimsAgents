@@ -47,7 +47,7 @@
             <maintaincondition>$beliefbase.tiempo_fin_entrenar>=beliefbase.tiempo</maintaincondition>
         </maintaingoal>
         <maintaingoalref name="df_deporte_entrenar">
-            <concrete ref="dfcap.df_deporte_entrenar"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
 
         <achievegoalref name="df_deregister">
