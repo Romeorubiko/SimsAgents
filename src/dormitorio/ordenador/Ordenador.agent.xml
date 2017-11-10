@@ -14,59 +14,115 @@
         <belief name="obsolescencia" class="Integer">
             <fact>new Integer(100)</fact>
         </belief>
-        <belief name="sim_jugando" class="Boolean">
+        <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
+        <belief name="tiempo" class="int">
+            <fact>(int) (System.currentTimeMillis()/1000)</fact>
+        </belief>
+        <belief name="tiempo_fin" class="int">
+            <fact>(int) 0</fact>
+        </belief>
+        <belief name="mensaje" class="IMessageEvent"/>
     </beliefs>
+
     <goals>
+        <maintaingoal name="navegar_internet_tiempo_superado">
+        <maintaincondition>
+            $beliefbase.tiempo_fin >= $beliefbase.tiempo
+        </maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="chatear_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin >= $beliefbase.tiempo
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="escribir_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin >= $beliefbase.tiempo
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="jugar_videojuego_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin >= $beliefbase.tiempo
+            </maintaincondition>
+        </maintaingoal>
         <maintaingoalref name="df_diversion_chatear">
-            <concrete ref="dfcap.df_diversion_chatear"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_interaccion_social_chatear">
-            <concrete ref="dfcap.df_interaccion_social_chatear"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_diversion_escribir">
-            <concrete ref="dfcap.df_diversion_escribir"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_escritura_escribir">
-            <concrete ref="dfcap.df_escritura_escribir"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_diversion_jugar_videojuego">
-            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_logica_jugar_videojuego">
-            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_diversion_navegar_internet">
-            <concrete ref="dfcap.df_diversion_jugar_videojuego"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
     </goals>
     <plans>
-        <plan name="NavegarPorInternetPlan">
-            <body class="dormitorio.ordenador.NavegarPorInternetPlan"/>
+        <plan name="NavegarPorInternetPreguntaPlan">
+            <body class="dormitorio.ordenador.NavegarPorInternetPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_navegar"/>
             </trigger>
         </plan>
 
-        <plan name="ChatearPlan">
-            <body class="dormitorio.ordenador.ChatearPlan"/>
+        <plan name="NavegarPorInternetRespuestaPlan">
+            <body class="dormitorio.camara.NavegarPorInternetRespuestaPlan"/>
+            <trigger>
+                <goal ref="navegar_internet_tiempo_superado"/>
+            </trigger>
+        </plan>
+
+        <plan name="ChatearPreguntaPlan">
+            <body class="dormitorio.ordenador.ChatearPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_chatear"/>
             </trigger>
         </plan>
-        <plan name="JugarVideojuegoPlan">
-            <body class="dormitorio.ordenador.JugarVideojuegoPlan"/>
+
+        <plan name="ChatearRespuestaPlan">
+            <body class="dormitorio.camara.ChatearRespuestaPlan"/>
+            <trigger>
+                <goal ref="chatear_tiempo_superado"/>
+            </trigger>
+        </plan>
+
+        <plan name="JugarVideojuegoPreguntaPlan">
+            <body class="dormitorio.ordenador.JugarVideojuegoPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_jugar"/>
             </trigger>
         </plan>
-        <plan name="EscribirPlan">
-            <body class="dormitorio.ordenador.EscribirPlan"/>
+        <plan name="JugarVideojuegoRespuestaPlan">
+            <body class="dormitorio.ordenador.JugarVideojuegoRespuestaPlan"/>
+            <trigger>
+                <goal ref="jugar_videojuego_tiempo_superado"/>
+            </trigger>
+        </plan>
+        <plan name="EscribirPreguntaPlan">
+            <body class="dormitorio.ordenador.EscribirPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_escribir"/>
             </trigger>
         </plan>
+        <plan name="EscribirRespuestaPlan">
+            <body class="dormitorio.ordenador.EscribirRespuestaPlan"/>
+            <trigger>
+                <goal ref="escribir_tiempo_superado"/>
+            </trigger>
+        </plan>
+
     </plans>
     <events>
         <messageevent name="request_navegar" direction="receive" type="fipa">
@@ -155,6 +211,18 @@
             </parameter>
             <parameter name="content" class="ontologia.predicados.OrdenadorEstropeadoNavegarInternet"/>
         </messageevent>
+
+        <messageevent name="agree" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="refuse" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+        </messageevent>
     </events>
 
     <configurations>
@@ -164,7 +232,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "Chatear"))
+                            SFipa.createServiceDescription("Diversion", "Chatear", ""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -172,7 +240,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("InteraccionSocial", "Chatear"))
+                            SFipa.createServiceDescription("InteraccionSocial", "Chatear", ""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -180,7 +248,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "Escribir"))
+                            SFipa.createServiceDescription("Diversion", "Escribir", ""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -188,7 +256,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Escritura", "Escribir"))
+                            SFipa.createServiceDescription("Escritura", "Escribir", ""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -196,7 +264,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "JugarVideojuego"))
+                            SFipa.createServiceDescription("Diversion", "JugarVideojuego", ""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -204,7 +272,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Logica", "JugarVideojuego"))
+                            SFipa.createServiceDescription("Logica", "JugarVideojuego", ""))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -212,11 +280,10 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "NavegarInternet"))
+                            SFipa.createServiceDescription("Diversion", "NavegarInternet", ""))
                         </value>
                     </parameter>
                 </initialgoal>
-                <endgoal ref="df_deregister"/>
             </goals>
         </configuration>
     </configurations>

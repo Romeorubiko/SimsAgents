@@ -119,14 +119,14 @@
 
         <messageevent name="camara_estropeada_sacar_foto" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
             <parameter name="content" class="ontologia.predicados.CamaraEstropeadaSacarFoto"/>
         </messageevent>
 
         <messageevent name="camara_estropeada_sacar_foto_retrato" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
             <parameter name="content" class="ontologia.predicados.CamaraEstropeadaSacarFotoRetrato"/>
         </messageevent>
