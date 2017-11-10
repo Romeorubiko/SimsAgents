@@ -19,9 +19,8 @@
         <import>jadex.runtime.impl.RMessageEvent</import>
     </imports>
 
+
     <capabilities>
-        <!-- this capability provides easy access to "out-of-the-box"-plans
-             allowing - for example - to register at the DF. -->
         <capability name="dfcap" file="jadex.planlib.DF"/>
     </capabilities>
 
@@ -50,6 +49,10 @@
         <maintaingoalref name="df_diversion_beber">
             <concrete ref="dfcap.df_diversion_beber"/>
         </maintaingoalref>
+
+        <achievegoalref name="df_deregister">
+            <concrete ref="dfcap.df_deregister"/>
+        </achievegoalref>
     </goals>
 
     <plans>

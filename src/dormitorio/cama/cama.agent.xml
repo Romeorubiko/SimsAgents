@@ -62,6 +62,10 @@
         <maintaingoalref name="df_energia_descansar"><concrete ref="dfcap.df_energia_descansar"/></maintaingoalref>
         <maintaingoalref name="df_df_higiene_hacer_cama" ><concrete ref="dfcap.df_higiene_hacer_cama"/></maintaingoalref>
 
+        <achievegoalref name="df_deregister">
+            <concrete ref="dfcap.df_deregister"/>
+        </achievegoalref>
+
     </goals>
 
     <plans>

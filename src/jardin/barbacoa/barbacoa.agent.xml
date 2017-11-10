@@ -76,6 +76,10 @@
         <maintaingoalref name="df_diversion_cocinarBarbacoa" ><concrete ref="dfcap.df_diversion_cocinarBarbacoa"/></maintaingoalref>
         <maintaingoalref name="df_cocina_cocinarBarbacoa"><concrete ref="dfcap.df_cocina_cocinarBarbacoa"/></maintaingoalref>
         <maintaingoalref name="df_mecanica_reparar"><concrete ref="dfcap.df_mecanica_reparar"/></maintaingoalref>
+
+        <achievegoalref name="df_deregister">
+            <concrete ref="dfcap.df_deregister"/>
+        </achievegoalref>
     </goals>
 
     <plans>

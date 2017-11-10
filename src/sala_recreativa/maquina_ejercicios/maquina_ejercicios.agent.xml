@@ -49,6 +49,10 @@
         <maintaingoalref name="df_deporte_entrenar">
             <concrete ref="dfcap.df_deporte_entrenar"/>
         </maintaingoalref>
+
+        <achievegoalref name="df_deregister">
+            <concrete ref="dfcap.df_deregister"/>
+        </achievegoalref>
     </goals>
 
     <plans>
