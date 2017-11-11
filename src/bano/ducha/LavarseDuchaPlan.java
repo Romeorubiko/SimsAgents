@@ -24,32 +24,44 @@ public class LavarseDuchaPlan extends Plan {
         Higiene higiene = content.getHigiene();
         Energia energia = content.getEnergia();
         
-        // Disminuye en uno la cantidad de usos restantes hasta el deterioro de la ducha.
-        Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact() - 1;
-        if (obsolescencia <= 0) {
-            IMessageEvent respuesta = createMessageEvent("ducha_estropeada");
-            DuchaEstropeada duchaEstropeada = new DuchaEstropeada();
-            respuesta.setContent(duchaEstropeada);
+        Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
+        Boolean estropeado = (Boolean)getBeliefbase().getBelief("estropeado").getFact();
+        
+        if(ocupado.booleanValue()) {
+            IMessageEvent respuesta = createMessageEvent("ducha_ocupada");
+            respuesta.setContent(content);
+            sendMessage(respuesta);
+        }
+        else if (estropeado.booleanValue()) {
+            IMessageEvent respuesta = createMessageEvent("barbacoa_estropeada");
+            DuchaEstropeada response = new DuchaEstropeada();
+            
+            response.setHigiene(higiene);
+            response.setEnergia(energia);
+            sendMessage(respuesta);
+        }
+        else if (((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1<=0){
+            getBeliefbase().getBelief("estropeada").setFact(Boolean.TRUE);
+            IMessageEvent respuesta = createMessageEvent("barbacoa_estropeada");
+            DuchaEstropeada response = new DuchaEstropeada();
+            response.setHigiene(higiene);
+            response.setEnergia(energia);
             sendMessage(respuesta);
         }
         else {
-            getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia);
+            getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
+            int obsolescencia = ((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1;
+            getBeliefbase().getBelief("obsolescencia").setFact(new Integer (obsolescencia));
+            int grado_higiene = content.getHigiene().getGrado();
+            int grado_energia = content.getEnergia().getGrado();
+            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
 
-            energia.setGrado(energia.getGrado() - Necesidad.NC_POCO);
-            content.setEnergia(energia);
+           
+            getBeliefbase().getBelief("higiene").setFact(new Integer(grado_higiene));
+            getBeliefbase().getBelief("energia").setFact(new Integer(grado_energia));
+            getBeliefbase().getBelief("tiempoFinalizacion").setFact(new Integer(end_timer));
 
-            higiene.setGrado(higiene.getGrado() + Necesidad.NC_NORMAL);
-            content.setHigiene(higiene);
-            
-        try {
-            wait(Accion.TIEMPO_MEDIO);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
         }
-        IMessageEvent respuesta = createMessageEvent("te_has_lavado");
-        TeHasLavado teHasLavado = new TeHasLavado(energia, higiene);
-        respuesta.setContent(teHasLavado);
-        sendMessage(respuesta);
-    }
+       
 }
 }

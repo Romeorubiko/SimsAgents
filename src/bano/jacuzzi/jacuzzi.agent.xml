@@ -11,6 +11,15 @@
         <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
+		 <belief name="estropeado" class="Boolean">
+            <fact>new Boolean(false)</fact>
+        </belief>
+		 <belief name="higiene" class="Integer">
+        </belief>
+        <belief name="energia" class="Integer">
+        </belief>
+		<belief name="interaccionsocial" class="Integer">
+        </belief>
 		<belief name="time" class="int" updaterate="750">
             <fact> (int)(System.currentTimeMillis()) </fact>
         </belief>
@@ -19,22 +28,65 @@
 
         </belief>
     </beliefs>
+	<goals>
+        <maintaingoal name="lavarse_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_jacuzzi >= $beliefbase.tiempo_jacuzzi
+            </maintaincondition>
+        <maintaingoalref name="df_higiene_lavarse">
+            <concrete ref="dfcap.df_higiene_lavarse"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_energia_lavarse">
+            <concrete ref="dfcap.df_energia_lavarse"/>
+        </maintaingoalref>
+<goals>
+        <maintaingoal name="compartir_jacuzzi_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_jacuzzi >= $beliefbase.tiempo_jacuzzi
+            </maintaincondition>
+        <maintaingoalref name="df_interaccionsocial_compartir_jacuzzi">
+            <concrete ref="dfcap.df_interaccionsocial_compartir_jacuzzi"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_energia_compartir_jacuzzi">
+            <concrete ref="dfcap.df_energia_compartir_jacuzzi"/>
+        </maintaingoalref>
+
+    </goals>
+    </goals>
     <plans>
-        <plan name="Lavarse">
-            <body class="baño.Jacuzzi.LavarseJacuzziPlan"/>
+        <plan name="LavarseJacuzziPlan">
+            <body class="baño.jacuzzi.LavarseJacuzziPlan"/>
             <trigger>
-                <messageevent ref="request_lavarse"/>
+                <goal ref="lavarse_tiempo_superado"/>
             </trigger>
         </plan>
-		<plan name="Compartir">
-            <body class="baño.Jacuzzi.CompartirJacuzziPlan"/>
+		<plan name="LavarseJacuzziTerminarPlan">
+            <body class="bano.jacuzzi.LavarseJacuzziTerminarPlan"/>
             <trigger>
-                <messageevent ref="request_compartir_jacuzzi"/>
+                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
+                </condition>
+                <condition>$beliefbase.ocupado==TRUE
+                </condition>
+            </trigger>
+        </plan>
+		<plan name="CompartirJacuzziPlan">
+            <body class="baño.jacuzzi.CompartirJacuzziPlan"/>
+            <trigger>
+                <goal ref="compartir_jacuzzi_tiempo_superado"/>
+            </trigger>
+        </plan>
+		<plan name="CompartirJacuzziTerminarPlan">
+            <body class="bano.jacuzzi.CompartirJacuzziTerminarPlan"/>
+            <trigger>
+                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
+                </condition>
+                <condition>$beliefbase.ocupado==TRUE
+                </condition>
             </trigger>
         </plan>
     </plans>
     <events>
-		<messageevent name="request_lavarse_jacuzzi" direction="receive" type="fipa">
+		<messageevent name="lavarse_jacuzzi" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
@@ -55,7 +107,7 @@
             </parameter>
             <parameter name="content" class="ontologia.predicados.JacuzziEstropeadoLavarse"/>
         </messageevent>
-        <messageevent name="request_compartir_jacuzzi" direction="receive" type="fipa">
+        <messageevent name="compartir_jacuzzi" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
@@ -76,5 +128,42 @@
             </parameter>
             <parameter name="content" class="ontologia.predicados.JacuzziEstropeadoCompartir"/>
         </messageevent>
+		 <messageevent name="jacuzzi_ocupado_lavarse" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.Lavarse"/>
+        </messageevent>
+		<messageevent name="jacuzzi_ocupado_compartir" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.CompartirJacuzzi"/>
+        </messageevent>
     </events>
+	<configuration name = "default">
+            <goals>
+                <initialgoal ref="df_higiene_lavarse">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Higiene", "Lavarse"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_energia_lavarse">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "Lavarse"))
+                        </value>
+                    </parameter>
+					<initialgoal ref="df_interaccionsocial_compartirjacuzzi">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("InteraccionSocial", "CompartirJacuzzi"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+            </goals>
+        </configuration>
+    </configurations>
 </agent>
