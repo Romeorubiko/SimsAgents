@@ -65,14 +65,14 @@
 
     <plans>
         <plan name="NadarPiscina">
-            <body class="NadarPiscinaPlan"/>
+            <body class="jardin.piscina.NadarPiscinaPlan"/>
             <trigger>
                 <messageevent ref="nadar"/>
             </trigger>
         </plan>
 
         <plan name="NadarPiscinaTerminar">
-            <body class="NadarPiscinaTerminarPlan"/>
+            <body class="jardin.piscina.NadarPiscinaTerminarPlan"/>
             <trigger>
                 <goal ref="terminar_nadar"></goal>
             </trigger>

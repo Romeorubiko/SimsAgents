@@ -69,23 +69,23 @@
 
 <plans>
   <plan name="CuidarPlantas">
-    <body class="CuidarPlantasPlan"/>
+    <body class="jardin.plantas.CuidarPlantasPlan"/>
     <trigger><messageevent ref="cuidar_plantas"/></trigger>
   </plan>
   <plan name="CuidarPlantasTerminarPlan">
-    <body class="CuidarPlantasTerminarPlan"/>
+    <body class="jardin.plantas.CuidarPlantasTerminarPlan"/>
     <trigger><goal ref="terminar_cuidar_plantas"></goal></trigger>
   </plan>
   <plan name="RecogerFrutosPlan">
-    <body class="RecogerFrutosPlan"/>
+    <body class="jardin.plantas.RecogerFrutosPlan"/>
     <trigger><messageevent ref="recoger_frutos"/></trigger>
   </plan>
   <plan name="RecogerFrutosTerminarPlan">
-    <body class="CuidarPlantasTerminarPlan"/>
+    <body class="jardin.plantas.CuidarPlantasTerminarPlan"/>
     <trigger><goal ref="terminar_recoger_frutos"></goal></trigger>
   </plan>
   <plan name="DarFrutos">
-    <body class="DarFrutos"/>
+    <body class="jardin.plantas.DarFrutos"/>
     <trigger> <condition>$beliefbase.tiempo>=$beliefbase.tiempo_maduracion
                 </condition></trigger>
   </plan>

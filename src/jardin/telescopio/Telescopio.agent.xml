@@ -61,14 +61,14 @@
 
     <plans>
         <plan name="MirarTelescopio">
-            <body class="MirarTelescopioPlan"/>
+            <body class="jardin.telescopio.MirarTelescopioPlan"/>
             <trigger>
                 <messageevent ref="mirar_telescopio"/>
             </trigger>
         </plan>
 
         <plan name="MirarTelescopioTerminar">
-            <body class="MirarTelescopioTerminarPlan"/>
+            <body class="jardin.telescopio.MirarTelescopioTerminarPlan"/>
             <trigger>
                 <goal ref="terminar_mirar_telescopio"></goal>
             </trigger>
