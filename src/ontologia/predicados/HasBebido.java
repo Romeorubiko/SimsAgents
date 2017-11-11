@@ -13,6 +13,11 @@ public class HasBebido extends Predicado {
     public HasBebido() {
     }
 
+    public HasBebido(Energia energia, Vejiga vejiga, Diversion diversion) {
+        this.energia = energia;
+        this.vejiga = vejiga;
+        this.diversion = diversion;
+    }
 
     public Energia getEnergia() {
         return energia;

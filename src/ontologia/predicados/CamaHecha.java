@@ -7,6 +7,11 @@ public class CamaHecha extends Predicado {
     private Energia energia;
     private Higiene higiene;
 
+    public CamaHecha(Energia energia, Higiene higiene) {
+        this.energia = energia;
+        this.higiene = higiene;
+    }
+
     public CamaHecha() {
     }
 

@@ -1,3 +1,10 @@
+<!--
+	<H3>minibar.agent</H3>
+
+	 Lizaveta Mishkinitse		NIA: 100317944
+     Raul Escabia				NIA: 100315903
+
+-->
 <agent xmlns="http://jadex.sourceforge.net/jadex"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://jadex.sourceforge.net/jadex
@@ -5,45 +12,70 @@
        name="minibar"
        package="sala_recreativa.minibar">
 
+    <imports>
+        <import>java.sql.Time</import>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>ontologia.Accion</import>
+        <import>ontologia.*</import>
+        <import>jadex.model.IMMessageEvent</import>
+        <import>jadex.runtime.impl.RMessageEvent</import>
+    </imports>
+
+
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
 
     <beliefs>
         <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
 
-        <belief name="energia" class="Integer">
-        </belief>
+        <belief name="mensaje_beber_minibar" class="RMessageEvent"/>
 
-        <belief name="diversion" class="Integer">
-        </belief>
-
-        <belief name="vejiga" class="Integer">
-        </belief>
-
-        <belief name="time" class="int" updaterate="750">
+        <belief name="tiempo" class="int" updaterate="750">
             <fact> (int)(System.currentTimeMillis()) </fact>
         </belief>
 
-        <belief name="tiempoFinalizacion" class="Time">
+        <belief name="tiempo_fin_minibar" class="int">
+            <fact> (int) 0 </fact>
         </belief>
 
     </beliefs>
 
+    <goals>
+        <maintaingoal name="terminar_beber_minibar">
+            <maintaincondition>$beliefbase.tiempo_fin_minibar>=beliefbase.tiempo</maintaincondition>
+        </maintaingoal>
+
+        <maintaingoalref name="df_diversion_beber">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+
+        <achievegoalref name="df_deregister">
+            <concrete ref="dfcap.df_deregister"/>
+        </achievegoalref>
+    </goals>
+
     <plans>
 
-        <plan name="BeberPlan">
-            <body class="sala_recreativa.minibar.BeberPlan"/>
+        <plan name="BeberMinibar">
+            <body class="BeberMinibarPlan"/>
             <trigger>
                 <messageevent ref="beber"/>
             </trigger>
         </plan>
 
-        <plan name="BeberTerminarPlan">
-            <body class="sala_recreativa.minibar.BeberTerminarPlan"/>
-            <trigger>               
-                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
-                </condition>
-           </trigger>
+        <plan name="BeberMinibarTerminar">
+            <body class="BeberMinibarTerminarPlan"/>
+            <trigger>
+                <goal ref="terminar_beber_minibar"></goal>
+            </trigger>
         </plan>
 
     </plans>
@@ -55,41 +87,33 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="ontologia.acciones.Beber"/>
+            <parameter name="content" class="BeberMinibarPlan"/>
         </messageevent>
 
 
         <messageevent name="minibar_ocupado" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
-
             </parameter>
+        </messageevent>
 
-            <parameter name="content" class="ontologia.acciones.Beber"/>
-
-
-
+        <messageevent name="minibar_no_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="has_bebido" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
-
             </parameter>
-
-            <parameter name="content" class="ontologia.predicados.HasBebido"/>
-
         </messageevent>
-
     </events>
 
     <configurations>
         <configuration name = "default">
             <goals>
+                <initialgoal ref="terminar_beber_minibar"/>
                 <initialgoal ref="df_diversion_beber">
                     <parameter ref="description">
                         <value>
@@ -97,6 +121,7 @@
                         </value>
                     </parameter>
                 </initialgoal>
+                <endgoal ref="df_deregister"/>
             </goals>
         </configuration>
     </configurations>

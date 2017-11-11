@@ -1,3 +1,11 @@
+<!--
+	<H3>barbacoa.agent</H3>
+
+	 Lizaveta Mishkinitse		NIA: 100317944
+     Raul Escabia				NIA: 100315903
+
+-->
+
 <agent xmlns="http://jadex.sourceforge.net/jadex"
 
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -7,255 +15,220 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
 
        name="barbacoa"
-
        package="jardin.barbacoa">
 
 
+    <imports>
+        <import>java.sql.Time</import>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>ontologia.Accion</import>
+        <import>ontologia.*</import>
+        <import>jadex.model.IMMessageEvent</import>
+        <import>jadex.runtime.impl.RMessageEvent</import>
+    </imports>
+
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
 
     <beliefs>
         <belief name="ocupado" class="Boolean">
-
             <fact>new Boolean(false)</fact>
-
         </belief>
 
         <belief name="estropeado" class="Boolean">
-
             <fact>new Boolean(false)</fact>
-
         </belief>
 
         <belief name="obsolescencia" class="Integer">
             <fact>new Integer(15)</fact>
         </belief>
 
-        <belief name="hambre" class="Integer">
+        <belief name="mensaje_cocinar_barbacoa" class="RMessageEvent"/>
+        <belief name="mensaje_reparar_barbacoa" class="RMessageEvent"/>
+
+        <belief name="tiempo" class="int" updaterate="750">
+            <fact>(int)(System.currentTimeMillis())</fact>
         </belief>
 
-        <belief name="higiene" class="Integer">
+        <belief name="tiempo_fin_cocinar_barbacoa" class="int">
+            <fact> (int) 0 </fact>
         </belief>
 
-        <belief name="energia" class="Integer">
-        </belief>
-
-        <belief name="diversion" class="Integer">
-        </belief>
-
-        <belief name="experiencia_cocina" class="Integer">
-        </belief>
-
-        <belief name="nivel_cocina" class="Integer">
-        </belief>
-
-        <belief name="experiencia_mecanica" class="Integer">
-        </belief>
-
-        <belief name="time" class="int" updaterate="750">
-            <fact> (int)(System.currentTimeMillis()) </fact>
-        </belief>
-
-        <belief name="tiempoFinalizacion" class="Time">
+        <belief name="tiempo_fin_reparar_barbacoa" class="int">
+            <fact> (int) 0 </fact>
         </belief>
 
     </beliefs>
 
+
+    <goals>
+        <maintaingoal name="terminar_cocinar_barbacoa">
+            <maintaincondition>$beliefbase.tiempo_fin_cocinar_barbacoa>=beliefbase.tiempo</maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="terminar_reparar_barbacoa">
+            <maintaincondition>$beliefbase.tiempo_fin_reparar_barbacoa>=beliefbase.tiempo</maintaincondition>
+        </maintaingoal>
+
+
+        <maintaingoalref name="df_hambre_cocinarBarbacoa">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_cocinarBarbacoa" >
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_cocina_cocinarBarbacoa">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_mecanica_reparar">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+
+        <achievegoalref name="df_deregister">
+            <concrete ref="dfcap.df_deregister"/>
+        </achievegoalref>
+    </goals>
+
     <plans>
 
-        <plan name="CocinarBarbacoaPlan">
-
-            <body class="jardin.barbacoa.CocinarBarbacoaPlan"/>
-
+        <plan name="CocinarBarbacoa">
+            <body class="CocinarBarbacoaPlan"/>
             <trigger>
-
                 <messageevent ref="cocinar_barbacoa"/>
-
             </trigger>
-
         </plan>
 
-        <plan name="RepararBarbacoaPlan">
-
-            <body class="jardin.barbacoa.RepararBarbacoaPlan"/>
-
+        <plan name="RepararBarbacoa">
+            <body class="RepararBarbacoaPlan"/>
             <trigger>
-
                 <messageevent ref="reparar"/>
-
             </trigger>
-
         </plan>
 
-        <plan name="CocinarBarbacoaTerminarPlan">
 
-            <body class="jardin.barbacoa.CocinarBarbacoaTerminarPlan"/>
+        <plan name="CocinarBarbacoaTerminar">
+            <body class="CocinarBarbacoaTerminarPlan"/>
+            <trigger>
+                <goal ref="terminar_cocinar_barbacoa"></goal>
+            </trigger>
+        </plan>
+
+
+        <plan name="RepararBarbacoaTerminar">
+
+            <body class="RepararBarbacoaTerminarPlan"/>
 
             <trigger>
-
-                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
-                </condition>
-                <condition>$beliefbase.ocupado==TRUE
-                </condition>
-
-
+                <goal ref="terminar_reparar_barbacoa"></goal>
             </trigger>
-
         </plan>
-
-        <plan name="RepararBarbacoaTerminarPlan">
-
-            <body class="jardin.barbacoa.CocinarBarbacoaTerminarPlan"/>
-
-            <trigger>
-
-                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
-                </condition>
-                <condition>$beliefbase.ocupado==TRUE
-                </condition>
-
-            </trigger>
-
-        </plan>
-
     </plans>
-
 
 
     <events>
 
         <messageevent name="cocinar_barbacoa" direction="receive" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
-
             </parameter>
-
-            <parameter name="content" class="ontologia.acciones.CocinarComidaBarbacoa"/>
-
+            <parameter name="content" class="CocinarBarbacoaPlan"
+                       direction="fixed">
+            </parameter>
         </messageevent>
 
-        <messageevent name="reparar_barbacoa" direction="receive" type="fipa">
 
+        <messageevent name="reparar" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
-
             </parameter>
-
-            <parameter name="content" class="ontologia.acciones.Reparar"/>
-
+            <parameter name="content" class="RepararBarbacoaPlan"
+                       direction="fixed">
+            </parameter>
         </messageevent>
 
-        <messageevent name="barbacoa_ocupada_cocinar" direction="send" type="fipa">
 
+        <messageevent name="barbacoa_ocupada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
-
             </parameter>
-
-            <parameter name="content" class="ontologia.acciones.CocinarComidaBarbacoa"/>
-
         </messageevent>
 
-        <messageevent name="barbacoa_ocupada_reparar" direction="send" type="fipa">
-
+        <messageevent name="barbacoa_cocinar_no_ocupada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-
-                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
-
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
             </parameter>
-
-            <parameter name="content" class="ontologia.acciones.Reparar"/>
-
         </messageevent>
 
-        <messageevent name="barbacoa_no_estropeada" direction="send" type="fipa">
-
+        <messageevent name="barbacoa_reparar_no_ocupada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-
-                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
-
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
             </parameter>
-
-            <parameter name="content" class="ontologia.acciones.Reparar"/>
-
         </messageevent>
 
         <messageevent name="barbacoa_estropeada" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
-
             </parameter>
+        </messageevent>
 
-            <parameter name="content" class="ontologia.predicados.BarbacoaRota"/>
-
-
-
+        <messageevent name="barbacoa_no_estropeada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="has_cocinado_barbacoa" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
-
             </parameter>
-
-            <parameter name="content" class="ontologia.predicados.HasCocinadoBarbacoa"/>
-
         </messageevent>
 
         <messageevent name="has_reparado" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
-
             </parameter>
-
-            <parameter name="content" class="ontologia.predicados.HasReparado"/>
-
         </messageevent>
 
         <messageevent name="perritos_quemados" direction="send" type="fipa">
-
             <parameter name="performative" class="String" direction="fixed">
-
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
-
             </parameter>
-
-            <parameter name="content" class="ontologia.predicados.PerritosQuemados"/>
-
         </messageevent>
-
 
 
     </events>
     <configurations>
-        <configuration name = "default">
+        <configuration name="default">
             <goals>
+                <initialgoal ref="terminar_cocinar_barbacoa"/>
+                <initialgoal ref="terminar_reparar_barbacoa"/>
+
                 <initialgoal ref="df_hambre_cocinarBarbacoa">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Hambre", "CocinarComidaBarbacoa"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Hambre",
+                            "CocinarComidaBarbacoa"))
                         </value>
                     </parameter>
                 </initialgoal>
                 <initialgoal ref="df_diversion_cocinarBarbacoa">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Diversion", "CocinarComidaBarbacoa"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Diversion",
+                            "CocinarComidaBarbacoa"))
                         </value>
                     </parameter>
                 </initialgoal>
                 <initialgoal ref="df_cocina_cocinarBarbacoa">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Cocina", "CocinarComidaBarbacoa"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Cocina",
+                            "CocinarComidaBarbacoa"))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -266,6 +239,7 @@
                         </value>
                     </parameter>
                 </initialgoal>
+                <endgoal ref="df_deregister"/>
             </goals>
         </configuration>
     </configurations>

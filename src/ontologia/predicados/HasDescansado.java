@@ -10,6 +10,10 @@ public class HasDescansado extends Predicado {
     public HasDescansado() {
     }
 
+    public HasDescansado(Energia energia) {
+        this.energia = energia;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

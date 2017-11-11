@@ -1,36 +1,46 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
 package dormitorio.cama;
 
+import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
+import jadex.runtime.impl.RMessageEvent;
+import ontologia.acciones.HacerLaCama;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Higiene;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.CamaHecha;
 
-/**
- * Created by eldgb on 09-Nov-17.
- */
+
 public class HacerCamaTerminarPlan extends Plan {
     public void body() {
-        getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
+
+        getGoalbase().getGoal("terminar_hacer_cama").drop();
+        getBeliefbase().getBelief("tiempo_fin_hacer_cama").setFact(new Integer (0));
+        RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_hacer_cama").getFact();
+        HacerLaCama contenido = (HacerLaCama) peticion.getContent();
+
+        Energia e = contenido.getEnergia();
+        Higiene h = contenido.getHigiene();
+
+        e.setGrado(e.getGrado()- Necesidad.NC_POCO);
+        h.setGrado(h.getGrado()+ Necesidad.NC_POCO);
+
+        CamaHecha response = new CamaHecha(e, h);
+
         getBeliefbase().getBelief("cama_hecha").setFact(Boolean.TRUE);
 
-        Energia e = new Energia();
-        Higiene h = new Higiene();
+        IMessageEvent inform = createMessageEvent("cama_hecha");
+        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+        inform.setContent(response);
+        sendMessage(inform);
 
-        Integer grado_e = (Integer)getBeliefbase().getBelief("energia").getFact();
-        Integer grado_h = (Integer)getBeliefbase().getBelief("higiene").getFact();
+        getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
 
-        e.setGrado(grado_e.intValue()- Necesidad.NC_POCO);
-        h.setGrado(grado_h.intValue()+ Necesidad.NC_POCO);
-
-        CamaHecha response = new CamaHecha();
-        response.setEnergia(e);
-        response.setHigiene(h);
-
-        IMessageEvent respuesta = createMessageEvent("cama_hecha");
-        respuesta.setContent(response);
-        sendMessage(respuesta);
 
     }
 }
