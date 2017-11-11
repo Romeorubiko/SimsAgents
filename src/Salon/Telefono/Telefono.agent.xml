@@ -65,33 +65,35 @@
 	</goals>
 	
 	<plans>
-		<!-- Primer plan para llamar a un sim. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		<!-- Planes que se encargan de recibir los request del Sim y evalúan si aceptarlos o no.
+			 Cada plan evaluará un tipo de request según los mensajes permitidos: llamar_sim o gastar_broma -->
 		<plan name="LlamarSimPregunta">
-			<body>new LlamarSimPreguntaPlan()</body>
+			<body class="LlamarSimPreguntaPlan"/>
 			<trigger>
 				<messageevent ref="llamar_sim"/>
 			</trigger>
 		</plan>
-
-		<!-- Segundo plan para llamar a un sim. Se ejecuta cuando termina el tiempo de llamada y modifica los recursos del Sim-->
-		<plan name="LlamarSimRespuesta">
-			<body>new LlamarSimRespuestaPlan()</body>
-			<trigger>
-				<goal ref="llamar_sim_tiempo_superado"></goal>
-			</trigger>
-		</plan>
-
-		<!-- Primer plan para gastar una broma telefónica. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		
+		
 		<plan name="GastarBromaPregunta">
-			<body>new GastarBromaPreguntaPlan()</body>
+			<body class="GastarBromaPreguntaPlan"/>
 			<trigger>
 				<messageevent ref="gastar_broma"/>
 			</trigger>
 		</plan>
 
-		<!-- Segundo plan para gastar una broma telefónica. Se ejecuta cuando termina el tiempo que dura la broma y modifica los recursos del Sim-->
+		<!-- Planes que se ejecutan si el request del Sim ha sido aceptado. Estos
+			 planes son los encargados de modificar los respectivos recursos del Sim dependiendo del
+			 mensaje que haya enviado al teléfono.-->
+		<plan name="LlamarSimRespuesta">
+			<body class="LlamarSimRespuestaPlan"/>
+			<trigger>
+				<goal ref="llamar_sim_tiempo_superado"></goal>
+			</trigger>
+		</plan>
+
 		<plan name="GastarBromaRespuesta">
-			<body>new GastarBromaRespuestaPlan()</body>
+			<body class="GastarBromaRespuestaPlan"/>
 			<trigger>
 				<goal ref="gastar_broma_tiempo_superado"></goal>
 			</trigger>

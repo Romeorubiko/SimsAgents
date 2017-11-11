@@ -21,10 +21,10 @@ public class BailarSimPreguntaPlan extends Plan {
 	}
 
 	/* Las clases BailarSimPreguntaPlan y BailarSimRespuestaPlan funcionan igual que las de BailarPreguntaPlan y BailarRespuestaPlan
-	 * con la diferencia de que en las primeras se modifica el atributo interacción social del Sim. Como se puede observar en el protocolo,
-	 * cuando un Sim quiere bailar con otro le envía una petición y si el otro Sim acepta, ambos sims enviarán un request de bailar_con_sim.
-	 * Puesto que cada uno envía su request de forma individual, las requests son procesadas por el equipo de música de forma individual y respondidas de forma individual.
-	 * Es decir, para el equipo de música es como si estuviera procesando un request de bailar pero modificando el atributo interacción social del Sim */
+	 * con la diferencia de que en las primeras se modifica el atributo interacci n social del Sim. Como se puede observar en el protocolo,
+	 * cuando un Sim quiere bailar con otro le env a una petici n y si el otro Sim acepta, ambos sims enviar n un request de bailar_con_sim.
+	 * Puesto que cada uno env a su request de forma individual, las requests son procesadas por el equipo de m sica de forma individual y respondidas de forma individual.
+	 * Es decir, para el equipo de m sica es como si estuviera procesando un request de bailar pero modificando el atributo interacci n social del Sim */
 	
 	public void body() {
 		/* Se obtiene el contenido del request */
@@ -39,22 +39,22 @@ public class BailarSimPreguntaPlan extends Plan {
 		Deporte fisico = content.getDeporte();
 
 		/* Se obtienen las creencias necesarias */
-		RBelief creenciaSimsBailando = (RBelief) getBeliefbase().getBelief("sims_bailando"); // Número de sims bailando
-		RBelief creenciaMusicaSonando = (RBelief) getBeliefbase().getBelief("musica_sonando"); // El tipo de música que
-																								// está sonando
-		RBelief creenciaObsolescencia = (RBelief) getBeliefbase().getBelief("obsolescencia");// Si el equipo está
+		RBelief creenciaSimsBailando = (RBelief) getBeliefbase().getBelief("sims_bailando"); // N mero de sims bailando
+		RBelief creenciaMusicaSonando = (RBelief) getBeliefbase().getBelief("musica_sonando"); // El tipo de m sica que
+																								// est  sonando
+		RBelief creenciaObsolescencia = (RBelief) getBeliefbase().getBelief("obsolescencia");// Si el equipo est 
 																								// estropeado
 		int simsBailando = (int) creenciaSimsBailando.getFact();
 		Musica musicaSonando = (Musica) creenciaMusicaSonando.getFact();
 		int obsolescencia = (int) creenciaObsolescencia.getFact();
 
 		/*
-		 * Basándose en sus creencias, el equipo de música evalúa si aceptar la petición
+		 * Bas ndose en sus creencias, el equipo de m sica eval a si aceptar la petici n
 		 * del Sim
 		 */
 		if (simsBailando > 0 && !musicaSonando.equals(musicaPedida)) {
 			/*
-			 * Se rechaza la petición si el Sim pide bailar una música que no están bailando
+			 * Se rechaza la petici n si el Sim pide bailar una m sica que no est n bailando
 			 * el resto de Sims
 			 */
 			IMessageEvent refuse = createMessageEvent("peticion_rechazada");
@@ -65,13 +65,13 @@ public class BailarSimPreguntaPlan extends Plan {
 			agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 			sendMessage(agree);
 
-			/* Se comprueba si el equipo de música está roto */
+			/* Se comprueba si el equipo de m sica est  roto */
 			if (obsolescencia <= 0) {
-				/* Si había sims bailando ya no los hay */
+				/* Si hab a sims bailando ya no los hay */
 				if (simsBailando > 0) {
 					creenciaSimsBailando.setFact(0);
 				}
-				/* La música deja de sonar */
+				/* La m sica deja de sonar */
 				if (!musicaSonando.equals(null)) {
 					creenciaMusicaSonando.setFact(null);
 				}
@@ -84,8 +84,8 @@ public class BailarSimPreguntaPlan extends Plan {
 				sendMessage(failure);
 			} else {
 				/*
-				 * Se modifican las creencias del agente sobre su obsolescencia, el número de
-				 * sims bailando y la música sonando.
+				 * Se modifican las creencias del agente sobre su obsolescencia, el n mero de
+				 * sims bailando y la m sica sonando.
 				 */
 				obsolescencia--;
 				creenciaObsolescencia.setFact(obsolescencia);
@@ -97,7 +97,7 @@ public class BailarSimPreguntaPlan extends Plan {
 
 				/*
 				 * Se obtienen los arrays que contienen los tiempos y mensajes de los sims que
-				 * están a la espera de que se modifiquen sus recursos
+				 * est n a la espera de que se modifiquen sus recursos
 				 */
 
 				RBelief creenciaMensajes = (RBelief) getBeliefbase().getBelief("mensajes_bailar_sim");
@@ -108,15 +108,15 @@ public class BailarSimPreguntaPlan extends Plan {
 				ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) creenciaTiemposFin.getFact();
 
 				/*
-				 * Se actualiza el Array de Mensajes añadiendo el mensaje del sim actual en la
-				 * última posicion
+				 * Se actualiza el Array de Mensajes a adiendo el mensaje del sim actual en la
+				 *  ltima posicion
 				 */
 				arrayMensajes.add(request);
 				creenciaMensajes.setFact(arrayMensajes);
 
 				/*
-				 * Se actualiza el array de tiempos de finalización añadiendo el tiempo de
-				 * finalización de la acción para el Sim actual a la última posición
+				 * Se actualiza el array de tiempos de finalizaci n a adiendo el tiempo de
+				 * finalizaci n de la acci n para el Sim actual a la  ltima posici n
 				 */
 				RBelief creenciaTiempo = (RBelief) getBeliefbase().getBelief("tiempo_actual");
 				Integer tiempo = (Integer) creenciaTiempo.getFact();

@@ -1,0 +1,296 @@
+<!--
+	<H3>Agente equipo de música</H3>
+-->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	name="EquipoMusica"
+	package="Salon.EquipoMusica">
+	
+	<imports>
+		<import>jadex.runtime.*</import>
+		<import>jadex.planlib.*</import>
+		<import>jadex.util.*</import>
+		<import>jadex.adapter.fipa.*</import>
+		<import>java.util.logging.*</import>
+		<import>java.util.*</import>
+		<import>ontologia.conceptos.*</import>
+		<import>ontologia.acciones.*</import>
+		<import>ontologia.predicados.*</import>
+	</imports>
+	
+	<capabilities>
+		<capability name="dfcap" file="jadex.planlib.DF"/>
+	</capabilities>
+
+	<beliefs>
+
+		<!-- Tiempo transcurrido desde que se activa el agente -->
+		<belief name="tiempo_actual" class="int" updaterate="100">
+			<fact> (int) (System.currentTimeMillis()/1000) </fact>
+		</belief>
+
+		<!-- Array tiempos fin bailar -->
+		<belief name="tiempos_fin_bailar" class="ArrayList"/>
+
+		<!-- Array mensajes bailar-->
+		<belief name="mensajes_bailar" class="ArrayList"/>
+
+		<!-- Array tiempos fin bailar con sim -->
+		<belief name="tiempos_fin_bailar_sim" class="ArrayList"/>
+
+		<!-- Array mensajes bailar con sim -->
+		<belief name="mensajes_bailar_sim" class="ArrayList"/>
+		
+		<!-- Array tiempos fin escuchar música -->
+		<belief name="tiempos_fin_escuchar_musica" class="ArrayList"/>
+
+		<!-- Array mensajes escuchar música -->
+		<belief name="mensajes_escuchar_musica" class="ArrayList"/>
+		
+		<!-- Contiene el número de veces que queda para que el equipo se estropee -->
+		<belief name="obsolescencia" class="Integer">
+			<fact> new Integer(30)</fact>
+		</belief>
+
+		<!-- Número de sims bailando -->
+		<belief name="sims_bailando" class="int">
+			<fact> (int) 0 </fact>
+		</belief>
+		
+		<!-- Música que está sonando -->
+		<belief name="musica_sonando" class="Musica">
+			<fact> null </fact>
+		</belief>
+	</beliefs>
+	<goals>
+
+		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha terminado de bailar se ejecute el plan que modifica sus recursos-->
+		<maintaingoal name="bailar_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempos_fin_bailar.get(0) >= $beliefbase.tiempo_actual
+			</maintaincondition>
+		</maintaingoal>
+		
+		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha terminado de bailar con un sim se ejecute el plan que modifica sus recursos-->
+		<maintaingoal name="bailar_sim_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempos_fin_bailar_sim.get(0) >= $beliefbase.tiempo_actual
+			</maintaincondition>
+		</maintaingoal>
+		
+		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha terminado de escuchar musica se ejecute el plan que modifica sus recursos-->
+		<maintaingoal name="escuchar_musica_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempos_fin_escuchar_musica.get(0) >= $beliefbase.tiempo_actual
+			</maintaincondition>
+		</maintaingoal>
+
+		<!-- Objetivos para registrar los servicios que ofrece el agente en el DF y los correspondientes recursos y habilidades que modifica-->
+		<maintaingoalref name="df_diversion_bailar">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		
+		<maintaingoalref name="df_fisico_bailar">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		
+		<maintaingoalref name="df_diversion_bailar_sim">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		
+		<maintaingoalref name="df_interaccion_bailar_sim">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		
+		<maintaingoalref name="df_fisico_bailar_sim">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		
+		<maintaingoalref name="df_diversion_escuchar_musica">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+	</goals>
+	
+	<plans>
+		<!-- Planes que se encargan de recibir los request del Sim y evalúan si aceptarlos o no.
+			 Cada plan evaluará un tipo de request según los mensajes permitidos: bailar, bailar_con_sim o escuchar_musica -->
+		<plan name="BailarPreguntaPlan">
+			<body class="BailarPreguntaPlan"/>
+			<trigger>
+				<messageevent ref="bailar"/>
+			</trigger>
+		</plan>
+		
+		<plan name="BailarSimPreguntaPlan">
+			<body class="BailarSimPreguntaPlan"/>
+			<trigger>
+				<messageevent ref="bailar_con_sim"/>
+			</trigger>
+		</plan>
+		
+		<plan name="EscucharMusicaPreguntaPlan">
+			<body class="EscucharMusicaPreguntaPlan"/>
+			<trigger>
+				<messageevent ref="escuchar_musica"/>
+			</trigger>
+		</plan>
+
+		<!-- Planes que se ejecutan si el request del Sim ha sido aceptado. Estos
+			 planes son los encargados de modificar los respectivos recursos del Sim dependiendo del
+			 mensaje que haya enviado al equipo de música.-->
+		<plan name="BailarRespuestaPlan">
+			<body class="BailarRespuestaPlan"/>
+			<trigger>
+				<goal ref="bailar_tiempo_superado"/>
+			</trigger>
+		</plan>
+		
+		<plan name="BailarSimRespuestaPlan">
+			<body class="BailarSimRespuestaPlan"/>
+			<trigger>
+				<goal ref="bailar_sim_tiempo_superado"/>
+			</trigger>
+		</plan>
+		
+		<plan name="EscucharMusicaRespuestaPlan">
+			<body class="EscucharMusicaRespuestaPlan"/>
+			<trigger>
+				<goal ref="escuchar_musica_tiempo_superado"/>
+			</trigger>
+		</plan>
+	</plans>
+	
+	<events>
+		<messageevent name="bailar" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="BailarPreguntaPlan" direction="fixed">
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="bailar_con_sim" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="BailarSimPreguntaPlan" direction="fixed">
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="escuchar_musica" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="EscucharMusicaPreguntaPlan" direction="fixed">
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="peticion_aceptada" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="peticion_rechazada" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="equipo_estropeado_bailando" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="equipo_estropeado_bailando_sim" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="equipo_estropeado_escuchando_musica" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_bailado" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_bailado_sim" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_escuchado_musica" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+	</events>
+
+	<configurations>
+		<configuration name="default">
+			<goals>
+			
+				<initialgoal ref="df_diversion_bailar">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Diversion", "Bailar", "EquipoMusica"))
+						</value>
+					</parameter>
+				</initialgoal>
+				
+				<initialgoal ref="df_fisico_bailar">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Deporte", "Bailar", "EquipoMusica"))
+						</value>
+					</parameter>
+				</initialgoal>
+				
+				<initialgoal ref="df_diversion_bailar_sim">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Diversion", "BailarConSim", "EquipoMusica"))
+						</value>
+					</parameter>
+				</initialgoal>
+				
+				<initialgoal ref="df_fisico_bailar_sim">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Deporte", "BailarConSim", "EquipoMusica"))
+						</value>
+					</parameter>
+				</initialgoal>
+				
+				<initialgoal ref="df_interaccion_bailar_sim">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("InteraccionSocial", "BailarConSim", "EquipoMusica"))
+						</value>
+					</parameter>
+				</initialgoal>
+				
+				<initialgoal ref="df_diversion_escuchar_musica">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Diversion", "EscucharMusica", "EquipoMusica"))
+						</value>
+					</parameter>
+				</initialgoal>
+			</goals>
+		</configuration>
+	</configurations>
+</agent>

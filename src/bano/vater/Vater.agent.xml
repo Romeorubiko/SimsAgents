@@ -6,17 +6,12 @@
        package="bano.vater">
 
     <imports>
-        <import>java.sql.Time</import>
         <import>jadex.runtime.*</import>
         <import>jadex.planlib.*</import>
         <import>jadex.util.*</import>
         <import>jadex.adapter.fipa.*</import>
         <import>java.util.logging.*</import>
         <import>java.util.*</import>
-        <import>ontologia.Accion</import>
-        <import>ontologia.*</import>
-        <import>jadex.model.IMMessageEvent</import>
-        <import>jadex.runtime.impl.RMessageEvent</import>
     </imports>
 
     <capabilities>
@@ -39,7 +34,7 @@
 		<belief name="time" class="int" updaterate="750">
             <fact> (int)(System.currentTimeMillis()) </fact>
         </belief>
-		  <belief name="tiempoFinalizacion" class="Time">
+		  <belief name="tiempoFinalizacion" class="Integer">
               <fact> (int) 0 </fact>
           </belief>
     </beliefs>
@@ -52,12 +47,13 @@
         </maintaingoal>
 
         <maintaingoalref name="df_vejiga_usar_vater">
-            <concrete ref="dfcap.df_vejiga_usar_vater"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
 
         <maintaingoalref name="df_energia_usar_vater">
-            <concrete ref="dfcap.df_energia_usar_vater"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
+
     </goals>
 
     <plans>
@@ -70,12 +66,9 @@
 
 		<plan name="UsarVaterTerminarPlan">
             <body class="bano.vater.UsarVaterTerminarPlan"/>
-            <trigger>
-                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
-                </condition>
-                <condition>$beliefbase.ocupado==TRUE
-                </condition>
-            </trigger>
+                <trigger>
+                    <goal ref="usar_vater_tiempo_superado"/>
+                </trigger>
         </plan>
 
     </plans>

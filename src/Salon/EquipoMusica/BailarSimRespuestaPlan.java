@@ -43,7 +43,7 @@ public class BailarSimRespuestaPlan extends Plan {
 		Diversion diversion = content.getDiversion();
 		Deporte fisico = content.getDeporte();
 
-		/* Se modifican los recursos del Sim dependiendo del tipo de música que baile */
+		/* Se modifican los recursos del Sim dependiendo del tipo de m sica que baile */
 		if (musicaPedida.getTipo().equals(TiposMusica.ROCK)) {
 			energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_MUCHO);
 			content.setEnergia(energia);
@@ -97,7 +97,7 @@ public class BailarSimRespuestaPlan extends Plan {
 		content.setInteraccionSocial(interaccion);
 
 		/*
-		 * Envío del mensaje al Sim informándole de que ha bailado con éxito a través
+		 * Env o del mensaje al Sim inform ndole de que ha bailado con  xito a trav s
 		 * del predicado correspondiente
 		 */
 		IMessageEvent inform = createMessageEvent("has_bailado_sim");
@@ -106,9 +106,9 @@ public class BailarSimRespuestaPlan extends Plan {
 		inform.setContent(hasBailadoSim);
 		sendMessage(inform);
 
-		/* Actualización de las creencias del equipo de música */
+		/* Actualizaci n de las creencias del equipo de m sica */
 		/*
-		 * El sim ha dejado de bailar, con lo que el número de sims bailando disminuye
+		 * El sim ha dejado de bailar, con lo que el n mero de sims bailando disminuye
 		 */
 		RBelief creenciaSimsBailando = (RBelief) getBeliefbase().getBelief("sims_bailando");
 		int simsBailando = (int) creenciaSimsBailando.getFact();
@@ -116,8 +116,8 @@ public class BailarSimRespuestaPlan extends Plan {
 		creenciaSimsBailando.setFact(simsBailando);
 
 		/*
-		 * Puesto que el Sim ha terminado de bailar se elimina la primera posición del
-		 * array de mensajes y la primera posición del array de tiempos de finalización
+		 * Puesto que el Sim ha terminado de bailar se elimina la primera posici n del
+		 * array de mensajes y la primera posici n del array de tiempos de finalizaci n
 		 */
 		arrayMensajes.remove(0);
 		creenciaMensajes.setFact(arrayMensajes);
@@ -129,8 +129,8 @@ public class BailarSimRespuestaPlan extends Plan {
 		creenciaTiempo.setValue(arrayTiempos);
 
 		/*
-		 * Si el array de tiempos está vacío, significa que no hay más sims bailando
-		 * acompañados (puede haberlos bailando solos) por lo tanto el objetivo
+		 * Si el array de tiempos est  vac o, significa que no hay m s sims bailando
+		 * acompa ados (puede haberlos bailando solos) por lo tanto el objetivo
 		 * correspondiente de desactiva
 		 */
 		if (arrayTiempos.isEmpty()) {

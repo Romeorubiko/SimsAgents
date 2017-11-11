@@ -18,13 +18,13 @@ public class GastarBromaPreguntaPlan extends Plan {
 	}
 	
 	public void body() {
-		/* ObtenciÛn del request que inicia el plan */
+		/* Obtenci√≥n del request que inicia el plan */
 		IMessageEvent request = (IMessageEvent) getInitialEvent();
 		GastarBromaTel content = (GastarBromaTel) request.getContent();
 		Energia energia = content.getEnergia();
 		Diversion diversion = content.getDiversion();
 
-		/* ObtenciÛn de las creencias del agente */
+		/* Obtenci√°n de las creencias del agente */
 		RBeliefbase bb;
 		bb = (RBeliefbase) getBeliefbase();
 		RBelief creenciaOcupado = (RBelief) bb.getBelief("telefono_ocupado");
@@ -32,14 +32,14 @@ public class GastarBromaPreguntaPlan extends Plan {
 		RBelief creenciaTiempoFin = (RBelief) bb.getBelief("tiempo_fin_broma");
 		Boolean ocupado = (Boolean) creenciaOcupado.getFact();
 
-		/* Si el telÈfono est· ocupado se rechaza la peticiÛn, si no se acepta */
+		/* Si el tel√°fono est√° ocupado se rechaza la petici√°n, si no se acepta */
 		if (ocupado) {
-			/* EnvÌo del refuse */
+			/* Env√°o del refuse */
 			IMessageEvent refuse = createMessageEvent("peticion_rechazada");
 			refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 			sendMessage(refuse);
 		} else {
-			/* EnvÌo del agree */
+			/* Env√°o del agree */
 			IMessageEvent agree = createMessageEvent("peticion_aceptada");
 			agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 			sendMessage(agree);
@@ -48,7 +48,7 @@ public class GastarBromaPreguntaPlan extends Plan {
 			Boolean falloBroma = new Random().nextInt(20) == 0;
 
 			/*
-			 * Si la llamada falla se envÌa un failure. Si no, pasar· a ejecutarse el plan
+			 * Si la llamada falla se env√°a un failure. Si no, pasar√° a ejecutarse el plan
 			 * de GastarBromaRespuestaPlan
 			 */
 			if (falloBroma) {
@@ -61,10 +61,10 @@ public class GastarBromaPreguntaPlan extends Plan {
 				/* Se guarda el contenido del request en una creencia para que el segundo plan pueda acceder a dicho contenido */
 				creenciaMensaje.setFact(request);
 				
-				/* Ahora el telÈfono est· ocupado, se actualiza la creencia*/
+				/* Ahora el tel√°fono est√° ocupado, se actualiza la creencia*/
 				creenciaOcupado.setFact(true);
 				
-				/* ObtenciÛn del tiempo que lleva ejecut·ndose el agente */
+				/* Obtenci√°n del tiempo que lleva ejecut√°ndose el agente */
 				int tiempo=(int) getBeliefbase().getBelief("tiempo_actual").getFact();
 				
 				/* Se guarda en una creencia el tiempo en el que se va a terminar la broma*/
