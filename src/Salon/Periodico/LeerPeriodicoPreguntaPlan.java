@@ -7,6 +7,10 @@ import ontologia.Accion;
 
 public class LeerPeriodicoPreguntaPlan extends Plan {
 
+	public LeerPeriodicoPreguntaPlan() {
+
+	}
+
 	/**
 	 *  Plan body.
 	 */

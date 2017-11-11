@@ -16,6 +16,11 @@ import ontologia.predicados.HasVistoTV;
 import java.util.ArrayList;
 
 public class VerTVRespuestaPlan extends Plan {
+
+    public VerTVRespuestaPlan() {
+
+    }
+
     /**
      *  Plan body.
      */

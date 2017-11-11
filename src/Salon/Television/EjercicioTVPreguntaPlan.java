@@ -15,6 +15,11 @@ import ontologia.predicados.TVEstropeadaEjercicio;
 import java.util.ArrayList;
 
 public class EjercicioTVPreguntaPlan extends Plan {
+
+    public EjercicioTVPreguntaPlan() {
+
+    }
+
     /**
      * Plan body.
      */

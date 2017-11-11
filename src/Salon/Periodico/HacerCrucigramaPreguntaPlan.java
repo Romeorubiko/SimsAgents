@@ -11,6 +11,10 @@ import ontologia.Accion;
 
 public class HacerCrucigramaPreguntaPlan extends Plan {
 
+    public HacerCrucigramaPreguntaPlan() {
+
+    }
+
     public void body()
     {
         IMessageEvent request	= (IMessageEvent)getInitialEvent();

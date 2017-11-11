@@ -14,6 +14,10 @@ import ontologia.predicados.HasLeidoPeriodico;
 
 public class LeerPeriodicoRespuestaPlan extends Plan {
 
+    public LeerPeriodicoRespuestaPlan() {
+
+    }
+
     /**
      *  Plan body.
      */

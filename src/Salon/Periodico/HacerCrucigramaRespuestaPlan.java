@@ -14,6 +14,11 @@ import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.HasHechoCrucigrama;
 
 public class HacerCrucigramaRespuestaPlan extends Plan {
+
+    public HacerCrucigramaRespuestaPlan() {
+
+    }
+
     /**
      *  Plan body.
      */

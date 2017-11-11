@@ -11,6 +11,11 @@ import ontologia.acciones.Descansar;
 import ontologia.conceptos.Descanso;
 
 public class DescansarSofaPreguntaPlan extends Plan {
+
+    public DescansarSofaPreguntaPlan() {
+
+    }
+
     /**
      *  Plan body.
      */

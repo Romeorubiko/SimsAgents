@@ -13,6 +13,11 @@ import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.HasDescansado;
 
 public class DescansarSofaRespuestaPlan extends Plan {
+
+    public DescansarSofaRespuestaPlan() {
+
+    }
+
     /**
      *  Plan body.
      */
