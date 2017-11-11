@@ -1,19 +1,15 @@
 package bano.ducha;
+
 import ontologia.Accion;
 import ontologia.acciones.*;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Higiene;
-import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.DuchaEstropeada;
-import ontologia.predicados.OrdenadorEstropeadoNavegarInternet;
-import ontologia.predicados.TeHasLavado;
 
 import java.util.*;
 import jadex.runtime.*;
 import jadex.runtime.impl.RMessageEvent;
 import jadex.adapter.fipa.*;
-
-
 
 public class LavarseDuchaPlan extends Plan {
 
@@ -27,13 +23,13 @@ public class LavarseDuchaPlan extends Plan {
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
         Boolean estropeado = (Boolean)getBeliefbase().getBelief("estropeado").getFact();
         
-        if(ocupado.booleanValue()) {
+        if (ocupado.booleanValue()) {
             IMessageEvent respuesta = createMessageEvent("ducha_ocupada");
             respuesta.setContent(content);
             sendMessage(respuesta);
         }
         else if (estropeado.booleanValue()) {
-            IMessageEvent respuesta = createMessageEvent("barbacoa_estropeada");
+            IMessageEvent respuesta = createMessageEvent("ducha_estropeada");
             DuchaEstropeada response = new DuchaEstropeada();
             
             response.setHigiene(higiene);
@@ -42,7 +38,7 @@ public class LavarseDuchaPlan extends Plan {
         }
         else if (((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1<=0){
             getBeliefbase().getBelief("estropeada").setFact(Boolean.TRUE);
-            IMessageEvent respuesta = createMessageEvent("barbacoa_estropeada");
+            IMessageEvent respuesta = createMessageEvent("ducha_estropeada");
             DuchaEstropeada response = new DuchaEstropeada();
             response.setHigiene(higiene);
             response.setEnergia(energia);

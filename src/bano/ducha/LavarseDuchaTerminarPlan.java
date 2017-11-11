@@ -1,19 +1,11 @@
 package bano.ducha;
-import ontologia.Accion;
-import ontologia.acciones.*;
+
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Higiene;
 import ontologia.conceptos.necesidades.Necesidad;
-import ontologia.predicados.DuchaEstropeada;
-import ontologia.predicados.OrdenadorEstropeadoNavegarInternet;
 import ontologia.predicados.TeHasLavado;
 
-import java.util.*;
 import jadex.runtime.*;
-import jadex.runtime.impl.RMessageEvent;
-import jadex.adapter.fipa.*;
-
-
 
 public class LavarseDuchaTerminarPlan extends Plan {
 
@@ -21,7 +13,7 @@ public class LavarseDuchaTerminarPlan extends Plan {
     	
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
         getBeliefbase().getBelief("estropeada").setFact(Boolean.FALSE);
-        getBeliefbase().getBelief("obsolescencia").setFact(new Integer (100));
+        getBeliefbase().getBelief("obsolescencia").setFact(100);
         Higiene higiene = new Higiene();
         Energia energia = new Energia();
          
