@@ -55,7 +55,7 @@
 	<plans>
 		<!-- Primer plan descansar en el sofa. Recibe el request del Sim y evalúa si aceptarlo o no-->
 		<plan name="DescansarSofaPreguntaPlan">
-			<body>Salon.Sofa.DescansarSofaPreguntaPlan</body>
+			<body class="Salon.Sofa.DescansarSofaPreguntaPlan"/>
 			<trigger>
 				<messageevent ref="descansar"/>
 			</trigger>
@@ -63,7 +63,7 @@
 
 		<!-- Segundo plan para descansar en el sofa. Se ejecuta cuando termina el tiempo de leer el sofa y modifica los recursos del Sim-->
 		<plan name="DescansarSofaRespuestaPlan">
-			<body>Salon.Sofa.DescansarSofaRespuestaPlan</body>
+			<body class="Salon.Sofa.DescansarSofaRespuestaPlan"/>
 			<trigger>
 				<goal ref="descansar_sofa_tiempo_superado"/>
 			</trigger>

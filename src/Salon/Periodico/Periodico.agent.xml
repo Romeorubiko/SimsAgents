@@ -87,7 +87,7 @@
 	<plans>
 		<!-- Primer plan leer el periódico. Recibe el request del Sim y evalúa si aceptarlo o no-->
 		<plan name="LeerPeriodicoPreguntaPlan">
-			<body>Salon.Periodico.LeerPeriodicoPreguntaPlan</body>
+			<body class="Salon.Periodico.LeerPeriodicoPreguntaPlan"/>
 			<trigger>
 				<messageevent ref="leer_periodico"/>
 			</trigger>
@@ -95,7 +95,7 @@
 
 		<!-- Segundo plan para leer el periodico. Se ejecuta cuando termina el tiempo de leer el periodico y modifica los recursos del Sim-->
 		<plan name="LeerPeriodicoRespuestaPlan">
-			<body>Salon.Periodico.LeerPeriodicoRespuestaPlan</body>
+			<body class="Salon.Periodico.LeerPeriodicoRespuestaPlan"/>
 			<trigger>
 				<goal ref="leer_periodico_tiempo_superado"/>
 			</trigger>
@@ -103,7 +103,7 @@
 
 		<!-- Primer plan para hacer un crucigrama. Recibe el request del Sim y evalúa si aceptarlo o no-->
 		<plan name="HacerCrucigramaPreguntaPlan">
-			<body>Salon.Periodico.HacerCrucigramaPreguntaPlan</body>
+			<body class="Salon.Periodico.HacerCrucigramaPreguntaPlan"/>
 			<trigger>
 				<messageevent ref="hacer_crucigrama"/>
 			</trigger>
@@ -111,7 +111,7 @@
 
 		<!-- Segundo plan para hacer un crucigrama. Se ejecuta cuando termina el tiempo de hacer un crucigrama y modifica los recursos del Sim-->
 		<plan name="HacerCrucigramaRespuestaPlan">
-			<body>Salon.Periodico.HacerCrucigramaRespuestaPlan</body>
+			<body class="Salon.Periodico.HacerCrucigramaRespuestaPlan"/>
 			<trigger>
 				<goal ref="crucigrama_periodico_tiempo_superado"/>
 			</trigger>
