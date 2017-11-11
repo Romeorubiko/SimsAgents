@@ -52,14 +52,14 @@
 		<!-- Objetivo para que cuando termina el tiempo de llamada se ejecute el segundo plan -->
 		<maintaingoal name="llamar_sim_tiempo_superado">
 			<maintaincondition>
-				$beliefbase.tiempo_actual >= $beliefbase.tiempo_fin_llamada
+				$beliefbase.tiempo_fin_llamada >= $beliefbase.tiempo_actual 
 			</maintaincondition>
 		</maintaingoal>
 
 		<!-- Objetivo para que cuando termina el tiempo que dura la broma se ejecute el segundo plan -->
 		<maintaingoal name="gastar_broma_tiempo_superado">
 			<maintaincondition>
-				$beliefbase.tiempo_actual >= $beliefbase.tiempo_fin_broma
+				$beliefbase.tiempo_fin_broma >= $beliefbase.tiempo_actual
 			</maintaincondition>
 		</maintaingoal>
 	</goals>
