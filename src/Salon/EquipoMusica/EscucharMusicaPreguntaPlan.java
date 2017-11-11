@@ -84,7 +84,7 @@ public class EscucharMusicaPreguntaPlan extends Plan {
 
 			/* Si es el primero en escuchar música se lanza el objetivo */
 			if (arrayTiempos.size() == 1) {
-				IGoal goal = createGoal("bailar_tiempo_superado");
+				IGoal goal = createGoal("escuchar_musica_tiempo_superado");
 				dispatchTopLevelGoal(goal);
 			}
 		}

@@ -128,12 +128,6 @@ public class BailarSimRespuestaPlan extends Plan {
 		arrayTiempos.remove(0);
 		creenciaTiempo.setValue(arrayTiempos);
 
-		/* Si no hay más sims bailando, entonces se apaga la música */
-		if (simsBailando == 0) {
-			RBelief creenciaMusicaSonando = (RBelief) getBeliefbase().getBelief("musica_sonando");
-			creenciaMusicaSonando.setFact(null);
-		}
-
 		/*
 		 * Si el array de tiempos está vacío, significa que no hay más sims bailando
 		 * acompañados (puede haberlos bailando solos) por lo tanto el objetivo
