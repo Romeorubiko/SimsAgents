@@ -6,7 +6,7 @@ import ontologia.conceptos.necesidades.*;
 
 public class EquipoEstropeadoBailandoSim extends Predicado {
 
-   	private InteraccionSocial interaccion;
+	private InteraccionSocial interaccion;
 	private Energia energia;
 	private Diversion diversion;
 	private Higiene higiene;
@@ -15,6 +15,16 @@ public class EquipoEstropeadoBailandoSim extends Predicado {
 
 	public EquipoEstropeadoBailandoSim() {
 		;
+	}
+
+	public EquipoEstropeadoBailandoSim(InteraccionSocial interaccion, Energia energia, Diversion diversion,
+			Higiene higiene, Hambre hambre, Deporte fisico) {
+		this.interaccion = interaccion;
+		this.energia = energia;
+		this.diversion = diversion;
+		this.higiene = higiene;
+		this.hambre = hambre;
+		this.fisico = fisico;
 	}
 
 	public InteraccionSocial getInteraccionSocial() {

@@ -1,41 +1,52 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
+
 package dormitorio.cama;
 
+import jadex.adapter.fipa.SFipa;
+import jadex.runtime.IGoal;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
-import ontologia.acciones.HacerLaCama;
 
-/**
- * Created by eldgb on 09-Nov-17.
- */
+
+
 public class HacerCamaPlan extends Plan {
     public void body() {
+
         RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
-        HacerLaCama content = (HacerLaCama) peticion.getContent();
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
         Boolean hecha = (Boolean) getBeliefbase().getBelief("cama_hecha").getFact();
 
         if(ocupado.booleanValue()) {
-            IMessageEvent respuesta = createMessageEvent("hacer_cama_ocupada");
-            respuesta.setContent(content);
-            sendMessage(respuesta);
+            IMessageEvent refuse = createMessageEvent("cama_ocupada");
+            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            sendMessage(refuse);;
         }
         else if (hecha.booleanValue()) {
-            IMessageEvent respuesta = createMessageEvent("cama_ya_hecha");
-            respuesta.setContent(content);
-            sendMessage(respuesta);
+            IMessageEvent refuse = createMessageEvent("cama_ya_hecha");
+            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            sendMessage(refuse);
         }
 
         else {
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
-            int grado_h = content.getHigiene().getGrado();
-            int grado_e = content.getEnergia().getGrado();
-            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_CORTO;
 
-            getBeliefbase().getBelief("energia").setFact(new Integer(grado_e));
-            getBeliefbase().getBelief("higiene").setFact(new Integer(grado_h));
-            getBeliefbase().getBelief("tiempoFinalizacion").setFact(new Integer(end_timer));
+            IMessageEvent agree = createMessageEvent("cama_no_ocupada");
+            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            sendMessage(agree);
+
+            getBeliefbase().getBelief("mensaje_hacer_cama").setFact(peticion);
+
+            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_CORTO;
+            getBeliefbase().getBelief("tiempo_fin_hacer_cama").setFact(new Integer(end_timer));
+
+            IGoal goal= createGoal("terminar_hacer_cama");
+            dispatchSubgoal(goal);
         }
     }
 }

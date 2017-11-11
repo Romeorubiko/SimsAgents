@@ -4,28 +4,89 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
        name="Ducha"
        package="bano.ducha">
+
+    <imports>
+        <import>java.sql.Time</import>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>ontologia.Accion</import>
+        <import>ontologia.*</import>
+        <import>jadex.model.IMMessageEvent</import>
+        <import>jadex.runtime.impl.RMessageEvent</import>
+    </imports>
+
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+
     <beliefs>
         <belief name="obsolescencia" class="Integer">
             <fact>new Integer(100)</fact>
         </belief>
+
         <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
-		 <belief name="time" class="int" updaterate="750">
+
+        <belief name="estropeada" class="Boolean">
+            <fact>new Boolean(false)</fact>
+        </belief>
+
+        <belief name="time" class="int" updaterate="750">
             <fact> (int)(System.currentTimeMillis()) </fact>
         </belief>
-		  <belief name="tiempoFinalizacion" class="Time"></belief>
+
+        <belief name="tiempoFinalizacion" class="Time">
+            <fact> (int) 0 </fact>
+        </belief>
+
     </beliefs>
+
+	<goals>
+        <maintaingoal name="lavarse_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_ducha >= $beliefbase.tiempo_ducha
+            </maintaincondition>
+        </maintaingoal>
+
+        <maintaingoalref name="df_higiene_lavarse">
+            <concrete ref="dfcap.df_higiene_lavarse"/>
+        </maintaingoalref>
+
+        <maintaingoalref name="df_energia_lavarse">
+            <concrete ref="dfcap.df_energia_lavarse"/>
+        </maintaingoalref>
+    </goals>
+
     <plans>
-        <plan name="Lavarse">
+
+        <plan name="LavarseDuchaPlan">
             <body class="bano.ducha.LavarseDuchaPlan"/>
             <trigger>
-                <messageevent ref="request_lavarse"/>
+                 <goal ref="lavarse_tiempo_superado"/>
             </trigger>
         </plan>
+
+        <plan name="LavarseDuchaTerminarPlan">
+            <body class="bano.ducha.LavarseDuchaTerminarPlan"/>
+            <trigger>
+                <condition>
+                    $beliefbase.time>=$beliefbase.tiempoFinalizacion
+                </condition>
+                <condition>
+                    $beliefbase.ocupado==TRUE
+                </condition>
+            </trigger>
+        </plan>
+
     </plans>
+
     <events>
-        <messageevent name="request_lavarse" direction="receive" type="fipa">
+        <messageevent name="lavarse" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
@@ -37,7 +98,6 @@
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
             <parameter name="content" class="ontologia.predicados.TeHasLavado"/>
-
         </messageevent>
 
         <messageevent name="ducha_estropeada" direction="send" type="fipa">
@@ -46,5 +106,36 @@
             </parameter>
             <parameter name="content" class="ontologia.predicados.DuchaEstropeada"/>
         </messageevent>
+		
+        <messageevent name="ducha_ocupada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.Lavarse"/>
+        </messageevent>
+
     </events>
+
+	 <configurations>
+        <configuration name = "default">
+            <goals>
+                <initialgoal ref="df_higiene_lavarse">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Higiene", "Lavarse"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+
+                <initialgoal ref="df_energia_lavarse">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "Lavarse"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+
+            </goals>
+        </configuration>
+    </configurations>
 </agent>

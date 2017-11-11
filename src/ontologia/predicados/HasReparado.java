@@ -13,6 +13,12 @@ public class HasReparado extends Predicado {
     public HasReparado() {
     }
 
+    public HasReparado(Energia energia, Higiene higiene, Mecanica mecanica) {
+        this.energia = energia;
+        this.higiene = higiene;
+        this.mecanica = mecanica;
+    }
+
     public Higiene getHigiene() {
         return higiene;
     }

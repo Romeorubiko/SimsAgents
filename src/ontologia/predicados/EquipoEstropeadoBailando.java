@@ -16,6 +16,15 @@ public class EquipoEstropeadoBailando extends Predicado {
 		;
 	}
 
+	public EquipoEstropeadoBailando(Energia energia, Diversion diversion, Higiene higiene, Hambre hambre,
+			Deporte fisico) {
+		this.energia = energia;
+		this.diversion = diversion;
+		this.higiene = higiene;
+		this.hambre = hambre;
+		this.fisico = fisico;
+	}
+
 	public Diversion getDiversion() {
 		return diversion;
 	}

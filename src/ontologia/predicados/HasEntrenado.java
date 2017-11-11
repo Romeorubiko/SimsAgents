@@ -14,6 +14,13 @@ public class HasEntrenado extends Predicado {
     public HasEntrenado() {
     }
 
+    public HasEntrenado(Energia energia, Higiene higiene, Hambre hambre, Deporte deporte) {
+        this.energia = energia;
+        this.higiene = higiene;
+        this.hambre = hambre;
+        this.deporte = deporte;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

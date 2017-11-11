@@ -9,10 +9,8 @@ public class Libro extends Concepto {
     }
 
     private GenerosLiterarios genero;
-    private int tiempoLectura;
 
     public Libro() {
-        tiempoLectura = 4500;
     }
 
     public GenerosLiterarios getGenero() {
@@ -21,13 +19,5 @@ public class Libro extends Concepto {
 
     public void setGenero(GenerosLiterarios genero) {
         this.genero = genero;
-    }
-
-    public int getTiempoLectura() {
-        return tiempoLectura;
-    }
-
-    public void setTiempoLectura(int tiempoLectura) {
-        this.tiempoLectura = tiempoLectura;
     }
 }

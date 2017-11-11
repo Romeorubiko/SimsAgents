@@ -1,4 +1,7 @@
 /bin/
+out/
 .classpath
 .project
 .DS_Store
+.idea/
+SimsAgents.iml

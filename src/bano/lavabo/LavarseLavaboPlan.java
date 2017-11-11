@@ -1,19 +1,13 @@
 package bano.lavabo;
+
 import ontologia.Accion;
 import ontologia.acciones.*;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Higiene;
-import ontologia.conceptos.necesidades.Necesidad;
-import ontologia.predicados.DuchaEstropeada;
 import ontologia.predicados.LavaboEstropeadoLavarse;
-import ontologia.predicados.OrdenadorEstropeadoNavegarInternet;
-import ontologia.predicados.TeHasLavado;
 
-import java.util.*;
 import jadex.runtime.*;
 import jadex.runtime.impl.RMessageEvent;
-import jadex.adapter.fipa.*;
-
 
 
 public class LavarseLavaboPlan extends Plan {
@@ -25,32 +19,43 @@ public class LavarseLavaboPlan extends Plan {
         Higiene higiene = content.getHigiene();
         Energia energia = content.getEnergia();
         
-        // Disminuye en uno la cantidad de usos restantes hasta el deterioro del.
-        Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact() - 1;
-        if (obsolescencia <= 0) {
+        Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
+        Boolean estropeado = (Boolean)getBeliefbase().getBelief("estropeado").getFact();
+        
+        if(ocupado) {
+            IMessageEvent respuesta = createMessageEvent("lavabo_ocupado");
+            respuesta.setContent(content);
+            sendMessage(respuesta);
+        }
+        else if (estropeado.booleanValue()) {
             IMessageEvent respuesta = createMessageEvent("lavabo_estropeado");
-            LavaboEstropeadoLavarse lavaboEstropeado = new LavaboEstropeadoLavarse();
-            respuesta.setContent(lavaboEstropeado);
+            LavaboEstropeadoLavarse response = new LavaboEstropeadoLavarse();
+            
+            response.setHigiene(higiene);
+            response.setEnergia(energia);
+            sendMessage(respuesta);
+        }
+        else if (((Integer) getBeliefbase().getBelief("obsolescencia").getFact()) - 1 <= 0){
+            getBeliefbase().getBelief("estropeado").setFact(Boolean.TRUE);
+            IMessageEvent respuesta = createMessageEvent("lavabo_estropeado");
+            LavaboEstropeadoLavarse response = new LavaboEstropeadoLavarse();
+            response.setHigiene(higiene);
+            response.setEnergia(energia);
             sendMessage(respuesta);
         }
         else {
+            getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
+            int obsolescencia = ((Integer) getBeliefbase().getBelief("obsolescencia").getFact()) - 1;
             getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia);
+            int grado_higiene = content.getHigiene().getGrado();
+            int grado_energia = content.getEnergia().getGrado();
+            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
 
-            energia.setGrado(energia.getGrado() - Necesidad.NC_POCO);
-            content.setEnergia(energia);
+           
+            getBeliefbase().getBelief("higiene").setFact(grado_higiene);
+            getBeliefbase().getBelief("energia").setFact(grado_energia);
+            getBeliefbase().getBelief("tiempoFinalizacion").setFact(end_timer);
 
-            higiene.setGrado(higiene.getGrado() + Necesidad.NC_NORMAL);
-            content.setHigiene(higiene);
-            
-        try {
-            wait(Accion.TIEMPO_MEDIO);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
         }
-        IMessageEvent respuesta = createMessageEvent("te_has_lavado");
-        TeHasLavado teHasLavado = new TeHasLavado(energia, higiene);
-        respuesta.setContent(teHasLavado);
-        sendMessage(respuesta);
     }
-}
 }

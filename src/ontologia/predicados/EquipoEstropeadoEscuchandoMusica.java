@@ -4,25 +4,31 @@ import ontologia.Predicado;
 import ontologia.conceptos.necesidades.*;
 
 public class EquipoEstropeadoEscuchandoMusica extends Predicado {
-    private Energia energia;
-    private Diversion diversion;
+	private Energia energia;
+	private Diversion diversion;
 
-    public EquipoEstropeadoEscuchandoMusica() {
-    }
+	public EquipoEstropeadoEscuchandoMusica() {
+		;
+	}
 
-    public Energia getEnergia() {
-        return energia;
-    }
+	public EquipoEstropeadoEscuchandoMusica(Energia energia, Diversion diversion) {
+		this.energia = energia;
+		this.diversion = diversion;
+	}
 
-    public void setEnergia(Energia e) {
-        energia = e;
-    }
+	public Energia getEnergia() {
+		return energia;
+	}
 
-    public Diversion getDiversion() {
-        return diversion;
-    }
+	public void setEnergia(Energia e) {
+		energia = e;
+	}
 
-    public void setDiversion(Diversion d) {
-        diversion = d;
-    }
+	public Diversion getDiversion() {
+		return diversion;
+	}
+
+	public void setDiversion(Diversion d) {
+		diversion = d;
+	}
 }

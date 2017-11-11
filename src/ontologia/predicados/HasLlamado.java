@@ -1,39 +1,44 @@
 package ontologia.predicados;
 
-import ontologia.Predicado;
-import ontologia.conceptos.habilidades.*;
-import ontologia.conceptos.necesidades.*;
+import ontologia.Predicado; 
+import ontologia.conceptos.habilidades.*; 
+import ontologia.conceptos.necesidades.*; 
 
 public class HasLlamado extends Predicado {
-
-    private Energia energia;
-    private InteraccionSocial interaccion;
-    private Carisma carisma;
-
-    public HasLlamado() {
+    
+	private Energia energia;
+	private InteraccionSocial interaccion;
+	private Carisma carisma;
+      
+	public HasLlamado()
+    {;}
+	
+	public HasLlamado(Energia energia, InteraccionSocial interaccion, Carisma carisma)
+    {
+		this.energia=energia;
+		this.interaccion=interaccion;
+		this.carisma=carisma;
+		
     }
-
-    public Energia getEnergia() {
+	   
+	public Energia getEnergia() {
         return energia;
     }
-
     public void setEnergia(Energia e) {
-        energia = e;
+        energia=e;
     }
-
-    public InteraccionSocial getInteraccionSocial() {
+	
+	public InteraccionSocial getInteraccionSocial() {
         return interaccion;
     }
-
     public void setInteraccionSocial(InteraccionSocial i) {
-        interaccion = i;
+        interaccion=i;
     }
-
-    public Carisma getCarisma() {
+	
+	public Carisma getCarisma() {
         return carisma;
     }
-
     public void setCarisma(Carisma c) {
-        carisma = c;
+        carisma=c;
     }
 }
