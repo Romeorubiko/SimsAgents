@@ -5,7 +5,6 @@ import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.acciones.Entrenar;
-import ontologia.acciones.Reparar;
 import ontologia.conceptos.habilidades.Deporte;
 import ontologia.conceptos.habilidades.Habilidad;
 import ontologia.conceptos.necesidades.Energia;

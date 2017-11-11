@@ -5,7 +5,6 @@ import jadex.runtime.IGoal;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
-import jardin.barbacoa.RepararBarbacoaPlan;
 import ontologia.Accion;
 import ontologia.acciones.Entrenar;
 

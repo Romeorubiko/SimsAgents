@@ -27,8 +27,8 @@
 
     <beliefs>
         
-        <belief name="mensaje_dormir_suelo" class="RMessageEvent"/>
-		<belief name="mensaje_orinar_suelo" class="RMessageEvent"/>
+        <belief name="mensajes_dormir_suelo" class="ArrayList<RMessageEvent>"/>
+		<belief name="mensajes_orinar_suelo" class="ArrayList<RMessageEvent>"/>
 
         <belief name="tiempo" class="int" updaterate="750">
             <fact> (int)(System.currentTimeMillis()) </fact>
