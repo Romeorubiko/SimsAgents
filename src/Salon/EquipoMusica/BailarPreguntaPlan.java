@@ -31,22 +31,22 @@ public class BailarPreguntaPlan extends Plan {
 		Deporte fisico = content.getDeporte();
 
 		/* Se obtienen las creencias necesarias */
-		RBelief creenciaSimsBailando = (RBelief) getBeliefbase().getBelief("sims_bailando"); // NÃºmero de sims bailando
-		RBelief creenciaMusicaSonando = (RBelief) getBeliefbase().getBelief("musica_sonando"); // El tipo de mÃºsica que
-																								// estÃ¡ sonando
-		RBelief creenciaObsolescencia = (RBelief) getBeliefbase().getBelief("obsolescencia");// Si el equipo estÃ¡
+		RBelief creenciaSimsBailando = (RBelief) getBeliefbase().getBelief("sims_bailando"); // Número de sims bailando
+		RBelief creenciaMusicaSonando = (RBelief) getBeliefbase().getBelief("musica_sonando"); // El tipo de música que
+																								// está sonando
+		RBelief creenciaObsolescencia = (RBelief) getBeliefbase().getBelief("obsolescencia");// Si el equipo está
 																								// estropeado
 		int simsBailando = (int) creenciaSimsBailando.getFact();
 		Musica musicaSonando = (Musica) creenciaMusicaSonando.getFact();
 		int obsolescencia = (int) creenciaObsolescencia.getFact();
 
 		/*
-		 * BasÃ¡ndose en sus creencias, el equipo de mÃºsica evalÃºa si aceptar la peticiÃ³n
+		 * Basándose en sus creencias, el equipo de música evalúa si aceptar la petición
 		 * del Sim
 		 */
 		if (simsBailando > 0 && !musicaSonando.equals(musicaPedida)) {
 			/*
-			 * Se rechaza la peticiÃ³n si el Sim pide bailar una mÃºsica que no estÃ¡n bailando
+			 * Se rechaza la petición si el Sim pide bailar una música que no están bailando
 			 * el resto de Sims
 			 */
 			IMessageEvent refuse = createMessageEvent("peticion_rechazada");
@@ -57,13 +57,13 @@ public class BailarPreguntaPlan extends Plan {
 			agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 			sendMessage(agree);
 
-			/* Se comprueba si el equipo de mÃºsica estÃ¡ roto */
+			/* Se comprueba si el equipo de música está roto */
 			if (obsolescencia <= 0) {
-				/* Si habÃ­a sims bailando ya no los hay */
+				/* Si había sims bailando ya no los hay */
 				if (simsBailando > 0) {
 					creenciaSimsBailando.setFact(0);
 				}
-				/* La mÃºsica deja de sonar */
+				/* La música deja de sonar */
 				if (!musicaSonando.equals(null)) {
 					creenciaMusicaSonando.setFact(null);
 				}
@@ -76,8 +76,8 @@ public class BailarPreguntaPlan extends Plan {
 				sendMessage(failure);
 			} else {
 				/*
-				 * Se modifican las creencias del agente sobre su obsolescencia, el nÃºmero de
-				 * sims bailando y la mÃºsica sonando.
+				 * Se modifican las creencias del agente sobre su obsolescencia, el número de
+				 * sims bailando y la música sonando.
 				 */
 				obsolescencia--;
 				creenciaObsolescencia.setFact(obsolescencia);
@@ -85,11 +85,12 @@ public class BailarPreguntaPlan extends Plan {
 				simsBailando++;
 				creenciaSimsBailando.setFact(simsBailando);
 
-				creenciaMusicaSonando.setFact(musicaPedida);  // Esto es por si no habÃ­a Sims bailando se actualiza la mÃºsica
+				// Se actualiza la creencia por si no estaba sonando la música.
+				creenciaMusicaSonando.setFact(musicaPedida);
 
 				/*
 				 * Se obtienen los arrays que contienen los tiempos y mensajes de los sims que
-				 * estÃ¡n a la espera de que se modifiquen sus recursos
+				 * están a la espera de que se modifiquen sus recursos
 				 */
 
 				RBelief creenciaMensajes = (RBelief) getBeliefbase().getBelief("mensajes_bailar");
@@ -100,15 +101,15 @@ public class BailarPreguntaPlan extends Plan {
 				ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) creenciaTiemposFin.getFact();
 
 				/*
-				 * Se actualiza el Array de Mensajes aÃ±adiendo el mensaje del sim actual en la
-				 * Ãºltima posicion
+				 * Se actualiza el Array de Mensajes añadiendo el mensaje del sim actual en la
+				 * última posicion
 				 */
 				arrayMensajes.add(request);
 				creenciaMensajes.setFact(arrayMensajes);
 
 				/*
-				 * Se actualiza el array de tiempos de finalizaciÃ³n aÃ±adiendo el tiempo de
-				 * finalizaciÃ³n de la acciÃ³n para el Sim actual a la Ãºltima posiciÃ³n
+				 * Se actualiza el array de tiempos de finalización añadiendo el tiempo de
+				 * finalización de la acción para el Sim actual a la última posición
 				 */
 				RBelief creenciaTiempo = (RBelief) getBeliefbase().getBelief("tiempo_actual");
 				Integer tiempo = (Integer) creenciaTiempo.getFact();

@@ -20,6 +20,12 @@ public class BailarSimPreguntaPlan extends Plan {
 	public BailarSimPreguntaPlan() {
 	}
 
+	/* Las clases BailarSimPreguntaPlan y BailarSimRespuestaPlan funcionan igual que las de BailarPreguntaPlan y BailarRespuestaPlan
+	 * con la diferencia de que en las primeras se modifica el atributo interacción social del Sim. Como se puede observar en el protocolo,
+	 * cuando un Sim quiere bailar con otro le envía una petición y si el otro Sim acepta, ambos sims enviarán un request de bailar_con_sim.
+	 * Puesto que cada uno envía su request de forma individual, las requests son procesadas por el equipo de música de forma individual y respondidas de forma individual.
+	 * Es decir, para el equipo de música es como si estuviera procesando un request de bailar pero modificando el atributo interacción social del Sim */
+	
 	public void body() {
 		/* Se obtiene el contenido del request */
 		IMessageEvent request = (IMessageEvent) getInitialEvent();

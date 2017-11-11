@@ -55,7 +55,7 @@ public class BailarRespuestaPlan extends Plan {
 			diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_MUCHO);
 			content.setDiversion(diversion);
 
-			fisico.setNivel(content.getDeporte().getNivel() + Habilidad.HB_MUCHO);
+			fisico.setExperiencia(content.getDeporte().getExperiencia() + Habilidad.HB_MUCHO);
 			content.setDeporte(fisico);
 
 		} else if (musicaPedida.getTipo().equals(TiposMusica.POP)) {
@@ -71,7 +71,7 @@ public class BailarRespuestaPlan extends Plan {
 			diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
 			content.setDiversion(diversion);
 
-			fisico.setNivel(content.getDeporte().getNivel() + Habilidad.HB_NORMAL);
+			fisico.setExperiencia(content.getDeporte().getExperiencia() + Habilidad.HB_NORMAL);
 			content.setDeporte(fisico);
 		} else {
 
@@ -87,7 +87,7 @@ public class BailarRespuestaPlan extends Plan {
 			diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_POCO);
 			content.setDiversion(diversion);
 
-			fisico.setNivel(content.getDeporte().getNivel() + Habilidad.HB_POCO);
+			fisico.setExperiencia(content.getDeporte().getExperiencia() + Habilidad.HB_POCO);
 			content.setDeporte(fisico);
 		}
 
