@@ -5,7 +5,12 @@
        name="Ordenador"
        package="dormitorio.ordenador">
     <imports>
+        <import>jadex.runtime.*</import>
         <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
     </imports>
     <capabilities>
         <capability name="dfcap" file="jadex.planlib.DF"/>
@@ -28,9 +33,9 @@
 
     <goals>
         <maintaingoal name="navegar_internet_tiempo_superado">
-        <maintaincondition>
-            $beliefbase.tiempo_fin >= $beliefbase.tiempo
-        </maintaincondition>
+            <maintaincondition>
+                $beliefbase.tiempo_fin >= $beliefbase.tiempo
+            </maintaincondition>
         </maintaingoal>
         <maintaingoal name="chatear_tiempo_superado">
             <maintaincondition>
@@ -78,7 +83,7 @@
         </plan>
 
         <plan name="NavegarPorInternetRespuestaPlan">
-            <body class="dormitorio.camara.NavegarPorInternetRespuestaPlan"/>
+            <body class="dormitorio.ordenador.NavegarPorInternetRespuestaPlan"/>
             <trigger>
                 <goal ref="navegar_internet_tiempo_superado"/>
             </trigger>
@@ -92,7 +97,7 @@
         </plan>
 
         <plan name="ChatearRespuestaPlan">
-            <body class="dormitorio.camara.ChatearRespuestaPlan"/>
+            <body class="dormitorio.ordenador.ChatearRespuestaPlan"/>
             <trigger>
                 <goal ref="chatear_tiempo_superado"/>
             </trigger>
