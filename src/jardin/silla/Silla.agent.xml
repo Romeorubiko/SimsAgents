@@ -57,14 +57,14 @@
 
     <plans>
         <plan name="SentarseSilla">
-            <body class="SentarseSillaPlan"/>
+            <body class="jardin.silla.SentarseSillaPlan"/>
             <trigger>
                 <messageevent ref="sentarse_silla"/>
             </trigger>
         </plan>
 
         <plan name="SentarseSillaTerminar">
-            <body class="SentarseSillaTerminarPlan"/>
+            <body class="jardin.silla.SentarseSillaTerminarPlan"/>
             <trigger>
                 <goal ref="terminar_sentarse_silla"></goal>
             </trigger>
