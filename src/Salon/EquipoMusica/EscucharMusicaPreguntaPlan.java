@@ -1,22 +1,16 @@
 package Salon.EquipoMusica;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.*;
 import jadex.runtime.impl.RBelief;
 import ontologia.Accion;
 import ontologia.acciones.EscucharMusica;
-import ontologia.acciones.LlamarSim;
 import ontologia.conceptos.Musica;
-import ontologia.conceptos.habilidades.Carisma;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
-import ontologia.conceptos.necesidades.InteraccionSocial;
-import ontologia.predicados.EquipoEstropeadoBailando;
 import ontologia.predicados.EquipoEstropeadoEscuchandoMusica;
-import ontologia.predicados.LlamadaFallida;
 
 public class EscucharMusicaPreguntaPlan extends Plan {
 
