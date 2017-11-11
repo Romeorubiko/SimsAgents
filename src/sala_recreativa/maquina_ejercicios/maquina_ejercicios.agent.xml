@@ -1,0 +1,128 @@
+<!--
+	<H3>maquina_ejercicios.agent</H3>
+
+	 Lizaveta Mishkinitse		NIA: 100317944
+     Raul Escabia				NIA: 100315903
+
+-->
+
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="maquina_ejercicios"
+       package="sala_recreativa.maquina_ejercicios">
+
+    <imports>
+        <import>java.sql.Time</import>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>ontologia.Accion</import>
+        <import>ontologia.*</import>
+        <import>jadex.model.IMMessageEvent</import>
+        <import>jadex.runtime.impl.RMessageEvent</import>
+    </imports>
+
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+
+    <beliefs>
+        <belief name="ocupado" class="Boolean">
+            <fact>new Boolean(false)</fact>
+        </belief>
+
+        <belief name="mensaje_entrenar" class="RMessageEvent"/>
+
+        <belief name="tiempo" class="int" updaterate="750">
+            <fact> (int)(System.currentTimeMillis()) </fact>
+        </belief>
+
+        <belief name="tiempo_fin_entrenar" class="int">
+            <fact> (int) 0 </fact>
+        </belief>
+
+    </beliefs>
+
+    <goals>
+        <maintaingoal name="terminar_entrenar">
+            <maintaincondition>$beliefbase.tiempo_fin_entrenar>=beliefbase.tiempo</maintaincondition>
+        </maintaingoal>
+        <maintaingoalref name="df_deporte_entrenar">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+
+        <achievegoalref name="df_deregister">
+            <concrete ref="dfcap.df_deregister"/>
+        </achievegoalref>
+    </goals>
+
+    <plans>
+        <plan name="Entrenar">
+            <body class="EntrenarPlan"/>
+            <trigger>
+                <messageevent ref="entrenar_maquina_ejercicios"/>
+            </trigger>
+        </plan>
+
+        <plan name="EntrenarTerminar">
+            <body class="EntrenarTerminarPlan"/>
+            <trigger>
+                <goal ref="terminar_entrenar"></goal>
+            </trigger>
+        </plan>
+
+    </plans>
+
+
+
+    <events>
+        <messageevent name="entrenar_maquina_ejercicios" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="EntrenarPlan"/>
+        </messageevent>
+
+
+        <messageevent name="maquina_ejercicios_ocupada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="maquina_ejercicios_no_ocupada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="has_entrenado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+        </messageevent>
+
+    </events>
+
+    <configurations>
+        <configuration name = "default">
+            <goals>
+                <initialgoal ref="terminar_entrenar"/>
+                <initialgoal ref="df_deporte_entrenar">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Deporte", "Entrenar"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <endgoal ref="df_deregister"/>
+            </goals>
+        </configuration>
+    </configurations>
+
+</agent>

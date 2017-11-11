@@ -1,7 +1,7 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Predicado;
+import ontologia.conceptos.necesidades.*;
 
 public class VaterUsado extends Predicado {
     private Energia energia;
@@ -19,7 +19,7 @@ public class VaterUsado extends Predicado {
         this.energia = energia;
     }
 
-   public Vejiga getVejiga() {
+    public Vejiga getVejiga() {
         return vejiga;
     }
 

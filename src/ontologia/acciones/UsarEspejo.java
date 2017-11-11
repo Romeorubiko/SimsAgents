@@ -1,7 +1,8 @@
 package ontologia.acciones;
 
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Accion;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 public class UsarEspejo extends Accion {
     private Energia energia;
@@ -9,7 +10,8 @@ public class UsarEspejo extends Accion {
 
     public UsarEspejo() {
     }
-     public Carisma getCarisma() {
+
+    public Carisma getCarisma() {
         return carisma;
     }
 

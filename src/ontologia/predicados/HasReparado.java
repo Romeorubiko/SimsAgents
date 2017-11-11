@@ -1,34 +1,45 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 public class HasReparado extends Predicado {
-    
-private Energia energia;
-private Higiene higiene;
-private Mecanica mecanica;
 
-      public HasReparado()
-      {;}
+    private Energia energia;
+    private Higiene higiene;
+    private Mecanica mecanica;
 
-      public Higiene getHigiene() {
-           return higiene;
-       }
-       public void setHigiene(Higiene e) {
-           higiene=e;
-       }
+    public HasReparado() {
+    }
 
-      public Energia getEnergia() {
-           return energia;
-       }
-       public void setEnergia(Energia e) {
-           energia=e;
-       }
-       public Mecanica getMecanica() {
-           return mecanica;
-       }
-       public void setMecanica(Mecanica m) {
-           mecanica=m;
-       }
+    public HasReparado(Energia energia, Higiene higiene, Mecanica mecanica) {
+        this.energia = energia;
+        this.higiene = higiene;
+        this.mecanica = mecanica;
+    }
+
+    public Higiene getHigiene() {
+        return higiene;
+    }
+
+    public void setHigiene(Higiene e) {
+        higiene = e;
+    }
+
+    public Energia getEnergia() {
+        return energia;
+    }
+
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
+
+    public Mecanica getMecanica() {
+        return mecanica;
+    }
+
+    public void setMecanica(Mecanica m) {
+        mecanica = m;
+    }
 }

@@ -1,6 +1,8 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*;
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 public class LlamadaFallida extends Predicado {
     
@@ -10,7 +12,7 @@ public class LlamadaFallida extends Predicado {
 
 	public LlamadaFallida()
     {;}
-	
+
 	public LlamadaFallida(Energia energia, InteraccionSocial interaccion, Carisma carisma)
     {
 		this.energia=energia;

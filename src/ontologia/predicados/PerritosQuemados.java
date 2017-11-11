@@ -1,7 +1,8 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 
 public class PerritosQuemados extends Predicado {
@@ -14,6 +15,12 @@ public class PerritosQuemados extends Predicado {
     public PerritosQuemados() {
     }
 
+    public PerritosQuemados(Higiene higiene, Hambre hambre, Diversion diversion, Cocina cocina) {
+        this.higiene = higiene;
+        this.hambre = hambre;
+        this.diversion = diversion;
+        this.cocina = cocina;
+    }
 
     public Higiene getHigiene() {
         return higiene;
@@ -31,12 +38,12 @@ public class PerritosQuemados extends Predicado {
         this.diversion = diversion;
     }
 
-     public Hambre getHambre() {
+    public Hambre getHambre() {
         return hambre;
     }
 
     public void setHambre(Hambre hambre) {
-        this.hambre= hambre;
+        this.hambre = hambre;
     }
 
     public Cocina getCocina() {

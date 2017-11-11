@@ -1,26 +1,34 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Predicado;
+import ontologia.conceptos.necesidades.*;
 
 public class EquipoEstropeadoEscuchandoMusica extends Predicado {
-    private Energia energia;
+	private Energia energia;
 	private Diversion diversion;
-      
-	public EquipoEstropeadoEscuchandoMusica()
-    {;}
-	   
+
+	public EquipoEstropeadoEscuchandoMusica() {
+		;
+	}
+
+	public EquipoEstropeadoEscuchandoMusica(Energia energia, Diversion diversion) {
+		this.energia = energia;
+		this.diversion = diversion;
+	}
+
 	public Energia getEnergia() {
-        return energia;
-    }
-    public void setEnergia(Energia e) {
-        energia=e;
-    }
+		return energia;
+	}
+
+	public void setEnergia(Energia e) {
+		energia = e;
+	}
 
 	public Diversion getDiversion() {
-        return diversion;
-    }
-    public void setDiversion(Diversion d) {
-        diversion=d;
-    }
+		return diversion;
+	}
+
+	public void setDiversion(Diversion d) {
+		diversion = d;
+	}
 }

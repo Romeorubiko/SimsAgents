@@ -1,28 +1,30 @@
 package ontologia.acciones;
 
-import jadex.runtime.*;
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Accion;
+import ontologia.conceptos.necesidades.*;
 
 public class RetarPartido extends Accion {
 
-	private Energia energia;
-	private InteraccionSocial interaccionsocial;
+    private Energia energia;
+    private InteraccionSocial interaccionsocial;
 
 
-	 public RetarPartido()
-      {;}
+    public RetarPartido() {
+    }
 
-      public Energia getEnergia() {
-           return energia;
-       }
-       public void setEnergia(Energia e) {
-           energia=e;
-       }
+    public Energia getEnergia() {
+        return energia;
+    }
 
-        public InteraccionSocial getInteraccionSocial() {
-           return interaccionsocial;
-       }
-       public void setInteraccionSocial(InteraccionSocial i) {
-           interaccionsocial=i;
-       }
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
+
+    public InteraccionSocial getInteraccionSocial() {
+        return interaccionsocial;
+    }
+
+    public void setInteraccionSocial(InteraccionSocial i) {
+        interaccionsocial = i;
+    }
 }

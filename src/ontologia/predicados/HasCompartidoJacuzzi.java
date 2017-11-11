@@ -1,7 +1,7 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Predicado;
+import ontologia.conceptos.necesidades.*;
 
 public class HasCompartidoJacuzzi extends Predicado {
     private Energia energia;
@@ -20,14 +20,15 @@ public class HasCompartidoJacuzzi extends Predicado {
         this.energia = energia;
     }
 
-   public Higiene getHigiene() {
+    public Higiene getHigiene() {
         return higiene;
     }
 
     public void setHigiene(Higiene higiene) {
         this.higiene = higiene;
     }
-  public InteraccionSocial getInteraccionSocial() {
+
+    public InteraccionSocial getInteraccionSocial() {
         return interaccionSocial;
     }
 

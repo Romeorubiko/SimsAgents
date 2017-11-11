@@ -1,11 +1,16 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Predicado;
+import ontologia.conceptos.necesidades.*;
 
 public class CamaHecha extends Predicado {
     private Energia energia;
     private Higiene higiene;
+
+    public CamaHecha(Energia energia, Higiene higiene) {
+        this.energia = energia;
+        this.higiene = higiene;
+    }
 
     public CamaHecha() {
     }

@@ -1,7 +1,8 @@
 package ontologia.predicados;
 
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 public class EspejoUsado extends Predicado {
     private Energia energia;
@@ -19,7 +20,7 @@ public class EspejoUsado extends Predicado {
         this.energia = energia;
     }
 
-   public Carisma getCarisma() {
+    public Carisma getCarisma() {
         return carisma;
     }
 

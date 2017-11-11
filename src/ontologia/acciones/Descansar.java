@@ -1,45 +1,32 @@
 package ontologia.acciones;
-import jadex.runtime.*;
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+
+import ontologia.Accion;
+import ontologia.conceptos.necesidades.*;
+import ontologia.conceptos.*;
 
 public class Descansar extends Accion {
+    private Descanso tipo;
+    private Energia energia;
 
-    
-
-private Descanso tipo;
-private Energia energia;
-    
-	   public Descansar()
-
-      {;}
+    public Descansar() {
+    }
 
 
+    public Descanso getTipo() {
+        return tipo;
+    }
 
-       public Descanso getTipo() {
+    public void setTipo(Descanso c) {
+        tipo = c;
+    }
 
-           return tipo;
+    public Energia getEnergia() {
+        return energia;
+    }
 
-       }
-
-       public void setTipo(Descanso c) {
-
-           tipo=c;
-
-       }
-
-       public Energia getEnergia() {
-
-           return energia;
-
-       }
-
-       public void setEnergia(Energia e) {
-
-           energia=e;
-
-       }
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
 
 
-
-   
 }

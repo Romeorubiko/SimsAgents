@@ -1,7 +1,8 @@
 package ontologia.acciones;
 
-import jadex.runtime.*;
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Accion;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 
 public class CuidarPlantas extends Accion {
@@ -20,12 +21,12 @@ public class CuidarPlantas extends Accion {
         this.energia = energia;
     }
 
-     public Higiene getHigiene() {
+    public Higiene getHigiene() {
         return higiene;
     }
 
     public void setHigiene(Higiene higiene) {
-        this.higiene= higiene;
+        this.higiene = higiene;
     }
 
     public Jardineria getJardineria() {

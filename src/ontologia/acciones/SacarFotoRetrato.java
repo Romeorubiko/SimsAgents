@@ -1,7 +1,9 @@
 package ontologia.acciones;
 
-import ontologia.Accion; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.Accion;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
+import ontologia.conceptos.*;
 
 public class SacarFotoRetrato extends Accion {
     private Retrato retrato;

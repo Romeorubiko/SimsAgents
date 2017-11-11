@@ -1,10 +1,11 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 public class HasMiradoTelescopio extends Predicado {
-	private InteraccionSocial interaccionSocial;
+    private InteraccionSocial interaccionSocial;
     private Diversion diversion;
     private Logica logica;
 
@@ -19,7 +20,7 @@ public class HasMiradoTelescopio extends Predicado {
         this.interaccionSocial = interaccionSocial;
     }
 
-   public Diversion getDiversion() {
+    public Diversion getDiversion() {
         return diversion;
     }
 
@@ -27,7 +28,7 @@ public class HasMiradoTelescopio extends Predicado {
         this.diversion = diversion;
     }
 
-   public Logica getLogica() {
+    public Logica getLogica() {
         return logica;
     }
 

@@ -1,0 +1,162 @@
+<!--
+	<H3>suelo.agent</H3>
+
+	 Lizaveta Mishkinitse		NIA: 100317944
+     Raul Escabia				NIA: 100315903
+
+-->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="suelo"
+       package="casa.suelo">
+
+    <imports>
+        <import>java.sql.Time</import>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>ontologia.Accion</import>
+		<import>ontologia.*</import>
+        <import>jadex.model.IMMessageEvent</import>
+		<import>jadex.runtime.impl.RMessageEvent</import>
+		<import>java.util.ArrayList</import>
+    </imports>
+
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+
+    <beliefs>
+        
+        
+
+        <belief name="tiempo" class="int" updaterate="750">
+            <fact> (int)(System.currentTimeMillis()) </fact>
+        </belief>
+		
+		<belief name="mensajes_dormir_suelo" class="ArrayList"/>
+		<belief name="mensajes_orinar_suelo" class="ArrayList"/>
+
+        <belief name="tiempos_fin_dormir_suelo" class="ArrayList"></belief>
+		<belief name="tiempos_fin_orinar_suelo" class="ArrayList"></belief>
+
+    </beliefs>
+
+    <goals>
+	
+		<maintaingoal name="terminar_dormir_suelo">
+            <maintaincondition>
+				$beliefbase.tiempo_fin_dormir_suelo.get(0) >= $beliefbase.tiempo
+			</maintaincondition>
+        </maintaingoal>
+		
+		<maintaingoal name="terminar_orinar_suelo">
+            <maintaincondition>
+				$beliefbase.tiempo_fin_orinar_suelo.get(0) >= $beliefbase.tiempo
+			</maintaincondition>
+        </maintaingoal>
+		
+		<achievegoalref name="df_deregister">
+            <concrete ref="dfcap.df_deregister"/>
+		</achievegoalref>
+		
+		<maintaingoalref name="df_energia_suelo">
+            <concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		
+		<maintaingoalref name="df_vejiga_suelo">
+            <concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		
+    </goals>
+
+    <plans>
+		<plan name="DormirSuelo">
+            <body class="DormirSueloPlan"/>
+            <trigger>
+                <messageevent ref="dormir_suelo"/>
+            </trigger>
+        </plan>
+		
+		<plan name="DormirSueloTerminar">
+            <body class="DormirSueloTerminarPlan"/>
+            <trigger>
+                <goal ref="terminar_dormir_suelo"></goal>
+            </trigger>
+        </plan>
+		
+		<plan name="OrinarSuelo">
+            <body class="OrinarSueloPlan"/>
+            <trigger>
+                <messageevent ref="orinar_suelo"/>
+            </trigger>
+        </plan>
+		
+		<plan name="OrinarSueloTerminar">
+            <body class="OrinarSueloTerminarPlan"/>
+            <trigger>
+                <goal ref="terminar_orinar_suelo"></goal>
+            </trigger>
+        </plan>
+    </plans>
+
+
+
+    <events>
+		<messageevent name="dormir_suelo" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="DormirSueloPlan"/>
+        </messageevent>
+        
+		<messageevent name="has_dormido_suelo" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+        </messageevent>
+		
+		<messageevent name="orinar_suelo" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="DormirSueloPlan"/>
+        </messageevent>
+        
+		<messageevent name="has_orinado_suelo" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+        </messageevent>
+    </events>
+
+    <configurations>
+       		<configuration name = "default">
+				<goals>
+					<initialgoal ref="terminar_dormir_suelo"/>
+					<initialgoal ref="terminar_orinar_suelo"/>
+					<initialgoal ref="df_energia_suelo">
+						<parameter ref="description">
+							<value>
+								S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "DormirSuelo"))
+							</value>
+						</parameter>
+					</initialgoal>
+					<initialgoal ref="df_vejiga_suelo">
+						<parameter ref="description">
+							<value>
+								S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Vejiga", "OrinarSuelo"))
+							</value>
+						</parameter>
+					</initialgoal>
+					<endgoal ref="df_deregister"/>
+				</goals>
+			</configuration>
+    </configurations>
+
+    </agent>

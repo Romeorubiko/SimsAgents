@@ -1,37 +1,41 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 
 public class HasCocinado extends Predicado {
-    
 
-private Energia energia;
-private Cocina cocina;
-private Hambre hambre;
 
-  public HasCocinado()
-      {;}
+    private Energia energia;
+    private Cocina cocina;
+    private Hambre hambre;
 
-      public Energia getEnergia() {
-           return energia;
-       }
-       public void setEnergia(Energia e) {
-           energia=e;
-       }
-       public Cocina getCocina() {
-           return cocina;
-       }
-       public void setCocina(Cocina c) {
-           cocina=c;
-       }
-	
-	public Hambre getHambre() {
-           return hambre;
-       }
-       public void setHambre(Hambre h) {
-           hambre=h;
-       }
+    public HasCocinado() {
+    }
+
+    public Energia getEnergia() {
+        return energia;
+    }
+
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
+
+    public Cocina getCocina() {
+        return cocina;
+    }
+
+    public void setCocina(Cocina c) {
+        cocina = c;
+    }
+
+    public Hambre getHambre() {
+        return hambre;
+    }
+
+    public void setHambre(Hambre h) {
+        hambre = h;
+    }
 }

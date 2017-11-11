@@ -1,26 +1,29 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Predicado;
+import ontologia.conceptos.necesidades.*;
 
 public class HasJugado extends Predicado {
-    
-private Energia energia;
-private Diversion diversion;
 
-      public HasJugado()
-      {;}
+    private Energia energia;
+    private Diversion diversion;
 
-      public Energia getEnergia() {
-           return energia;
-       }
-       public void setEnergia(Energia e) {
-           energia=e;
-       }
-       public Diversion getDiversion() {
-           return diversion;
-       }
-       public void setDiversion(Diversion d) {
-           diversion=d;
-       }
+    public HasJugado() {
+    }
+
+    public Energia getEnergia() {
+        return energia;
+    }
+
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
+
+    public Diversion getDiversion() {
+        return diversion;
+    }
+
+    public void setDiversion(Diversion d) {
+        diversion = d;
+    }
 }

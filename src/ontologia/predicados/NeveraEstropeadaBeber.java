@@ -1,8 +1,7 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-
+import ontologia.Predicado;
+import ontologia.conceptos.necesidades.*;
 
 
 public class NeveraEstropeadaBeber extends Predicado {
@@ -10,32 +9,32 @@ public class NeveraEstropeadaBeber extends Predicado {
     private Vejiga vejiga;
     private Diversion diversion;
 
-    public NeveraEstropeadaBeber()
-      {;}
-    
+    public NeveraEstropeadaBeber() {
+    }
+
 
     public Energia getEnergia() {
-           return energia;
-       }
+        return energia;
+    }
 
-     public void setEnergia(Energia e) {
-           energia=e;
-       }
+    public void setEnergia(Energia e) {
+        energia = e;
+    }
 
-     public Vejiga getVejiga() {
-           return vejiga;
-       }
+    public Vejiga getVejiga() {
+        return vejiga;
+    }
 
-      public void setVejiga(Vejiga c) {
-           vejiga=c;
-       }
-      
-      public Diversion getDiversion() {
-           return diversion;
-       }
+    public void setVejiga(Vejiga c) {
+        vejiga = c;
+    }
 
-      public void setDiversion(Diversion d) {
-           diversion=d;
-       }
+    public Diversion getDiversion() {
+        return diversion;
+    }
+
+    public void setDiversion(Diversion d) {
+        diversion = d;
+    }
 
 }

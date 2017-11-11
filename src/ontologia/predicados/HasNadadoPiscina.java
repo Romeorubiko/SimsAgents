@@ -1,7 +1,8 @@
 package ontologia.predicados;
 
-import jadex.runtime.*;
-import ontologia.Predicado; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
+import ontologia.Predicado;
+import ontologia.conceptos.habilidades.*;
+import ontologia.conceptos.necesidades.*;
 
 public class HasNadadoPiscina extends Predicado {
     private Energia energia;
@@ -20,7 +21,7 @@ public class HasNadadoPiscina extends Predicado {
         this.energia = energia;
     }
 
-   public Higiene getHigiene() {
+    public Higiene getHigiene() {
         return higiene;
     }
 
@@ -28,7 +29,7 @@ public class HasNadadoPiscina extends Predicado {
         this.higiene = higiene;
     }
 
-   public Diversion getDiversion() {
+    public Diversion getDiversion() {
         return diversion;
     }
 
@@ -36,7 +37,7 @@ public class HasNadadoPiscina extends Predicado {
         this.diversion = diversion;
     }
 
-   public Deporte getDeporte() {
+    public Deporte getDeporte() {
         return deporte;
     }
 

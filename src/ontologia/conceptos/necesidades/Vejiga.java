@@ -1,7 +1,6 @@
 package ontologia.conceptos.necesidades;
 
-import ontologia.Concepto; import ontologia.conceptos.habilidades.*; import ontologia.conceptos.necesidades.*; import ontologia.conceptos.*;
-import jadex.runtime.*;
+import ontologia.conceptos.necesidades.*;
 
 public class Vejiga extends Necesidad{
     private int grado;

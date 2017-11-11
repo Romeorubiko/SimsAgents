@@ -7,7 +7,7 @@ package ontologia;
 
 
 public class Predicado {
-    
-	public Predicado ()
-	{ ; }
+
+    public Predicado() {
+    }
 }
