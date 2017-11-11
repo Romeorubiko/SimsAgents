@@ -18,31 +18,31 @@ public class EscucharMusicaPreguntaPlan extends Plan {
 	}
 
 	public void body() {
-		/* Obtención del request que inicia el plan */
+		/* ObtenciÃ³n del request que inicia el plan */
 		IMessageEvent request = (IMessageEvent) getInitialEvent();
 		EscucharMusica content = (EscucharMusica) request.getContent();
 		Diversion diversion = content.getDiversion();
 		Energia energia = content.getEnergia();
 
-		/* Obtención de las creencias del agente */
-		RBelief creenciaMusicaSonando = (RBelief) getBeliefbase().getBelief("musica_sonando"); // El tipo de música que
-		Musica musicaSonando = (Musica) creenciaMusicaSonando.getFact();						// está sonando
-		RBelief creenciaObsolescencia = (RBelief) getBeliefbase().getBelief("obsolescencia");// Si el equipo está
+		/* ObtenciÃ³n de las creencias del agente */
+		RBelief creenciaMusicaSonando = (RBelief) getBeliefbase().getBelief("musica_sonando"); // El tipo de mÃºsica que
+		Musica musicaSonando = (Musica) creenciaMusicaSonando.getFact();						// estÃ¡ sonando
+		RBelief creenciaObsolescencia = (RBelief) getBeliefbase().getBelief("obsolescencia");// Si el equipo estÃ¡
 		int obsolescencia = (int) creenciaObsolescencia.getFact(); 								// estropeado
 
-		/* Al escuchar música siempre se aceptan las peticiones */
+		/* Al escuchar mÃºsica siempre se aceptan las peticiones */
 		IMessageEvent agree = createMessageEvent("peticion_aceptada");
 		agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 		sendMessage(agree);
 
-		/* Se comprueba si el equipo de música está roto */
+		/* Se comprueba si el equipo de mÃºsica estÃ¡ roto */
 		if (obsolescencia <= 0) {
-			/* La música deja de sonar */
+			/* La mÃºsica deja de sonar */
 			if (!musicaSonando.equals(null)) {
 				creenciaMusicaSonando.setFact(null);
 			}
 			/* Mensaje de failure enviado con el predicado correspondiente */
-			IMessageEvent failure = createMessageEvent("equipo_estropeado_escuchando_mmusica");
+			IMessageEvent failure = createMessageEvent("equipo_estropeado_escuchando_musica");
 			EquipoEstropeadoEscuchandoMusica equipoEstropeado = new EquipoEstropeadoEscuchandoMusica(energia, diversion);
 			failure.setContent(equipoEstropeado);
 			failure.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
@@ -56,7 +56,7 @@ public class EscucharMusicaPreguntaPlan extends Plan {
 
 			/*
 			 * Se obtienen los arrays que contienen los tiempos y mensajes de los sims que
-			 * están a la espera de que se modifiquen sus recursos
+			 * estÃ¡n a la espera de que se modifiquen sus recursos
 			 */
 
 			RBelief creenciaMensajes = (RBelief) getBeliefbase().getBelief("mensajes_escuchar_musica");
@@ -67,22 +67,22 @@ public class EscucharMusicaPreguntaPlan extends Plan {
 			ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) creenciaTiemposFin.getFact();
 
 			/*
-			 * Se actualiza el Array de Mensajes añadiendo el mensaje del sim actual en la
-			 * última posicion
+			 * Se actualiza el Array de Mensajes aÃ±adiendo el mensaje del sim actual en la
+			 * Ãºltima posicion
 			 */
 			arrayMensajes.add(request);
 			creenciaMensajes.setFact(arrayMensajes);
 
 			/*
-			 * Se actualiza el array de tiempos de finalización añadiendo el tiempo de
-			 * finalización de la acción para el Sim actual a la última posición
+			 * Se actualiza el array de tiempos de finalizaciÃ³n aÃ±adiendo el tiempo de
+			 * finalizaciÃ³n de la acciÃ³n para el Sim actual a la Ãºltima posiciÃ³n
 			 */
 			RBelief creenciaTiempo = (RBelief) getBeliefbase().getBelief("tiempo_actual");
 			Integer tiempo = (Integer) creenciaTiempo.getFact();
 			arrayTiempos.add(tiempo + Accion.TIEMPO_CORTO);
 			creenciaTiemposFin.setFact(arrayTiempos);
 
-			/* Si es el primero en escuchar música se lanza el objetivo */
+			/* Si es el primero en escuchar mÃºsica se lanza el objetivo */
 			if (arrayTiempos.size() == 1) {
 				IGoal goal = createGoal("escuchar_musica_tiempo_superado");
 				dispatchTopLevelGoal(goal);
