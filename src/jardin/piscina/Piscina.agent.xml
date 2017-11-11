@@ -1,0 +1,134 @@
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+                      http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="piscina"
+       package="jardin.piscina">
+
+    <imports>
+        <import>java.util.*</import>
+        <import>java.sql.Time</import>
+        <import>java.util.logging.*</import>
+        <import>ontologia.Accion</import>
+        <import>ontologia.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>jadex.model.IMMessageEvent</import>
+        <import>jadex.runtime.impl.RMessageEvent</import>
+    </imports>
+
+    <capabilities>
+        <!-- this capability provides easy access to "out-of-the-box"-plans
+             allowing - for example - to register at the DF. -->
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+
+    <beliefs>
+        <belief name="ocupado" class="Boolean">
+            <fact>new Boolean(false)</fact>
+        </belief>
+
+        <belief name="mensaje_nadar" class="RMessageEvent"/>
+
+        <belief name="tiempo" class="int" updaterate="750">
+            <fact> (int)(System.currentTimeMillis()) </fact>
+        </belief>
+
+        <belief name="tiempo_fin_nadar" class="int">
+            <fact> (int) 0 </fact>
+        </belief>
+    </beliefs>
+
+    <goals>
+        <maintaingoal name="terminar_nadar">
+            <maintaincondition>$beliefbase.tiempo_fin_nadar>=beliefbase.tiempo</maintaincondition>
+        </maintaingoal>
+
+        <maintaingoalref name="df_deporte_nadar">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+
+        <maintaingoalref name="df_diversion_nadar" >
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+
+        <maintaingoalref name="df_higiene_nadar">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+
+        <achievegoalref name="df_deregister">
+            <concrete ref="dfcap.df_deregister"/>
+        </achievegoalref>
+    </goals>
+
+    <plans>
+        <plan name="NadarPiscina">
+            <body class="NadarPiscinaPlan"/>
+            <trigger>
+                <messageevent ref="nadar"/>
+            </trigger>
+        </plan>
+
+        <plan name="NadarPiscinaTerminar">
+            <body class="NadarPiscinaTerminarPlan"/>
+            <trigger>
+                <goal ref="terminar_nadar"></goal>
+            </trigger>
+        </plan>
+    </plans>
+
+    <events>
+        <messageevent name="nadar" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="NadarPiscinaPlan"/>
+        </messageevent>
+
+        <messageevent name="piscina_ocupada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="piscina_no_ocupada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="has_nadado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+        </messageevent>
+    </events>
+
+    <configurations>
+        <configuration name = "default">
+            <goals>
+                <initialgoal ref="terminar_nadar"/>
+                <initialgoal ref="df_deporte_nadar">
+                    <parameter ref="description">
+                        <value>S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Deporte", "Nadar"))</value>
+                    </parameter>
+                </initialgoal>
+
+                <initialgoal ref="df_diversion_nadar">
+                    <parameter ref="description">
+                        <value>S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Diversion", "Nadar"))</value>
+                    </parameter>
+                </initialgoal>
+
+                <initialgoal ref="df_higiene_nadar">
+                    <parameter ref="description">
+                        <value>S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Higiene", "Nadar"))</value>
+                    </parameter>
+                </initialgoal>
+                <endgoal ref="df_deregister"/>
+            </goals>
+        </configuration>
+    </configurations>
+</agent>
