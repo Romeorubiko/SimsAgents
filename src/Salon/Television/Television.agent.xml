@@ -3,7 +3,7 @@
 -->
 <agent xmlns="http://jadex.sourceforge.net/jadex"
 	name="Television"
-	package="ontologia.acciones">
+	package="Salon.Television">
 
 	<imports>
 		<import>jadex.runtime.*</import>
@@ -13,6 +13,11 @@
 		<import>java.util.logging.*</import>
 		<import>java.util.*</import>
 	</imports>
+
+	<capabilities>
+		<capability name="dfcap" file="jadex.planlib.DF"/>
+	</capabilities>
+
 	<beliefs>
 
 		<!-- Contiene el número de veces que queda para que la TV se estropee -->
@@ -85,10 +90,26 @@
 			<concrete ref="dfcap.df_keep_registered"/>
 		</maintaingoalref>
 
+		<maintaingoalref name="df_diversion_ver_tv">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_energia_ver_tv">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_cocina_ver_tv">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_carisma_ver_tv">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
 	</goals>
 	<plans>
 		<!-- Primer plan ver TV. Recibe el request del Sim y evalúa si aceptarlo o no-->
-		<plan name="VerTVPreguntaPlan">
+		<plan name="VerTVPregunta">
 			<body>new VerTVPreguntaPlan()</body>
 			<trigger>
 				<messageevent ref="ver_tv"/>
@@ -96,7 +117,7 @@
 		</plan>
 
 		<!-- Segundo plan ver TV. Se ejecuta cuando termina el tiempo de ver TV y modifica los recursos del Sim-->
-		<plan name="VerTVRespuestaPlan">
+		<plan name="VerTVRespuesta">
 			<body>new VerTVRespuestaPlan()</body>
 			<trigger>
 				<goal ref="ver_tv_tiempo_superado"/>
@@ -104,7 +125,7 @@
 		</plan>
 
 		<!-- Primer plan hacer ejercicio en la TV. Recibe el request del Sim y evalúa si aceptarlo o no-->
-		<plan name="EjercicioTVPreguntaPlan">
+		<plan name="EjercicioTVPregunta">
 			<body>new EjercicioTVPreguntaPlan()</body>
 			<trigger>
 				<messageevent ref="ejercicio_tv"/>
@@ -112,7 +133,7 @@
 		</plan>
 
 		<!-- Segundo plan hacer ejercicio TV. Se ejecuta cuando termina el tiempo de hacer ejercicio en la TV y modifica los recursos del Sim-->
-		<plan name="EjercicioTVRespuestaPlan">
+		<plan name="EjercicioTVRespuesta">
 			<body>new EjercicioTVRespuestaPlan()</body>
 			<trigger>
 				<goal ref="ejercicio_tv_tiempo_superado"/>
@@ -141,13 +162,18 @@ direction="fixed">
 
 		</messageevent>
 		
-		<messageevent name="tv_ocupada" direction="send" type="fipa">
+		<messageevent name="sim_haciendo_ejercicio_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="sim_viendo_tv" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
 			</parameter>
 		</messageevent>
 		
-
 		<messageevent name="tv_estropeada" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
@@ -160,7 +186,13 @@ direction="fixed">
 			</parameter>
 		</messageevent>
 		
-		<messageevent name="tv_no_ocupada" direction="send" type="fipa">
+		<messageevent name="sim_no_haciendo_ejercicio_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="sim_no_viendo_tv" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.AGREE</value>
 			</parameter>
@@ -187,7 +219,7 @@ direction="fixed">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Energia", "EjercicioTV"))
+							SFipa.createServiceDescription("Energia", "EjercicioTV", "Television"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -196,7 +228,7 @@ direction="fixed">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Diversion", "EjercicioTV"))
+							SFipa.createServiceDescription("Diversion", "EjercicioTV", "Television"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -205,7 +237,7 @@ direction="fixed">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Higiene", "EjercicioTV"))
+							SFipa.createServiceDescription("Higiene", "EjercicioTV", "Television"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -214,7 +246,7 @@ direction="fixed">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Hambre", "EjercicioTV"))
+							SFipa.createServiceDescription("Hambre", "EjercicioTV", "Television"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -223,7 +255,7 @@ direction="fixed">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Deporte", "EjercicioTV"))
+							SFipa.createServiceDescription("Deporte", "EjercicioTV", "Television"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -232,7 +264,7 @@ direction="fixed">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Energia", "VerTV"))
+							SFipa.createServiceDescription("Energia", "VerTV", "Television"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -241,7 +273,7 @@ direction="fixed">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Diversion", "VerTV"))
+							SFipa.createServiceDescription("Diversion", "VerTV", "Television"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -250,7 +282,7 @@ direction="fixed">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Cocina", "VerTV"))
+							SFipa.createServiceDescription("Cocina", "VerTV", "Television"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -259,7 +291,7 @@ direction="fixed">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Carisma", "VerTV"))
+							SFipa.createServiceDescription("Carisma", "VerTV", "Television"))
 						</value>
 					</parameter>
 				</initialgoal>

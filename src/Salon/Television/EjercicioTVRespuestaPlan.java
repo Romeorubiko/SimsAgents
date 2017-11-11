@@ -1,4 +1,4 @@
-package Salon;
+package Salon.Television;
 
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;

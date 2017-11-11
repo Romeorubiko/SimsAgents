@@ -31,23 +31,23 @@ public class EjercicioTVPlan extends Plan {
 		Diversion diversion= content.getDiversion();
 		Energia energia= content.getEnergia();
 		Deporte deporte= content.getDeporte();
-		
-		/* Creencias */ 
+
+		/* Creencias */
 		RBeliefbase bb;
 		bb=(RBeliefbase) getBeliefbase();
 		RBelief creencia1=(RBelief) bb.getBelief("estado_tv");
 		Boolean ocupado= (Boolean)creencia1.getFact();
 		RBelief creencia2=(RBelief) bb.getBelief("obsolescencia_tv");
 		Integer obsolescenciaTV= (Integer)creencia2.getFact();
-				
+
 		if(ocupado){
 			IMessageEvent respuesta = createMessageEvent("tv_ocupada");
-	        sendMessage(respuesta);
+			sendMessage(respuesta);
 
 		} else{
 			creencia1.setFact(true);
 			IMessageEvent agree = createMessageEvent("tv_no_ocupada");
-	        sendMessage(agree);
+			sendMessage(agree);
 
 			obsolescenciaTV= obsolescenciaTV-1;
 
@@ -64,56 +64,56 @@ public class EjercicioTVPlan extends Plan {
 				*/
 				creencia1.setFact(false);
 				creencia2.setFact(obsolescenciaTV);
-	        } else{
+			} else{
 	        	/*
 		         * Energia
 		         */
-	        	energia.setGrado(content.getEnergia().getGrado()- Necesidad.NC_POCO);
+				energia.setGrado(content.getEnergia().getGrado()- Necesidad.NC_POCO);
 				content.setEnergia(energia);
-				
+
 				/*
 				 * Diversion
 				 */
 				diversion.setGrado(content.getDiversion().getGrado()+ Necesidad.NC_NORMAL);
 				content.setDiversion(diversion);
-				
+
 				/*
 				 * Higiene
 				 */
 				higiene.setGrado(content.getHigiene().getGrado()- Necesidad.NC_NORMAL);
 				content.setHigiene(higiene);
-				
+
 				/*
 				 * Hambre
 				 */
 				hambre.setGrado(content.getHambre().getGrado()- Necesidad.NC_NORMAL);
 				content.setHambre(hambre);
-				
+
 				/*
 				 * Deporte
 				 */
 				deporte.setExperiencia(content.getDeporte().getExperiencia()+ Habilidad.HB_POCO);
 				content.setDeporte(deporte);
-				
+
 				try {
-					
+
 					wait(Accion.TIEMPO_MEDIO);
-		            
-		        } catch (InterruptedException e1) {
-		            e1.printStackTrace();
-		        }
-				
+
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+
 				IMessageEvent inform = createMessageEvent("has_hecho_ejercicio_tv");
 				HasHechoEjercicioTV hasHechoEjercicioTV= new HasHechoEjercicioTV(energia,diversion,hambre,higiene,deporte);
-		        inform.setContent(hasHechoEjercicioTV);
+				inform.setContent(hasHechoEjercicioTV);
 				sendMessage(inform);
 				creencia1.setFact(false);
-				
-	        }
-	        
+
+			}
+
 		}
-		
-		
-		
+
+
+
 	}
 }

@@ -1,4 +1,4 @@
-package Salon;
+package Salon.Television;
 
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IGoal;
@@ -33,11 +33,11 @@ public class EjercicioTVPreguntaPlan extends Plan {
         Si hay un sim viendo la tv se devuelve un refuse
          */
         if (simViendoTV) {
-            IMessageEvent refuse = createMessageEvent("tv_ocupada");
+            IMessageEvent refuse = createMessageEvent("sim_viendo_tv");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         } else {
-            IMessageEvent agree = createMessageEvent("tv_no_ocupada");
+            IMessageEvent agree = createMessageEvent("sim_no_viendo_tv");
             agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 
@@ -88,7 +88,7 @@ public class EjercicioTVPreguntaPlan extends Plan {
                 /*
                 Se dispara el goal en el caso de que sea el primer Sim en usar la TV
                 */
-                if(!simViendoTV && !haciendoEjercicioTV){
+                if(!haciendoEjercicioTV){
                     IGoal goal= createGoal("ejercicio_tv_tiempo_superado");
                     dispatchTopLevelGoal(goal);
                 }

@@ -1,4 +1,4 @@
-package Salon;
+package Salon.Periodico;
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.*;
 import jadex.runtime.impl.RBelief;
@@ -20,8 +20,7 @@ public class LeerPeriodicoRespuestaPlan extends Plan {
     public void body()
     {
         /* Creencias */
-        RBeliefbase bb;
-        bb=(RBeliefbase) getBeliefbase();
+        RBeliefbase bb=(RBeliefbase) getBeliefbase();
         RBelief creenciaOcupado=(RBelief) bb.getBelief("ocupado_periodico");
         RBelief creenciaMensaje=(RBelief) bb.getBelief("mensaje_periodico");
         IMessageEvent request= (IMessageEvent) creenciaMensaje.getFact();
@@ -37,29 +36,27 @@ public class LeerPeriodicoRespuestaPlan extends Plan {
 
 
 
-	        /*
-	         * Se actualiza el grado de diversiï¿½n
-	         */
+        /*
+         * Diversión
+         */
         diversion.setGrado(content.getDiversion().getGrado()+Necesidad.NC_NORMAL);
         content.setDiversion(diversion);
 
-			/*
-	         * Se actualiza el grado de energï¿½a tanto del mensaje como del sim
-	         */
+        /*
+         * Energía
+         */
         energia.setGrado(content.getEnergia().getGrado()- Necesidad.NC_POCO);
         content.setEnergia(energia);
 
-			/*
-	         * Se actualiza la experiencia en lï¿½gica
-	         */
-
+        /*
+         * Lógica
+         */
         logica.setExperiencia(content.getLogica().getExperiencia()+Habilidad.HB_POCO);
         content.setLogica(logica);
 
-			/*
-	         * Se actualiza el experiencia en escritura
-	         */
-
+        /*
+         * Escritura
+         */
         escritura.setExperiencia(content.getEscritura().getExperiencia()+Habilidad.HB_POCO);
         content.setEscritura(escritura);
 
@@ -67,7 +64,6 @@ public class LeerPeriodicoRespuestaPlan extends Plan {
         HasLeidoPeriodico hasLeidoPeriodico= new HasLeidoPeriodico(energia,diversion,logica,escritura);
         inform.setContent(hasLeidoPeriodico);
         inform.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
-        //inform.getParameterSet(SFipa.SENDER).addValue(request.getParameterSet(SFipa.RECEIVERS).getValues());
         sendMessage(inform);
         creenciaOcupado.setFact(false);
     }

@@ -6,7 +6,7 @@
 	   xsi:schemaLocation="http://jadex.sourceforge.net/jadex
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
 	   name="Periodico"
-	   package="ontologia.acciones">
+	   package="Salon.Periodico">
 
 	<imports>
 		<import>jadex.runtime.*</import>
@@ -17,63 +17,103 @@
 		<import>java.util.*</import>
 		<import>jadex.model.IMMessageEvent</import>
 	</imports>
+
+	<capabilities>
+		<capability name="dfcap" file="jadex.planlib.DF"/>
+	</capabilities>
+
 	<beliefs>
+		<!-- Si el periodico está ocupado o no -->
 		<belief name="ocupado_periodico" class="Boolean">
 			<fact> new Boolean(false)</fact>
 		</belief>
 
+		<!-- Tiempo transcurrido desde que se activa el agente -->
 		<belief name="tiempo_actual" class="int" updaterate="100">
 			<fact> (int) (System.currentTimeMillis()/1000) </fact>
 		</belief>
 
+		<!-- Tiempo en el que el agente termina de ver el periodico -->
 		<belief name="tiempo_fin_periodico" class="int">
 			<fact> (int) 0 </fact>
 		</belief>
 
+		<!-- Contenido del request que le llega al agente, necesario para ejecutar segundo plan  -->
 		<belief name="mensaje_periodico" class="IMessageEvent"/>
-
-
 	</beliefs>
+
 	<goals>
+
+		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha leido el periodico se ejecute el segundo plan -->
 		<maintaingoal name="leer_periodico_tiempo_superado">
 			<maintaincondition>
 				$beliefbase.tiempo_fin_periodico >= $beliefbase.tiempo_actual
 			</maintaincondition>
 		</maintaingoal>
 
+		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha realizado un crucigrama se ejecute el segundo plan -->
 		<maintaingoal name="crucigrama_periodico_tiempo_superado">
 			<maintaincondition>
 				$beliefbase.tiempo_fin_periodico >= $beliefbase.tiempo_actual
 			</maintaincondition>
 		</maintaingoal>
 
+		<!-- Objetivos para registrar los servicios que ofrece el agente en el DF y los correspondientes recursos y habilidades que modifica-->
+		<maintaingoalref name="df_diversion_leer_periodico">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_energia_leer_periodico">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_escritura_leer_periodico">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_diversion_hacer_crucigrama">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_energia_hacer_crucigrama">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_logica_hacer_crucigrama">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
 	</goals>
 	<plans>
-		<plan name="LeerPeriodicoPreguntaPlan">
+		<!-- Primer plan leer el periódico. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		<plan name="LeerPeriodicoPregunta">
 			<body>new LeerPeriodicoPreguntaPlan()</body>
 			<trigger>
 				<messageevent ref="leer_periodico"/>
 			</trigger>
 		</plan>
 
-		<plan name="LeerPeriodicoRespuestaPlan">
+		<!-- Segundo plan para leer el periodico. Se ejecuta cuando termina el tiempo de leer el periodico y modifica los recursos del Sim-->
+		<plan name="LeerPeriodicoRespuesta">
 			<body>new LeerPeriodicoRespuestaPlan()</body>
 			<trigger>
-				<goal ref="leer_periodico_tiempo_superado"></goal>
+				<goal ref="leer_periodico_tiempo_superado"/>
 			</trigger>
 		</plan>
 
-		<plan name="HacerCrucigramaPreguntaPlan">
+		<!-- Primer plan para hacer un crucigrama. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		<plan name="HacerCrucigramaPregunta">
 			<body>new HacerCrucigramaPreguntaPlan()</body>
 			<trigger>
 				<messageevent ref="hacer_crucigrama"/>
 			</trigger>
 		</plan>
 
-		<plan name="HacerCrucigramaRespuestaPlan">
+		<!-- Segundo plan para hacer un crucigrama. Se ejecuta cuando termina el tiempo de hacer un crucigrama y modifica los recursos del Sim-->
+		<plan name="HacerCrucigramaRespuesta">
 			<body>new HacerCrucigramaRespuestaPlan()</body>
 			<trigger>
-				<goal ref="crucigrama_periodico_tiempo_superado"></goal>
+				<goal ref="crucigrama_periodico_tiempo_superado"/>
 			</trigger>
 		</plan>
 
@@ -105,7 +145,7 @@
 			</parameter>
 		</messageevent>
 
-		<messageevent name="periodico_no_ocupado" direction="send" type="fipa">
+		<messageevent name="periodico_libre" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.AGREE</value>
 			</parameter>
@@ -128,14 +168,11 @@
 	<configurations>
 		<configuration name="default">
 			<goals>
-				<initialgoal ref="leer_peridico_tiempo_superado"/>
-				<initialgoal ref="crucigrama_peridico_tiempo_superado"/>
-
 				<initialgoal ref="df_diversion_leer_periodico">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Diversion", "LeerPeriodico"))
+							SFipa.createServiceDescription("Diversion", "LeerPeriodico", "Periodico"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -144,7 +181,7 @@
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Energia", "LeerPeriodico"))
+							SFipa.createServiceDescription("Energia", "LeerPeriodico", "Periodico"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -153,7 +190,7 @@
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Escritura", "LeerPeriodico"))
+							SFipa.createServiceDescription("Escritura", "LeerPeriodico", "Periodico"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -162,7 +199,7 @@
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Diversion", "HacerCrucigrama"))
+							SFipa.createServiceDescription("Diversion", "HacerCrucigrama", "Periodico"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -171,7 +208,7 @@
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Energia", "HacerCrucigrama"))
+							SFipa.createServiceDescription("Energia", "HacerCrucigrama", "Periodico"))
 						</value>
 					</parameter>
 				</initialgoal>
@@ -180,7 +217,7 @@
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Logica", "HacerCrucigrama"))
+							SFipa.createServiceDescription("Logica", "HacerCrucigrama", "Periodico"))
 						</value>
 					</parameter>
 				</initialgoal>

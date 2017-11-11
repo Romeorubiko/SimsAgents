@@ -1,5 +1,6 @@
 package Salon;
 
+import jadex.adapter.fipa.SFipa;
 import jadex.runtime.*;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RBelief;
@@ -28,17 +29,18 @@ public class DescansarSofaPlan extends Plan
 		Energia energia= content.getEnergia();
 		
 		/* Creencias */ 
-		RBeliefbase bb;
-		bb=(RBeliefbase) getBeliefbase();
-		RBelief creencia1=(RBelief) bb.getBelief("estado_sofa");
-		Boolean ocupado= (Boolean)creencia1.getFact();
+		RBeliefbase bb=(RBeliefbase) getBeliefbase();
+		RBelief creenciaOcupado=(RBelief) bb.getBelief("ocupado_sofa");
+		Boolean ocupado= (Boolean)creenciaOcupado.getFact();
 				
 		if(ocupado){
-			IMessageEvent respuesta = createMessageEvent("sofa_ocupado");
-	        sendMessage(respuesta);	        
+			IMessageEvent refuse = createMessageEvent("sofa_ocupado");
+			refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
+	        sendMessage(refuse);
 		}else{
-			creencia1.setFact(true);
+			creenciaOcupado.setFact(true);
 			IMessageEvent agree = createMessageEvent("sofa_no_ocupado");
+			agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 	        sendMessage(agree);
 	       
 			if(tipo.getTipoDescanso().equals(tipoDescanso.DORMIR)){
@@ -63,8 +65,9 @@ public class DescansarSofaPlan extends Plan
 			IMessageEvent inform = createMessageEvent("has_descansado");
 			HasDescansado hasDescansado= new HasDescansado(energia);
 	        inform.setContent(hasDescansado);
-			sendMessage(inform);
-			creencia1.setFact(false);
+			inform.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
+	        sendMessage(inform);
+			creenciaOcupado.setFact(false);
 		}
 		
 		

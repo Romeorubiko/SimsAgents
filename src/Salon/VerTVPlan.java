@@ -2,6 +2,7 @@ package Salon;
 
 import java.util.Random;
 
+import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RBelief;
@@ -30,20 +31,21 @@ public class VerTVPlan extends Plan{
 		Energia energia= content.getEnergia();
 		
 		/* Creencias */ 
-		RBeliefbase bb;
-		bb=(RBeliefbase) getBeliefbase();
-		RBelief creencia1=(RBelief) bb.getBelief("estado_tv");
-		Boolean ocupado= (Boolean)creencia1.getFact();
-		RBelief creencia2=(RBelief) bb.getBelief("obsolescencia_tv");
-		Integer obsolescenciaTV= (Integer)creencia2.getFact();
+		RBeliefbase bb=(RBeliefbase) getBeliefbase();
+		RBelief creenciaOcupado=(RBelief) bb.getBelief("ocupada_tv");
+		Boolean ocupado= (Boolean)creenciaOcupado.getFact();
+		RBelief creenciaObsolescencia=(RBelief) bb.getBelief("obsolescencia_tv");
+		Integer obsolescenciaTV= (Integer)creenciaObsolescencia.getFact();
 				
 		if(ocupado){
-			IMessageEvent respuesta = createMessageEvent("tv_ocupada");
-	        sendMessage(respuesta);	        
+			IMessageEvent refuse = createMessageEvent("tv_ocupada");
+			refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
+	        sendMessage(refuse);
 		}else{
-			creencia1.setFact(true);
+			creenciaOcupado.setFact(true);
 			IMessageEvent agree = createMessageEvent("tv_no_ocupada");
-	        sendMessage(agree);
+			agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
+			sendMessage(agree);
 
 	        obsolescenciaTV= obsolescenciaTV-1;
 
@@ -52,12 +54,11 @@ public class VerTVPlan extends Plan{
 				IMessageEvent failure = createMessageEvent("tv_estropeada");
 				TVEstropeada tvEstropeada= new TVEstropeada(canal,energia,diversion);
 				failure.setContent(tvEstropeada);
+				failure.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 				sendMessage(failure);
-				/* Se actualizan las creencias
-				   tv_ocupada false
-				 * obsolescenciaTV*/
-				creencia1.setFact(false);
-				creencia2.setFact(obsolescenciaTV);
+
+				creenciaObsolescencia.setFact(obsolescenciaTV);
+				creenciaOcupado.setFact(false);
 	        }else{
 	        	/*
 		         * Energia
@@ -82,19 +83,14 @@ public class VerTVPlan extends Plan{
 					content.getCanalTV().setCarisma(canal.getCarisma());
 				}
 				
-				try {
-			
-					wait(Accion.TIEMPO_MEDIO);
-		            
-		        } catch (InterruptedException e1) {
-		            e1.printStackTrace();
-		        }
+
 				
 				IMessageEvent inform = createMessageEvent("has_visto_tv");
 				HasVistoTV hasvistoTV= new HasVistoTV(canal,energia,diversion);
 		        inform.setContent(hasvistoTV);
+				inform.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 				sendMessage(inform);
-				creencia1.setFact(false);
+				creenciaOcupado.setFact(false);
 	        }
 		}
 	}

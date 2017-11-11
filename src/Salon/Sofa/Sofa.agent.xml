@@ -1,0 +1,119 @@
+<!--
+	<H3>Agente Sofa</H3>
+-->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	name="Sofa"
+	package="Salon.Sofa">
+	
+	<imports>
+		<import>jadex.runtime.*</import>
+		<import>jadex.planlib.*</import>
+		<import>jadex.util.*</import>
+		<import>jadex.adapter.fipa.*</import>
+		<import>java.util.logging.*</import>
+		<import>java.util.*</import>
+	</imports>
+
+	<capabilities>
+		<capability name="dfcap" file="jadex.planlib.DF"/>
+	</capabilities>
+
+	<beliefs>
+		<!-- Si el sofá esta ocupado o no  -->
+		<belief name="ocupado_sofa" class="Boolean">
+			<fact> new Boolean(false)</fact>
+		</belief>
+
+		<!-- Tiempo transcurrido desde que se activa el agente -->
+		<belief name="tiempo_actual" class="int" updaterate="100">
+			<fact> (int) (System.currentTimeMillis()/1000) </fact>
+		</belief>
+
+		<!-- Tiempo en el que el agente termina de descansar en el sofa -->
+		<belief name="tiempo_fin_sofa" class="int">
+			<fact> (int) 0 </fact>
+		</belief>
+
+		<!-- Contenido del request que le llega al agente, necesario para ejecutar segundo plan  -->
+		<belief name="mensaje_sofa" class="IMessageEvent"/>
+
+	</beliefs>
+	<goals>
+		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha leido el periodico se ejecute el segundo plan -->
+		<maintaingoal name="descansar_sofa_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempo_fin_sofa >= $beliefbase.tiempo_actual
+			</maintaincondition>
+		</maintaingoal>
+
+		<!-- Objetivos para registrar los servicios que ofrece el agente en el DF y los correspondientes recursos y habilidades que modifica-->
+		<maintaingoalref name="df_energia_descansar_sofa">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+	</goals>
+	<plans>
+		<!-- Primer plan descansar en el sofa. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		<plan name="DescansarSofaPregunta">
+			<body>new DescansarSofaPreguntaPlan()</body>
+			<trigger>
+				<messageevent ref="descansar"/>
+			</trigger>
+		</plan>
+
+		<!-- Segundo plan para descansar en el sofa. Se ejecuta cuando termina el tiempo de leer el sofa y modifica los recursos del Sim-->
+		<plan name="DescansarSofaRespuesta">
+			<body>new DescansarSofaRespuestaPlan()</body>
+			<trigger>
+				<goal ref="descansar_sofa_tiempo_superado"/>
+			</trigger>
+		</plan>
+	</plans>
+
+	<events>
+		<messageevent name="descansar" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="Descansar"
+direction="fixed">
+			</parameter>
+
+		</messageevent>
+		
+		<messageevent name="sofa_ocupado" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="sofa_no_ocupado" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_descansado" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+		
+	</events>
+
+	<configurations>
+		<configuration name="default">
+			<goals>
+				<initialgoal ref="df_energia_descansar_sofa">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Energia", "DescansarSofa", "Sofa"))
+						</value>
+					</parameter>
+				</initialgoal>
+			</goals>
+		</configuration>
+	</configurations>
+
+</agent>
