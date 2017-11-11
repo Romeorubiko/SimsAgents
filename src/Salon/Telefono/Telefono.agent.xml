@@ -40,10 +40,13 @@
 	
 	<goals>
 		<!-- Objetivos para registrar los servicios que ofrece el agente en el DF-->
-		<maintaingoalref name="df_llamar_sim">
+		<maintaingoalref name="df_llamar_sim_interaccion">
 			<concrete ref="dfcap.df_keep_registered"/>
 		</maintaingoalref>
-		<maintaingoalref name="df_gastar_broma_telefonica">
+		<maintaingoalref name="df_llamar_sim_carisma">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		<maintaingoalref name="df_gastar_broma_telefonica_diversion">
 			<concrete ref="dfcap.df_keep_registered"/>
 		</maintaingoalref>
 		<!-- Objetivo para que cuando termina el tiempo de llamada se ejecute el segundo plan -->
@@ -152,19 +155,27 @@
 	  <configurations>
         <configuration name="default">
             <goals>
-                <initialgoal ref="df_llamar_sim">
+                <initialgoal ref="df_llamar_sim_interaccion">
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("LlamarSim", "Telefono", ""))
+                            SFipa.createServiceDescription("Interaccion Social", "LlamarSim", "Telefono"))
                         </value>
                     </parameter>
                 </initialgoal>
-				<initialgoal ref="df_gastar_broma_telefonica">
+				<initialgoal ref="df_llamar_sim_carisma">
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("GastarBromaTel", "Telefono", ""))
+                            SFipa.createServiceDescription("Carisma", "LlamarSim", "Telefono"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+				<initialgoal ref="df_gastar_broma_telefonica_diversion">
+                    <parameter ref="description">
+                        <value>
+							SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "GastarBromaTel", "Telefono"))
                         </value>
                     </parameter>
                 </initialgoal>
