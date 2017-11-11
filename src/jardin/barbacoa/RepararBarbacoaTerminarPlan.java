@@ -1,10 +1,14 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
 package jardin.barbacoa;
 
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
-import ontologia.acciones.CocinarComidaBarbacoa;
 import ontologia.acciones.Reparar;
 import ontologia.conceptos.habilidades.Habilidad;
 import ontologia.conceptos.habilidades.Mecanica;
@@ -13,9 +17,7 @@ import ontologia.conceptos.necesidades.Higiene;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.HasReparado;
 
-/**
- * Created by eldgb on 09-Nov-17.
- */
+
 public class RepararBarbacoaTerminarPlan extends Plan {
     public void body() {
         getGoalbase().getGoal("terminar_reparar_barbacoa").drop();

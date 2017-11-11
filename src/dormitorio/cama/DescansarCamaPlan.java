@@ -1,15 +1,15 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
+
 package dormitorio.cama;
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
-import ontologia.acciones.*;
 import jadex.runtime.*;
 
-import ontologia.conceptos.necesidades.Energia;
-
-/**
- * Created by eldgb on 08-Nov-17.
- */
 
 public class DescansarCamaPlan extends Plan {
     public void body(){

@@ -1,3 +1,8 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
 package sala_recreativa.maquina_ejercicios;
 
 import jadex.adapter.fipa.SFipa;
@@ -8,9 +13,7 @@ import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
 import ontologia.acciones.Entrenar;
 
-/**
- * Created by eldgb on 09-Nov-17.
- */
+
 public class EntrenarPlan extends Plan{
     public void body() {
         RMessageEvent peticion = ((RMessageEvent)getInitialEvent());

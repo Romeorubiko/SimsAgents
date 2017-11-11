@@ -1,16 +1,18 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
 package sala_recreativa.minibar;
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IGoal;
 import jadex.runtime.IMessageEvent;
 import ontologia.Accion;
-import ontologia.conceptos.necesidades.*;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
-import ontologia.acciones.Beber;
 
-/**
- * Created by eldgb on 09-Nov-17.
- */
+
+
 public class BeberMinibarPlan extends Plan {
     public void body() {
 

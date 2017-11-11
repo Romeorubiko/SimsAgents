@@ -1,3 +1,8 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
 package jardin.barbacoa;
 
 import jadex.adapter.fipa.SFipa;
@@ -6,7 +11,7 @@ import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
-import ontologia.acciones.Reparar;
+
 
 
 

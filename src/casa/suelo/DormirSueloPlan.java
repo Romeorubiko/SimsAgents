@@ -1,3 +1,9 @@
+
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
 package casa.suelo;
 
 import java.util.ArrayList;
@@ -9,9 +15,6 @@ import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
 
-/**
- * Created by eldgb on 25-Oct-17.
- */
 public class DormirSueloPlan extends Plan {
 
 	@SuppressWarnings("unchecked")

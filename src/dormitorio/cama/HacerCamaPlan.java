@@ -1,3 +1,9 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
+
 package dormitorio.cama;
 
 import jadex.adapter.fipa.SFipa;
@@ -6,11 +12,9 @@ import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
-import ontologia.acciones.HacerLaCama;
 
-/**
- * Created by eldgb on 09-Nov-17.
- */
+
+
 public class HacerCamaPlan extends Plan {
     public void body() {
 

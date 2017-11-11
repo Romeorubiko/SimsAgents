@@ -1,3 +1,11 @@
+<!--
+	<H3>cama.agent</H3>
+
+	 Lizaveta Mishkinitse		NIA: 100317944
+     Raul Escabia				NIA: 100315903
+
+-->
+
 <agent xmlns="http://jadex.sourceforge.net/jadex"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://jadex.sourceforge.net/jadex
@@ -20,8 +28,6 @@
     </imports>
 
     <capabilities>
-        <!-- this capability provides easy access to "out-of-the-box"-plans
-             allowing - for example - to register at the DF. -->
         <capability name="dfcap" file="jadex.planlib.DF"/>
     </capabilities>
 

@@ -1,3 +1,9 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
+
 package sala_recreativa.maquina_ejercicios;
 
 import jadex.adapter.fipa.SFipa;
@@ -13,9 +19,7 @@ import ontologia.conceptos.necesidades.Higiene;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.HasEntrenado;
 
-/**
- * Created by eldgb on 09-Nov-17.
- */
+
 public class EntrenarTerminarPlan extends Plan {
     public void body() {
 

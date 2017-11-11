@@ -1,3 +1,8 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
 package jardin.barbacoa;
 import java.util.Random;
 import jadex.adapter.fipa.SFipa;
@@ -14,9 +19,7 @@ import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.HasCocinadoBarbacoa;
 import ontologia.predicados.PerritosQuemados;
 
-/**
- * Created by eldgb on 09-Nov-17.
- */
+
 public class CocinarBarbacoaTerminarPlan extends Plan {
     public void body() {
 

@@ -1,3 +1,9 @@
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
+
 package casa.suelo;
 
 import java.util.ArrayList;

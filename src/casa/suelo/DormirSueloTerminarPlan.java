@@ -1,3 +1,9 @@
+
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
+ * Raul Escabia				NIA: 100315903
+ */
+
 package casa.suelo;
 
 import java.util.ArrayList;
@@ -12,9 +18,6 @@ import ontologia.conceptos.necesidades.Higiene;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.HasDormidoSuelo;
 
-/**
- * Created by eldgb on 08-Nov-17.
- */
 public class DormirSueloTerminarPlan extends Plan {
 
 	@SuppressWarnings("unchecked")
