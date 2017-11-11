@@ -4,37 +4,55 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
        name="Espejo"
        package="bano.espejo">
+
+    <imports>
+        <import>java.sql.Time</import>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>ontologia.Accion</import>
+        <import>ontologia.*</import>
+        <import>jadex.model.IMMessageEvent</import>
+        <import>jadex.runtime.impl.RMessageEvent</import>
+    </imports>
+
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+
     <beliefs>
         <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
-		  <belief name="nivel_carisma" class="Integer">
-        </belief>
-        <belief name="experiencia_carisma" class="Integer">
-        </belief>
-        <belief name="energia" class="Integer">
-        </belief>
+
 		<belief name="time" class="int" updaterate="750">
             <fact> (int)(System.currentTimeMillis()) </fact>
         </belief>
 
         <belief name="tiempoFinalizacion" class="Time">
-
+            <fact>(int) 0</fact>
         </belief>
-		<goals>
+    </beliefs>
+
+	<goals>
         <maintaingoal name="usar_espejo_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin_espejo >= $beliefbase.tiempo_espejo
             </maintaincondition>
+        </maintaingoal>
+
         <maintaingoalref name="df_carisma_usar_espejo">
             <concrete ref="dfcap.df_carisma_usar_espejo"/>
         </maintaingoalref>
+
         <maintaingoalref name="df_energia_usar_espejo">
             <concrete ref="dfcap.df_energia_usar_espejo"/>
         </maintaingoalref>
-
     </goals>
-    </beliefs>
+
     <plans>
         <plan name="UsarEspejoPlan">
             <body class="bano.espejo.UsarEspejoPlan"/>
@@ -42,16 +60,15 @@
                 <goal ref="usar_espejo_tiempo_superado"/>
             </trigger>
         </plan>
+
 		<plan name="UsarEspejoTerminarPlan">
             <body class="bano.espejo.UsarEspejoTerminarPlan"/>
             <trigger>
-                <condition>$beliefbase.time>=$beliefbase.tiempoFinalizacion
-                </condition>
-                <condition>$beliefbase.ocupado==TRUE
-                </condition>
+                <messageevent ref="espejo_usado"/>
             </trigger>
         </plan>
     </plans>
+
     <events>
         <messageevent name="usar_espejo" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
@@ -65,8 +82,8 @@
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
             <parameter name="content" class="ontologia.predicados.EspejoUsado"/>
-
         </messageevent>
+
 		<messageevent name="espejo_ocupado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
@@ -74,7 +91,8 @@
             <parameter name="content" class="ontologia.acciones.UsarEspejo"/>
         </messageevent>
     </events>
-	 <configurations>
+
+	<configurations>
         <configuration name = "default">
             <goals>
                 <initialgoal ref="df_carisma_usar_espejo">
@@ -90,6 +108,7 @@
                             S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "UsarEspejo"))
                         </value>
                     </parameter>
+                </initialgoal>
             </goals>
         </configuration>
     </configurations>
