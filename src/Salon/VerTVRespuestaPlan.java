@@ -25,23 +25,25 @@ public class VerTVRespuestaPlan extends Plan {
 
 		/* Se coge el mensaje de la primera posicion del array de mensajes guardado en la creencia mensajes_tv */
         RBeliefbase bb=(RBeliefbase) getBeliefbase();
-        RBelief creenciaMensajes=(RBelief) bb.getBelief("mensajes_tv");
-        ArrayList<IMessageEvent> arrayMensajes= (ArrayList<IMessageEvent>) creenciaMensajes.getFact();
-        IMessageEvent request = arrayMensajes.get(0);
+        RBelief creenciaMensajesVerTV=(RBelief) bb.getBelief("mensajes_ver_tv");
+        @SuppressWarnings("unchecked")
+        ArrayList<IMessageEvent> arrayMensajesVerTV= (ArrayList<IMessageEvent>) creenciaMensajesVerTV.getFact();
+        IMessageEvent request = arrayMensajesVerTV.get(0);
         /*
         Se borra el primer mensaje del Array de Mensajes de la creencia mensajes_tv,
         ya que es el primero en activar este plan
          */
-        arrayMensajes.remove(0);
-        creenciaMensajes.setFact(arrayMensajes);
+        arrayMensajesVerTV.remove(0);
+        creenciaMensajesVerTV.setFact(arrayMensajesVerTV);
 
         /*
         Se borra la primera posición del Array de tiempos de finalización de la creencia tiempos_fin_tv
          */
-        RBelief creenciaTiempoTV=(RBelief) bb.getBelief("tiempos_fin_tv");
-        ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) creenciaTiempoTV.getFact();
-        arrayTiempos.remove(0);
-        creenciaTiempoTV.setValue(arrayTiempos);
+        RBelief creenciaTiempoEjercicioTV=(RBelief) bb.getBelief("tiempos_fin_ver_tv");
+        @SuppressWarnings("unchecked")
+        ArrayList<Integer> arrayTiemposEjercicioTV = (ArrayList<Integer>) creenciaTiempoEjercicioTV.getFact();
+        arrayTiemposEjercicioTV.remove(0);
+        creenciaTiempoEjercicioTV.setValue(arrayTiemposEjercicioTV);
 
         /*
         Si la tv no esta ocupado se termina el goal ya que no hay que comprabar la condición indicada en maintaincondition
@@ -50,8 +52,10 @@ public class VerTVRespuestaPlan extends Plan {
         con los datos del siguiente Sim. Volviendose a meter en este plan para comprobar devolverle un inform cuando termine de
         ver la TV
          */
-        if(arrayTiempos.isEmpty()) {
+        if(arrayTiemposEjercicioTV.isEmpty()) {
             getGoalbase().getGoal("ver_tv_tiempo_superado").drop();
+            RBelief creenciaSimViendoTV=(RBelief) bb.getBelief("viendo_tv");
+            creenciaSimViendoTV.setFact(false);
         }
 
         VerTV content = (VerTV)request.getContent();

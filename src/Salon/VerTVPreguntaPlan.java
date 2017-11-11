@@ -21,72 +21,76 @@ public class VerTVPreguntaPlan extends Plan {
     public void body() {
         IMessageEvent request = (IMessageEvent) getInitialEvent();
 
-        /* Se realiza agree siempre ya que la TV nunca se encuentra ocupada*/
-        IMessageEvent agree = createMessageEvent("tv_no_ocupada");
-        agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
-        sendMessage(agree);
-
-		/* Se obtiene la obsolescencia de creencia obsolescencia_tv */
         RBeliefbase bb = (RBeliefbase) getBeliefbase();
-        RBelief creenciaObsolescencia = (RBelief) bb.getBelief("obsolescencia_tv");
-        Integer obsolescenciaTV = (Integer) creenciaObsolescencia.getFact();
+        RBelief creenciaHaciendoEjercicioTV=(RBelief) bb.getBelief("haciendo_ejercicio_tv");
+        Boolean haciendoEjercicioTV= (Boolean) creenciaHaciendoEjercicioTV.getFact();
 
-        if (obsolescenciaTV <= 0) {
-        /* Mensaje de failure que se le env�a al Sim */
-
-            VerTV content = (VerTV) request.getContent();
-            CanalTV canal = content.getCanalTV();
-            Diversion diversion = content.getDiversion();
-            Energia energia = content.getEnergia();
-
-            IMessageEvent failure = createMessageEvent("tv_estropeada");
-            TVEstropeada tvEstropeada = new TVEstropeada(canal, energia, diversion);
-            failure.setContent(tvEstropeada);
-            failure.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
-            sendMessage(failure);
-
-
+        /*
+        Si hay un sim haciendo ejercicio en la televisión no se puede verla a la vez
+         */
+        if(haciendoEjercicioTV){
+            IMessageEvent refuse = createMessageEvent("tv_ocupada");
+            refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
+            sendMessage(refuse);
         }else{
-            obsolescenciaTV = obsolescenciaTV - 1;
-            creenciaObsolescencia.setFact(obsolescenciaTV);
+            IMessageEvent agree = createMessageEvent("tv_no_ocupada");
+            agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
+            sendMessage(agree);
 
-            RBelief creenciaMensajes=(RBelief) bb.getBelief("mensajes_tv");
-            @SuppressWarnings("unchecked")
-            ArrayList<IMessageEvent> arrayMensajes= (ArrayList<IMessageEvent>)creenciaMensajes.getFact();
-            RBelief creenciaTiemposFinTV=(RBelief) bb.getBelief("tiempos_fin_tv");
-            @SuppressWarnings("unchecked")
-            ArrayList<Integer> arrayTiempos = (ArrayList<Integer>)creenciaTiemposFinTV.getFact();
-
-            RBelief creenciaTiempo=(RBelief) bb.getBelief("tiempo_actual");
-            Integer tiempo= (Integer)creenciaTiempo.getFact();
+            RBelief creenciaObsolescencia = (RBelief) bb.getBelief("obsolescencia_tv");
+            Integer obsolescenciaTV = (Integer) creenciaObsolescencia.getFact();
 
             /*
-            Se actualiza el Array de Mensajes añadiendo el mensaje del sim actual en la ultima posicion
+            Si la tv se encuentra estropeada se devuelve un failure con los recursos y habilidades sin modificar
              */
-            arrayMensajes.add(request);
-            creenciaMensajes.setFact(arrayMensajes);
+            if (obsolescenciaTV <= 0) {
+                VerTV content = (VerTV) request.getContent();
+                CanalTV canal = content.getCanalTV();
+                Diversion diversion = content.getDiversion();
+                Energia energia = content.getEnergia();
 
+                IMessageEvent failure = createMessageEvent("tv_estropeada");
+                TVEstropeada tvEstropeada = new TVEstropeada(canal, energia, diversion);
+                failure.setContent(tvEstropeada);
+                failure.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
+                sendMessage(failure);
+            }else{
+                obsolescenciaTV = obsolescenciaTV - 1;
+                creenciaObsolescencia.setFact(obsolescenciaTV);
 
+                /*
+                Se introduce en la ultimas posición del array de mensajes de ver la tv el request del sim
+                */
+                RBelief creenciaMensajes=(RBelief) bb.getBelief("mensajes_ver_tv");
+                @SuppressWarnings("unchecked")
+                ArrayList<IMessageEvent> arrayMensajes= (ArrayList<IMessageEvent>)creenciaMensajes.getFact();
+                arrayMensajes.add(request);
+                creenciaMensajes.setFact(arrayMensajes);
+                /*
+                Se introduce en la última posición del array de tiempos de ver la tv el tiempo de finalización de la acción
+                 */
+                RBelief creenciaTiemposFinTV=(RBelief) bb.getBelief("tiempos_fin_ver_tv");
+                @SuppressWarnings("unchecked")
+                ArrayList<Integer> arrayTiempos = (ArrayList<Integer>)creenciaTiemposFinTV.getFact();
+                RBelief creenciaTiempo=(RBelief) bb.getBelief("tiempo_actual");
+                Integer tiempo= (Integer)creenciaTiempo.getFact();
+                arrayTiempos.add(tiempo+ Accion.TIEMPO_MEDIO);
+                creenciaTiemposFinTV.setFact(arrayTiempos);
 
-            /*
-            Se actualiza el array de tiempos de finalización de las TV añadiendo la ultima
-             */
-            arrayTiempos.add(tiempo+ Accion.TIEMPO_MEDIO);
-            creenciaTiemposFinTV.setFact(arrayTiempos);
+                RBelief creenciaSimViendoTV=(RBelief) bb.getBelief("viendo_tv");
+                Boolean simViendoTV= (Boolean) creenciaSimViendoTV.getFact();
 
-             /*
-            Se obtiene la creencia  que indica que un sim esta viendo la TV
-             */
-            RBelief creenciaSimViendoTV=(RBelief) bb.getBelief("viendo_tv");
-            Boolean simViendoTV= (Boolean) creenciaSimViendoTV.getFact();
-            RBelief creenciaHaciendoEjercicioTV=(RBelief) bb.getBelief("viendo_tv");
-            Boolean haciendoEjercicioTV= (Boolean) creenciaSimViendoTV.getFact();
-
-            if(!simViendoTV && !haciendoEjercicioTV){
-                IGoal goal= createGoal("ver_tv_tiempo_superado");
-                dispatchTopLevelGoal(goal);
+                /*
+                Se dispara el goal en el caso de que sea el primer Sim en usar la TV
+                */
+                if(!simViendoTV && !haciendoEjercicioTV){
+                    IGoal goal= createGoal("ver_tv_tiempo_superado");
+                    dispatchTopLevelGoal(goal);
+                }
+                creenciaSimViendoTV.setFact(true);
             }
-            creenciaSimViendoTV.setFact(true);
         }
+
+
     }
 }
