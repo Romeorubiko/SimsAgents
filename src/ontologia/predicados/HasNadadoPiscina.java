@@ -32,7 +32,7 @@ public class HasNadadoPiscina extends Predicado {
         return diversion;
     }
 
-    public void setDiversión(Diversion diversion) {
+    public void setDiversion(Diversion diversion) {
         this.diversion = diversion;
     }
 

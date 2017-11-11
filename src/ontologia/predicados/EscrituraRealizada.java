@@ -11,6 +11,12 @@ public class EscrituraRealizada extends Predicado {
     public EscrituraRealizada() {
     }
 
+    public EscrituraRealizada(Energia energia, Diversion diversion, Escritura escritura) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.escritura = escritura;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

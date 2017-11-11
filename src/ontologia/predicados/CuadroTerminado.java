@@ -11,6 +11,12 @@ public class CuadroTerminado extends Predicado {
     public CuadroTerminado() {
     }
 
+    public CuadroTerminado(Energia energia, Diversion diversion, Pintura pintura) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.pintura = pintura;
+    }
+
     public Energia getEnergia() {
         return energia;
     }
