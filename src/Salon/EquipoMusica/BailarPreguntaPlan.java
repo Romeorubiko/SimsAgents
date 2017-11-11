@@ -115,8 +115,8 @@ public class BailarPreguntaPlan extends Plan {
 				arrayTiempos.add(tiempo + Accion.TIEMPO_MEDIO);
 				creenciaTiemposFin.setFact(arrayTiempos);
 
-				/* Si es el primero en bailar se lanza el objetivo */
-				if (simsBailando == 1) {
+				/* Si es el primero en bailar solo se lanza el objetivo */
+				if (arrayTiempos.size() == 1) {
 					IGoal goal = createGoal("bailar_tiempo_superado");
 					dispatchTopLevelGoal(goal);
 				}
