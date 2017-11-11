@@ -6,17 +6,12 @@
        package="bano.ducha">
 
     <imports>
-        <import>java.sql.Time</import>
         <import>jadex.runtime.*</import>
         <import>jadex.planlib.*</import>
         <import>jadex.util.*</import>
         <import>jadex.adapter.fipa.*</import>
         <import>java.util.logging.*</import>
         <import>java.util.*</import>
-        <import>ontologia.Accion</import>
-        <import>ontologia.*</import>
-        <import>jadex.model.IMMessageEvent</import>
-        <import>jadex.runtime.impl.RMessageEvent</import>
     </imports>
 
     <capabilities>
@@ -40,7 +35,7 @@
             <fact> (int)(System.currentTimeMillis()) </fact>
         </belief>
 
-        <belief name="tiempoFinalizacion" class="Time">
+        <belief name="tiempoFinalizacion" class="Integer">
             <fact> (int) 0 </fact>
         </belief>
 
@@ -54,11 +49,11 @@
         </maintaingoal>
 
         <maintaingoalref name="df_higiene_lavarse">
-            <concrete ref="dfcap.df_higiene_lavarse"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
 
         <maintaingoalref name="df_energia_lavarse">
-            <concrete ref="dfcap.df_energia_lavarse"/>
+            <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
     </goals>
 
@@ -74,12 +69,7 @@
         <plan name="LavarseDuchaTerminarPlan">
             <body class="bano.ducha.LavarseDuchaTerminarPlan"/>
             <trigger>
-                <condition>
-                    $beliefbase.time>=$beliefbase.tiempoFinalizacion
-                </condition>
-                <condition>
-                    $beliefbase.ocupado==TRUE
-                </condition>
+                <messageevent ref="te_has_lavado"/>
             </trigger>
         </plan>
 
