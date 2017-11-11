@@ -1,9 +1,13 @@
 package casa.suelo;
 
+import java.util.ArrayList;
+
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
+import jadex.runtime.impl.RBelief;
 import jadex.runtime.impl.RMessageEvent;
+import ontologia.Accion;
 import ontologia.acciones.DormirSuelo;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
@@ -16,13 +20,14 @@ import ontologia.predicados.HasDormidoSuelo;
  */
 public class DormirSueloTerminarPlan extends Plan {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void body() {
 
 		getGoalbase().getGoal("terminar_dormir_suelo").drop();
-		getBeliefbase().getBelief("tiempo_fin_dormir_suelo").setFact(new Integer(0));
+		
 
-		RMessageEvent peticion = (RMessageEvent) getBeliefbase().getBelief("mensaje_dormir_suelo").getFact();
+		IMessageEvent peticion = (IMessageEvent) ((ArrayList<IMessageEvent>)getBeliefbase().getBelief("mensajes_dormir_suelo").getFact()).get(0);
 		DormirSuelo content = (DormirSuelo) peticion.getContent();
 		HasDormidoSuelo response = new HasDormidoSuelo();
 
@@ -38,6 +43,14 @@ public class DormirSueloTerminarPlan extends Plan {
 		e.setGrado(content.getEnergia().getGrado() + Necesidad.NC_NORMAL);
 		response.setEnergia(e);
 
+		ArrayList<IMessageEvent> arrayMensajes = (ArrayList<IMessageEvent>)getBeliefbase().getBelief("mensajes_dormir_suelo").getFact();
+		arrayMensajes.remove(0);
+		getBeliefbase().getBelief("mensajes_dormir_suelo").setFact(arrayMensajes);
+		
+		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>)getBeliefbase().getBelief("tiempos_dormir_suelo").getFact();
+		arrayTiempos.remove(0);
+		getBeliefbase().getBelief("tiempos_dormir_suelo").setFact(arrayTiempos);
+		
 		IMessageEvent inform = createMessageEvent("has_dormido_suelo");
 		inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
 		inform.setContent(response);

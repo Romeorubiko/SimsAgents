@@ -17,53 +17,54 @@
 		<import>ontologia.*</import>
         <import>jadex.model.IMMessageEvent</import>
 		<import>jadex.runtime.impl.RMessageEvent</import>
+		<import>java.util.ArrayList</import>
     </imports>
 
     <capabilities>
-        <!-- this capability provides easy access to "out-of-the-box"-plans
-             allowing - for example - to register at the DF. -->
         <capability name="dfcap" file="jadex.planlib.DF"/>
     </capabilities>
 
     <beliefs>
         
-        <belief name="mensajes_dormir_suelo" class="ArrayList<RMessageEvent>"/>
-		<belief name="mensajes_orinar_suelo" class="ArrayList<RMessageEvent>"/>
+        
 
         <belief name="tiempo" class="int" updaterate="750">
             <fact> (int)(System.currentTimeMillis()) </fact>
         </belief>
+		
+		<belief name="mensajes_dormir_suelo" class="ArrayList"/>
+		<belief name="mensajes_orinar_suelo" class="ArrayList"/>
 
-        <belief name="tiempo_fin_dormir_suelo" class="int">
-            <fact> (int) 0 </fact>
-        </belief>
-		<belief name="tiempo_fin_orinar_suelo" class="int">
-            <fact> (int) 0 </fact>
-        </belief>
+        <belief name="tiempos_fin_dormir_suelo" class="ArrayList"></belief>
+		<belief name="tiempos_fin_orinar_suelo" class="ArrayList"></belief>
 
     </beliefs>
 
     <goals>
+	
 		<maintaingoal name="terminar_dormir_suelo">
             <maintaincondition>
-				$beliefbase.tiempo_fin_dormir_suelo >= $beliefbase.tiempo
+				$beliefbase.tiempo_fin_dormir_suelo.get(0) >= $beliefbase.tiempo
 			</maintaincondition>
         </maintaingoal>
+		
 		<maintaingoal name="terminar_orinar_suelo">
             <maintaincondition>
-				$beliefbase.tiempo_fin_orinar_suelo >= $beliefbase.tiempo
+				$beliefbase.tiempo_fin_orinar_suelo.get(0) >= $beliefbase.tiempo
 			</maintaincondition>
         </maintaingoal>
-
-        <maintaingoalref name="df_energia_dormir_suelo">
-            <concrete ref="dfcap.df_keep_registered"/>
-        </maintaingoalref>
-        <maintaingoalref name="df_vejiga_orinar_suelo">
-            <concrete ref="dfcap.df_keep_registered"/>
-        </maintaingoalref>
-        <achievegoalref name="df_deregister">
+		
+		<achievegoalref name="df_deregister">
             <concrete ref="dfcap.df_deregister"/>
-        </achievegoalref>
+		</achievegoalref>
+		
+		<maintaingoalref name="df_energia_suelo">
+            <concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		
+		<maintaingoalref name="df_vejiga_suelo">
+            <concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
 		
     </goals>
 
@@ -128,27 +129,27 @@
     </events>
 
     <configurations>
-       <configuration name = "default">
-            <goals>
-                <initialgoal ref="terminar_dormir_suelo"/>
-				<initialgoal ref="terminar_orinar_suelo"/>
-                <initialgoal ref="df_energia_dormir_suelo">
-                    <parameter ref="description">
-                        <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "DormirSuelo"))
-                        </value>
-                    </parameter>
-                </initialgoal>
-                <initialgoal ref="df_vejiga_orinar_suelo">
-                    <parameter ref="description">
-                        <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Vajiga", "OrinarSuelo"))
-                        </value>
-                    </parameter>
-                </initialgoal>
-                <endgoal ref="df_deregister"/>
-            </goals>
-        </configuration>
+       		<configuration name = "default">
+				<goals>
+					<initialgoal ref="terminar_dormir_suelo"/>
+					<initialgoal ref="terminar_orinar_suelo"/>
+					<initialgoal ref="df_energia_suelo">
+						<parameter ref="description">
+							<value>
+								S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "DormirSuelo"))
+							</value>
+						</parameter>
+					</initialgoal>
+					<initialgoal ref="df_vejiga_suelo">
+						<parameter ref="description">
+							<value>
+								S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Vejiga", "OrinarSuelo"))
+							</value>
+						</parameter>
+					</initialgoal>
+					<endgoal ref="df_deregister"/>
+				</goals>
+			</configuration>
     </configurations>
 
     </agent>

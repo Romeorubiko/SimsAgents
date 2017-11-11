@@ -1,5 +1,7 @@
 package casa.suelo;
 
+import java.util.ArrayList;
+
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
@@ -13,13 +15,15 @@ import ontologia.predicados.HasOrinadoSuelo;
 
 public class OrinarSueloTerminarPlan extends Plan {
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void body() {
-
+	public void body() { 
+//		if(((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_orinar_suelo").getFact())).size() == 1){
+//			getGoalbase().getGoal("terminar_orinar_suelo").drop();
+//		}
 		getGoalbase().getGoal("terminar_orinar_suelo").drop();
-		getBeliefbase().getBelief("tiempo_fin_orinar_suelo").setFact(new Integer(0));
 
-		RMessageEvent peticion = (RMessageEvent) getBeliefbase().getBelief("mensaje_orinar_suelo").getFact();
+		IMessageEvent peticion = (IMessageEvent) ((ArrayList<IMessageEvent>)getBeliefbase().getBelief("mensajes_orinar_suelo").getFact()).get(0);
 		OrinarSuelo content = (OrinarSuelo) peticion.getContent();
 		HasOrinadoSuelo response = new HasOrinadoSuelo();
 
@@ -35,11 +39,21 @@ public class OrinarSueloTerminarPlan extends Plan {
 		v.setGrado(content.getVejiga().getGrado() + Necesidad.NC_NORMAL);
 		response.setVejiga(v);
 
+		ArrayList<IMessageEvent> arrayMensajes = (ArrayList<IMessageEvent>)getBeliefbase().getBelief("mensajes_orinar_suelo").getFact();
+		arrayMensajes.remove(0);
+		getBeliefbase().getBelief("mensajes_orinar_suelo").setFact(arrayMensajes);
+		
+		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>)getBeliefbase().getBelief("tiempos_orinar_suelo").getFact();
+		arrayTiempos.remove(0);
+		getBeliefbase().getBelief("tiempos_orinar_suelo").setFact(arrayTiempos);
+		
 		IMessageEvent inform = createMessageEvent("has_orinado_suelo");
 		inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
 		inform.setContent(response);
 		sendMessage(inform);
 
+		
+		
 	}
 
 }

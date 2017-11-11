@@ -1,5 +1,7 @@
 package casa.suelo;
 
+import java.util.ArrayList;
+
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IGoal;
 import jadex.runtime.IMessageEvent;
@@ -20,11 +22,16 @@ public class OrinarSueloPlan extends Plan {
 		agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
 		sendMessage(agree);
 
-		getBeliefbase().getBelief("mensaje_orinar_suelo").setFact(peticion);
-
-		int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_LARGO;
-		getBeliefbase().getBelief("tiempo_fin_orinar_suelo").setFact(new Integer(end_timer));
-
+		@SuppressWarnings("unchecked")
+		ArrayList<IMessageEvent> arrayMensajes = (ArrayList<IMessageEvent>)getBeliefbase().getBelief("mensajes_orinar_suelo").getFact();
+		arrayMensajes.add(agree);
+		getBeliefbase().getBelief("mensajes_orinar_suelo").setFact(arrayMensajes);
+		
+		@SuppressWarnings("unchecked")
+		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>)getBeliefbase().getBelief("tiempos_orinar_suelo").getFact();
+		arrayTiempos.add((int) (System.currentTimeMillis() + Accion.TIEMPO_CORTO));
+		getBeliefbase().getBelief("tiempos_orinar_suelo").setFact(arrayTiempos);
+		
 		IGoal goal = createGoal("terminar_orinar_suelo");
 		dispatchSubgoal(goal);
 
