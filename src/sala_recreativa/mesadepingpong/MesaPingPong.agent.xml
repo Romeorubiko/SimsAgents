@@ -1,0 +1,183 @@
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+                        http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="MesaPingPong"
+       package="salarecreativa.mesadepingpong">
+    
+
+    <imports>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>ontologia.Accion</import>
+        <import>jadex.model.IMMessageEvent</import>
+    </imports>
+
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+
+    <beliefs>
+        <belief name="ocupado_pingpong" class="Boolean">
+            <fact> new Boolean(false)</fact>
+        </belief>
+
+        <belief name="tiempo_pingpong" class="int" updaterate="100">
+            <fact> (int) (System.currentTimeMillis()/1000) </fact>
+        </belief>
+
+        <belief name="tiempo_fin_pingpong" class="int">
+            <fact> (int) 0 </fact>
+        </belief>
+
+        <belief name="mensaje_jugar_pingpong" class="IMessageEvent"/>
+    </beliefs>
+
+
+    <goals>
+        <maintaingoal name="jugar_pingpong_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_pingpong >= $beliefbase.tiempo_pingpong
+            </maintaincondition>
+        </maintaingoal>
+
+        <maintaingoalref name="df_diversion_jugar_pingpong">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_energia_jugar_pingpong">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_deporte_jugar_pingpong">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_interaccionsocial_jugar_pingpong">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_higiene_jugar_pingpong">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+    </goals>
+
+
+    <plans>
+        <plan name="JugarPingpongPregunta">
+            <body class="salarecreativa.mesadepingpong.JugarPingpongPregunta"/>
+            <trigger>
+                <messageevent ref="jugar_pingpong"/>
+            </trigger>
+        </plan>
+
+        <plan name="JugarPingpongRespuesta">
+            <body class="salarecreativa.mesadepingpong.JugarPingpongRespuesta"/>
+            <trigger>
+                <goal ref="jugar_pingpong_tiempo_superado"></goal>
+            </trigger>
+        </plan>
+    </plans>
+
+
+    <events>
+        <messageevent name="jugar_pingpong" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.JugarPingpong"
+                       direction="fixed">
+            </parameter>
+        </messageevent>
+
+        <messageevent name="pingpong_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.bridge.fipa.SFipa.REFUSE</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="pingpong_no_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.bridge.fipa.SFipa.AGREE</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="pingpong_jugado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.bridge.fipa.SFipa.INFORM</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="retar_partido" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.RetarPartido"
+                       direction="fixed">
+            </parameter>
+        </messageevent>
+
+        <messageevent name="pingpong_fallido" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.PingpongFallido"/>
+        </messageevent>
+    </events>
+
+
+
+    <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="jugar_pingpong_tiempo_superado"/>
+
+                <initialgoal ref="df_diversion_jugar_pingpong">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "JugarPingpong", "MesaPingPong"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+
+                <initialgoal ref="df_energia_jugar_pingpong">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Energia", "JugarPingpong", "MesaPingPong"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+
+                <initialgoal ref="df_interaccionsocial_jugar_pingpong">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("InteraccionSocial", "JugarPingpong", "MesaPingPong"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+
+                <initialgoal ref="df_higiene_jugar_pingpong">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Higiene", "JugarPingpong", "MesaPingPong"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+
+                <initialgoal ref="df_deporte_jugar_pingpong">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Deporte", "JugarPingpong", "MesaPingPong"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+            </goals>
+        </configuration>
+    </configurations>
+
+</agent>
