@@ -1,21 +1,12 @@
 package bano.espejo;
-import ontologia.Accion;
-import ontologia.acciones.*;
+
 import ontologia.conceptos.habilidades.Carisma;
 import ontologia.conceptos.habilidades.Habilidad;
 import ontologia.conceptos.necesidades.Energia;
-import ontologia.conceptos.necesidades.Higiene;
 import ontologia.conceptos.necesidades.Necesidad;
-import ontologia.predicados.DuchaEstropeada;
 import ontologia.predicados.EspejoUsado;
-import ontologia.predicados.OrdenadorEstropeadoNavegarInternet;
-import ontologia.predicados.TeHasLavado;
 
-import java.util.*;
 import jadex.runtime.*;
-import jadex.runtime.impl.RMessageEvent;
-import jadex.adapter.fipa.*;
-
 
 
 public class UsarEspejoTerminarPlan extends Plan {

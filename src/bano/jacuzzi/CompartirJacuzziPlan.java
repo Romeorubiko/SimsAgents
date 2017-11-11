@@ -1,18 +1,13 @@
 package bano.jacuzzi;
+
 import ontologia.Accion;
 import ontologia.acciones.*;
 import ontologia.conceptos.necesidades.Energia;
-import ontologia.conceptos.necesidades.Higiene;
 import ontologia.conceptos.necesidades.InteraccionSocial;
-import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.JacuzziEstropeadoCompartir;
-import ontologia.predicados.TeHasLavado;
 
-import java.util.*;
 import jadex.runtime.*;
 import jadex.runtime.impl.RMessageEvent;
-import jadex.adapter.fipa.*;
-
 
 
 public class CompartirJacuzziPlan extends Plan {
@@ -27,20 +22,20 @@ public class CompartirJacuzziPlan extends Plan {
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
         Boolean estropeado = (Boolean)getBeliefbase().getBelief("estropeado").getFact();
         
-        if(ocupado.booleanValue()) {
+        if(ocupado) {
             IMessageEvent respuesta = createMessageEvent("jacuzzi_ocupado");
             respuesta.setContent(content);
             sendMessage(respuesta);
         }
-        else if (estropeado.booleanValue()) {
-            IMessageEvent respuesta = createMessageEvent("ducha_estropeada");
+        else if (estropeado) {
+            IMessageEvent respuesta = createMessageEvent("jacuzzi_estropeado");
             JacuzziEstropeadoCompartir response = new JacuzziEstropeadoCompartir();
             
             response.setInteraccionSocial(interaccionsocial);
             response.setEnergia(energia);
             sendMessage(respuesta);
         }
-        else if (((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1<=0){
+        else if (((Integer) getBeliefbase().getBelief("obsolescencia").getFact()) - 1<=0){
             getBeliefbase().getBelief("estropeado").setFact(Boolean.TRUE);
             IMessageEvent respuesta = createMessageEvent("jacuzzi_estropeado");
             JacuzziEstropeadoCompartir response = new JacuzziEstropeadoCompartir();
@@ -50,18 +45,17 @@ public class CompartirJacuzziPlan extends Plan {
         }
         else {
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
-            int obsolescencia = ((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1;
-            getBeliefbase().getBelief("obsolescencia").setFact(new Integer (obsolescencia));
+            int obsolescencia = ((Integer) getBeliefbase().getBelief("obsolescencia").getFact()) - 1;
+            getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia);
             int grado_interaccionsocial = content.getInteraccionSocial().getGrado();
             int grado_energia = content.getEnergia().getGrado();
             int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
 
            
-            getBeliefbase().getBelief("higiene").setFact(new Integer(grado_interaccionsocial));
-            getBeliefbase().getBelief("energia").setFact(new Integer(grado_energia));
-            getBeliefbase().getBelief("tiempoFinalizacion").setFact(new Integer(end_timer));
+            getBeliefbase().getBelief("higiene").setFact(grado_interaccionsocial);
+            getBeliefbase().getBelief("energia").setFact(grado_energia);
+            getBeliefbase().getBelief("tiempoFinalizacion").setFact(end_timer);
 
         }
-       
-}
+    }
 }
