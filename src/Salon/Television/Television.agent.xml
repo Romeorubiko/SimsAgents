@@ -54,7 +54,6 @@
 		
 	</beliefs>
 	<goals>
-
 		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha visto la TV  se ejecute el segundo plan con el request-->
 		<maintaingoal name="ver_tv_tiempo_superado">
 			<maintaincondition>
@@ -70,19 +69,7 @@
 		</maintaingoal>
 
 		<!-- Objetivos para registrar los servicios que ofrece el agente en el DF y los correspondientes recursos y habilidades que modifica-->
-		<maintaingoalref name="df_energia_ejercicio_tv">
-			<concrete ref="dfcap.df_keep_registered"/>
-		</maintaingoalref>
-
 		<maintaingoalref name="df_diversion_ejercicio_tv">
-			<concrete ref="dfcap.df_keep_registered"/>
-		</maintaingoalref>
-
-		<maintaingoalref name="df_higiene_ejercicio_tv">
-			<concrete ref="dfcap.df_keep_registered"/>
-		</maintaingoalref>
-
-		<maintaingoalref name="df_hambre_ejercicio_tv">
 			<concrete ref="dfcap.df_keep_registered"/>
 		</maintaingoalref>
 
@@ -91,10 +78,6 @@
 		</maintaingoalref>
 
 		<maintaingoalref name="df_diversion_ver_tv">
-			<concrete ref="dfcap.df_keep_registered"/>
-		</maintaingoalref>
-
-		<maintaingoalref name="df_energia_ver_tv">
 			<concrete ref="dfcap.df_keep_registered"/>
 		</maintaingoalref>
 
@@ -215,15 +198,6 @@ direction="fixed">
 	<configurations>
 		<configuration name="default">
 			<goals>
-				<initialgoal ref="df_energia_ejercicio_tv">
-					<parameter ref="description">
-						<value>
-							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Energia", "EjercicioTV", "Television"))
-						</value>
-					</parameter>
-				</initialgoal>
-
 				<initialgoal ref="df_diversion_ejercicio_tv">
 					<parameter ref="description">
 						<value>
@@ -233,38 +207,11 @@ direction="fixed">
 					</parameter>
 				</initialgoal>
 
-				<initialgoal ref="df_higiene_ejercicio_tv">
-					<parameter ref="description">
-						<value>
-							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Higiene", "EjercicioTV", "Television"))
-						</value>
-					</parameter>
-				</initialgoal>
-
-				<initialgoal ref="df_hambre_ejercicio_tv">
-					<parameter ref="description">
-						<value>
-							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Hambre", "EjercicioTV", "Television"))
-						</value>
-					</parameter>
-				</initialgoal>
-
 				<initialgoal ref="df_deporte_ejercicio_tv">
 					<parameter ref="description">
 						<value>
 							SFipa.createAgentDescription(null,
 							SFipa.createServiceDescription("Deporte", "EjercicioTV", "Television"))
-						</value>
-					</parameter>
-				</initialgoal>
-
-				<initialgoal ref="df_energia_ver_tv">
-					<parameter ref="description">
-						<value>
-							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Energia", "VerTV", "Television"))
 						</value>
 					</parameter>
 				</initialgoal>

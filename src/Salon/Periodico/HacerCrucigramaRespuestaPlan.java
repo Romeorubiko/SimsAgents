@@ -41,31 +41,31 @@ public class HacerCrucigramaRespuestaPlan extends Plan {
         Energia energia= content.getEnergia();
         Logica logica= content.getLogica();
 
-	        /*
-	         * Diversión
-	         */
-            diversion.setGrado(content.getDiversion().getGrado()+ Necesidad.NC_NORMAL);
-            content.setDiversion(diversion);
+        /*
+         * Diversión
+         */
+        diversion.setGrado(content.getDiversion().getGrado()+ Necesidad.NC_NORMAL);
+        content.setDiversion(diversion);
 
-			/*
-	         * Energía
-	         */
-            energia.setGrado(content.getEnergia().getGrado()- Necesidad.NC_POCO);
-            content.setEnergia(energia);
+        /*
+         * Energía
+         */
+        energia.setGrado(content.getEnergia().getGrado()- Necesidad.NC_POCO);
+        content.setEnergia(energia);
 
-			/*
-	         * Lógica
-	         */
-            logica.setExperiencia(content.getLogica().getExperiencia()+ Habilidad.HB_NORMAL);
-            content.setLogica(logica);
+        /*
+         * Lógica
+         */
+        logica.setExperiencia(content.getLogica().getExperiencia()+ Habilidad.HB_NORMAL);
+        content.setLogica(logica);
 
 
-            IMessageEvent inform = createMessageEvent("has_hecho_crucigrama");
-            HasHechoCrucigrama hasHechoCrucigrama= new HasHechoCrucigrama(energia,diversion,logica);
-            inform.setContent(hasHechoCrucigrama);
-            inform.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
-            sendMessage(inform);
-            creenciaOcupado.setFact(false);
+        IMessageEvent inform = createMessageEvent("has_hecho_crucigrama");
+        HasHechoCrucigrama hasHechoCrucigrama= new HasHechoCrucigrama(energia,diversion,logica);
+        inform.setContent(hasHechoCrucigrama);
+        inform.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
+        sendMessage(inform);
+        creenciaOcupado.setFact(false);
 
     }
 }

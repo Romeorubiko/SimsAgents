@@ -43,7 +43,6 @@
 	</beliefs>
 
 	<goals>
-
 		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha leido el periodico se ejecute el segundo plan -->
 		<maintaingoal name="leer_periodico_tiempo_superado">
 			<maintaincondition>
@@ -63,10 +62,6 @@
 			<concrete ref="dfcap.df_keep_registered"/>
 		</maintaingoalref>
 
-		<maintaingoalref name="df_energia_leer_periodico">
-			<concrete ref="dfcap.df_keep_registered"/>
-		</maintaingoalref>
-
 		<maintaingoalref name="df_escritura_leer_periodico">
 			<concrete ref="dfcap.df_keep_registered"/>
 		</maintaingoalref>
@@ -75,14 +70,9 @@
 			<concrete ref="dfcap.df_keep_registered"/>
 		</maintaingoalref>
 
-		<maintaingoalref name="df_energia_hacer_crucigrama">
-			<concrete ref="dfcap.df_keep_registered"/>
-		</maintaingoalref>
-
 		<maintaingoalref name="df_logica_hacer_crucigrama">
 			<concrete ref="dfcap.df_keep_registered"/>
 		</maintaingoalref>
-
 	</goals>
 	<plans>
 		<!-- Primer plan leer el periódico. Recibe el request del Sim y evalúa si aceptarlo o no-->
@@ -126,7 +116,6 @@
 			<parameter name="content" class="LeerPeriodicoPreguntaPlan"
 					   direction="fixed">
 			</parameter>
-
 		</messageevent>
 
 		<messageevent name="hacer_crucigrama" direction="receive" type="fipa">
@@ -136,7 +125,6 @@
 			<parameter name="content" class="HacerCrucigramaPreguntaPlan"
 					   direction="fixed">
 			</parameter>
-
 		</messageevent>
 
 		<messageevent name="periodico_ocupado" direction="send" type="fipa">
@@ -177,15 +165,6 @@
 					</parameter>
 				</initialgoal>
 
-				<initialgoal ref="df_energia_leer_periodico">
-					<parameter ref="description">
-						<value>
-							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Energia", "LeerPeriodico", "Periodico"))
-						</value>
-					</parameter>
-				</initialgoal>
-
 				<initialgoal ref="df_escritura_leer_periodico">
 					<parameter ref="description">
 						<value>
@@ -204,15 +183,6 @@
 					</parameter>
 				</initialgoal>
 
-				<initialgoal ref="df_energia_hacer_crucigrama">
-					<parameter ref="description">
-						<value>
-							SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Energia", "HacerCrucigrama", "Periodico"))
-						</value>
-					</parameter>
-				</initialgoal>
-
 				<initialgoal ref="df_logica_hacer_crucigrama">
 					<parameter ref="description">
 						<value>
@@ -221,9 +191,6 @@
 						</value>
 					</parameter>
 				</initialgoal>
-
-
-
 			</goals>
 		</configuration>
 	</configurations>
