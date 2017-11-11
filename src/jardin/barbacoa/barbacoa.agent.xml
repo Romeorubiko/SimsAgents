@@ -46,14 +46,14 @@
         </belief>
 
         <belief name="obsolescencia" class="Integer">
-            <fact>new Integer(15)</fact>
+            <fact>new Integer(100)</fact>
         </belief>
 
         <belief name="mensaje_cocinar_barbacoa" class="RMessageEvent"/>
         <belief name="mensaje_reparar_barbacoa" class="RMessageEvent"/>
 
-        <belief name="tiempo" class="int" updaterate="750">
-            <fact>(int)(System.currentTimeMillis())</fact>
+        <belief name="tiempo" class="int">
+            <fact>(int)(System.currentTimeMillis()/1000)</fact>
         </belief>
 
         <belief name="tiempo_fin_cocinar_barbacoa" class="int">
