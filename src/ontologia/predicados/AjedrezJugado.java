@@ -14,6 +14,9 @@ public class AjedrezJugado extends Predicado {
     public AjedrezJugado() {
     }
 
+    public AjedrezJugado(Energia energia, Diversion diversion, InteraccionSocial interaccionsocial, Logica logica) {
+    }
+
     public Energia getEnergia() {
         return energia;
     }

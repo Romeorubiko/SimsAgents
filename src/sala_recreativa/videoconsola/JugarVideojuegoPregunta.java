@@ -33,7 +33,7 @@ public class JugarVideojuegoPregunta extends Plan {
         } else {
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
             getBeliefbase().getBelief("mensaje").setFact(peticion);
-            int tiempo = (int) getBeliefbase().getBelief("tiempo").getFact();
+            int tiempo = ((Integer) getBeliefbase().getBelief("tiempo2").getFact()).intValue();
             getBeliefbase().getBelief("tiempo_fin").setFact(tiempo + Accion.TIEMPO_MEDIO);
             Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact();
 

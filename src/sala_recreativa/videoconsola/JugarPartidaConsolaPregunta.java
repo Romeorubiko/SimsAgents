@@ -38,7 +38,7 @@ public class JugarPartidaConsolaPregunta extends Plan {
         } else {
             getBeliefbase().getBelief("ocupado2").setFact(Boolean.TRUE);
             getBeliefbase().getBelief("mensaje2").setFact(peticion);
-            int tiempo = (int) getBeliefbase().getBelief("tiempo2").getFact();
+            int tiempo = ((Integer) getBeliefbase().getBelief("tiempo2").getFact()).intValue();
             getBeliefbase().getBelief("tiempo_fin").setFact(tiempo + Accion.TIEMPO_MEDIO);
             Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact();
 
