@@ -13,9 +13,9 @@ import ontologia.predicados.LlamadaFallida;
 
 public class LlamarSimPreguntaPlan extends Plan {
 
-	/**
-	 *  Plan body.
-	 */
+	public LlamarSimPreguntaPlan() {
+	}
+	
 	public void body()
 	{
 		/* Obtención del request que inicia el plan */

@@ -13,9 +13,9 @@ import ontologia.predicados.HasLlamado;
 
 public class LlamarSimRespuestaPlan extends Plan {
 
-	/**
-	 * Plan body.
-	 */
+	public LlamarSimRespuestaPlan() {	
+	}
+	
 	public void body() {
 		/* Obtención de las creencias */
 		RBelief creenciaOcupado = (RBelief) getBeliefbase().getBelief("telefono_ocupado");

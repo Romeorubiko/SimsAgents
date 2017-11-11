@@ -2,7 +2,6 @@ package Salon.Telefono;
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.*;
 import jadex.runtime.impl.RBelief;
-import jadex.runtime.impl.RBeliefbase;
 import ontologia.acciones.GastarBromaTel;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
@@ -10,9 +9,9 @@ import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.HasGastadoBroma;
 public class GastarBromaRespuestaPlan extends Plan {
 
-	/**
-	 *  Plan body.
-	 */
+	public GastarBromaRespuestaPlan() {
+	}
+	
 	public void body() {
 		/* Obtención de las creencias */
 		RBelief creenciaOcupado = (RBelief) getBeliefbase().getBelief("telefono_ocupado");

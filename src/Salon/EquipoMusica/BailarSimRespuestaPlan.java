@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.*;
 import jadex.runtime.impl.RBelief;
-import ontologia.acciones.Bailar;
+import ontologia.acciones.BailarConSim;
 import ontologia.conceptos.Musica;
 import ontologia.conceptos.Musica.TiposMusica;
 import ontologia.conceptos.habilidades.Deporte;
@@ -14,12 +14,13 @@ import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Hambre;
 import ontologia.conceptos.necesidades.Higiene;
+import ontologia.conceptos.necesidades.InteraccionSocial;
 import ontologia.conceptos.necesidades.Necesidad;
-import ontologia.predicados.HasBailado;
+import ontologia.predicados.HasBailadoSim;
 
-public class BailarRespuestaPlan extends Plan {
+public class BailarSimRespuestaPlan extends Plan {
 
-	public BailarRespuestaPlan() {
+	public BailarSimRespuestaPlan() {
 	}
 
 	public void body() {
@@ -27,14 +28,15 @@ public class BailarRespuestaPlan extends Plan {
 		 * Se coge el mensaje de la primera posicion del array de mensajes guardado en
 		 * la creencia correspondiente
 		 */
-		RBelief creenciaMensajes = (RBelief) getBeliefbase().getBelief("mensajes_bailar");
+		RBelief creenciaMensajes = (RBelief) getBeliefbase().getBelief("mensajes_bailar_sim");
 		@SuppressWarnings("unchecked")
 		ArrayList<IMessageEvent> arrayMensajes = (ArrayList<IMessageEvent>) creenciaMensajes.getFact();
 		IMessageEvent request = arrayMensajes.get(0);
 
 		/* Se obtienen los recursos del Sim del mensaje */
-		Bailar content = (Bailar) request.getContent();
+		BailarConSim content = (BailarConSim) request.getContent();
 		Musica musicaPedida = content.getMusica();
+		InteraccionSocial interaccion = content.getInteraccionSocial();
 		Energia energia = content.getEnergia();
 		Higiene higiene = content.getHigiene();
 		Hambre hambre = content.getHambre();
@@ -91,14 +93,17 @@ public class BailarRespuestaPlan extends Plan {
 			content.setDeporte(fisico);
 		}
 
+		interaccion.setGrado(content.getInteraccionSocial().getGrado() + Necesidad.NC_POCO);
+		content.setInteraccionSocial(interaccion);
+
 		/*
 		 * Envío del mensaje al Sim informándole de que ha bailado con éxito a través
 		 * del predicado correspondiente
 		 */
-		IMessageEvent inform = createMessageEvent("has_bailado");
-		HasBailado hasBailado = new HasBailado(energia, higiene, diversion, hambre, fisico);
+		IMessageEvent inform = createMessageEvent("has_bailado_sim");
+		HasBailadoSim hasBailadoSim = new HasBailadoSim(interaccion, energia, higiene, diversion, hambre, fisico);
 		inform.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
-		inform.setContent(hasBailado);
+		inform.setContent(hasBailadoSim);
 		sendMessage(inform);
 
 		/* Actualización de las creencias del equipo de música */
@@ -117,7 +122,7 @@ public class BailarRespuestaPlan extends Plan {
 		arrayMensajes.remove(0);
 		creenciaMensajes.setFact(arrayMensajes);
 
-		RBelief creenciaTiempo = (RBelief) getBeliefbase().getBelief("tiempos_fin_bailar");
+		RBelief creenciaTiempo = (RBelief) getBeliefbase().getBelief("tiempos_fin_bailar_sim");
 		@SuppressWarnings("unchecked")
 		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) creenciaTiempo.getFact();
 		arrayTiempos.remove(0);
@@ -131,11 +136,11 @@ public class BailarRespuestaPlan extends Plan {
 
 		/*
 		 * Si el array de tiempos está vacío, significa que no hay más sims bailando
-		 * SOLOS (puede haberlos bailando juntos) por lo tanto el objetivo
+		 * acompañados (puede haberlos bailando solos) por lo tanto el objetivo
 		 * correspondiente de desactiva
 		 */
 		if (arrayTiempos.isEmpty()) {
-			getGoalbase().getGoal("bailar_tiempo_superado").drop();
+			getGoalbase().getGoal("bailar_sim_tiempo_superado").drop();
 		}
 	}
 

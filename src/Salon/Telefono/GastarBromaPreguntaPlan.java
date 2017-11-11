@@ -8,19 +8,15 @@ import jadex.runtime.impl.RBelief;
 import jadex.runtime.impl.RBeliefbase;
 import ontologia.Accion;
 import ontologia.acciones.GastarBromaTel;
-import ontologia.acciones.LlamarSim;
-import ontologia.conceptos.habilidades.Carisma;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
-import ontologia.conceptos.necesidades.InteraccionSocial;
 import ontologia.predicados.BromaFallida;
-import ontologia.predicados.LlamadaFallida;
 
 public class GastarBromaPreguntaPlan extends Plan {
 
-	/**
-	 * Plan body.
-	 */
+	public GastarBromaPreguntaPlan() {
+	}
+	
 	public void body() {
 		/* Obtención del request que inicia el plan */
 		IMessageEvent request = (IMessageEvent) getInitialEvent();

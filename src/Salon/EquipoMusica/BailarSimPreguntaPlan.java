@@ -5,25 +5,27 @@ import jadex.adapter.fipa.SFipa;
 import jadex.runtime.*;
 import jadex.runtime.impl.RBelief;
 import ontologia.Accion;
-import ontologia.acciones.Bailar;
+import ontologia.acciones.BailarConSim;
 import ontologia.conceptos.Musica;
 import ontologia.conceptos.habilidades.Deporte;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Hambre;
 import ontologia.conceptos.necesidades.Higiene;
-import ontologia.predicados.EquipoEstropeadoBailando;
+import ontologia.conceptos.necesidades.InteraccionSocial;
+import ontologia.predicados.EquipoEstropeadoBailandoSim;
 
-public class BailarPreguntaPlan extends Plan {
+public class BailarSimPreguntaPlan extends Plan {
 
-	public BailarPreguntaPlan() {
+	public BailarSimPreguntaPlan() {
 	}
 
 	public void body() {
 		/* Se obtiene el contenido del request */
 		IMessageEvent request = (IMessageEvent) getInitialEvent();
-		Bailar content = (Bailar) request.getContent();
+		BailarConSim content = (BailarConSim) request.getContent();
 		Musica musicaPedida = content.getMusica();
+		InteraccionSocial interaccion = content.getInteraccionSocial();
 		Energia energia = content.getEnergia();
 		Higiene higiene = content.getHigiene();
 		Hambre hambre = content.getHambre();
@@ -68,9 +70,9 @@ public class BailarPreguntaPlan extends Plan {
 					creenciaMusicaSonando.setFact(null);
 				}
 				/* Mensaje de failure enviado con el predicado correspondiente */
-				IMessageEvent failure = createMessageEvent("equipo_estropeado_bailando");
-				EquipoEstropeadoBailando equipoEstropeado = new EquipoEstropeadoBailando(energia, diversion, higiene,
-						hambre, fisico);
+				IMessageEvent failure = createMessageEvent("equipo_estropeado_bailando_sim");
+				EquipoEstropeadoBailandoSim equipoEstropeado = new EquipoEstropeadoBailandoSim(interaccion, energia,
+						diversion, higiene, hambre, fisico);
 				failure.setContent(equipoEstropeado);
 				failure.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 				sendMessage(failure);
@@ -92,10 +94,10 @@ public class BailarPreguntaPlan extends Plan {
 				 * están a la espera de que se modifiquen sus recursos
 				 */
 
-				RBelief creenciaMensajes = (RBelief) getBeliefbase().getBelief("mensajes_bailar");
+				RBelief creenciaMensajes = (RBelief) getBeliefbase().getBelief("mensajes_bailar_sim");
 				@SuppressWarnings("unchecked")
 				ArrayList<IMessageEvent> arrayMensajes = (ArrayList<IMessageEvent>) creenciaMensajes.getFact();
-				RBelief creenciaTiemposFin = (RBelief) getBeliefbase().getBelief("tiempos_bailar");
+				RBelief creenciaTiemposFin = (RBelief) getBeliefbase().getBelief("tiempos_bailar_sim");
 				@SuppressWarnings("unchecked")
 				ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) creenciaTiemposFin.getFact();
 
@@ -117,7 +119,7 @@ public class BailarPreguntaPlan extends Plan {
 
 				/* Si es el primero en bailar se lanza el objetivo */
 				if (simsBailando == 1) {
-					IGoal goal = createGoal("bailar_tiempo_superado");
+					IGoal goal = createGoal("bailar_sim_tiempo_superado");
 					dispatchTopLevelGoal(goal);
 				}
 
