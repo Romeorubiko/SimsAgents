@@ -22,10 +22,6 @@ public class DormirSueloPlan extends Plan {
 	public void body() {
 		RMessageEvent peticion = ((RMessageEvent) getInitialEvent());
 
-		IMessageEvent agree = createMessageEvent("suelo_no_ocupado");
-		agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
-		sendMessage(agree);
-
 		ArrayList<IMessageEvent> arrayMensajes = (ArrayList<IMessageEvent>) getBeliefbase()
 				.getBelief("mensajes_dormir_suelo").getFact();
 		arrayMensajes.add(agree);
