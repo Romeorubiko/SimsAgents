@@ -5,6 +5,7 @@ import jadex.runtime.IGoal;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import ontologia.Accion;
+import ontologia.acciones.LeerLibro;
 
 import java.util.ArrayList;
 
@@ -16,9 +17,11 @@ public class LeerLibroPreguntaPlan extends Plan {
     @Override
     public void body() {
         IMessageEvent peticion = ((IMessageEvent) getInitialEvent());
+        LeerLibro content = (LeerLibro) peticion.getContent();
 
         if (getBeliefbase().getBelief("ocupado_estanteria").getFact().equals(Boolean.TRUE)) {
             IMessageEvent refuse = createMessageEvent("refuse_estanteria");
+            refuse.setContent(content);
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         } else {
@@ -26,6 +29,7 @@ public class LeerLibroPreguntaPlan extends Plan {
             int tiempo = (int) getBeliefbase().getBelief("tiempo_estanteria").getFact();
 
             IMessageEvent agree = createMessageEvent("agree_estanteria");
+            agree.setContent(content);
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 

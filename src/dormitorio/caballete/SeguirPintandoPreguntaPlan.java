@@ -17,6 +17,7 @@ public class SeguirPintandoPreguntaPlan extends Plan {
     @Override
     public void body() {
         IMessageEvent peticion = ((IMessageEvent) getInitialEvent());
+        SeguirPintando content = (SeguirPintando) peticion.getContent();
 
         if (getBeliefbase().getBelief("cuadro_instalado").getFact() == null) {
             System.out.println("No hay un cuadro instalado en el caballete.");
@@ -26,6 +27,7 @@ public class SeguirPintandoPreguntaPlan extends Plan {
         } else {
             if (getBeliefbase().getBelief("ocupado_caballete").getFact().equals(Boolean.TRUE)) {
                 IMessageEvent refuse = createMessageEvent("refuse_caballete");
+                refuse.setContent(content);
                 refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(refuse);
             } else {
@@ -33,7 +35,9 @@ public class SeguirPintandoPreguntaPlan extends Plan {
                 getBeliefbase().getBelief("mensaje_caballete").setFact(peticion);
                 int tiempo = (int) getBeliefbase().getBelief("tiempo_caballete").getFact();
                 getBeliefbase().getBelief("tiempo_fin_caballete").setFact(tiempo + Accion.TIEMPO_MEDIO);
+
                 IMessageEvent agree = createMessageEvent("agree_caballete");
+                agree.setContent(content);
                 agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(agree);
 

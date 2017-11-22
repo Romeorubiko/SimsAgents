@@ -33,11 +33,13 @@ public class SacarFotoPreguntaPlan extends Plan {
 
         if (obsolescencia <= 0) {
             IMessageEvent refuse = createMessageEvent("camara_estropeada_sacar_foto");
+            refuse.setContent(content);
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         } else {
             if (ocupado) {
                 IMessageEvent refuse = createMessageEvent("refuse_camara");
+                refuse.setContent(content);
                 refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(refuse);
             } else {
@@ -48,6 +50,7 @@ public class SacarFotoPreguntaPlan extends Plan {
 
 
                 IMessageEvent agree = createMessageEvent("agree_camara");
+                agree.setContent(content);
                 agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(agree);
 

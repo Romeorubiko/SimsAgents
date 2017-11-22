@@ -23,6 +23,7 @@ public class PintarNuevoCuadroPreguntaPlan extends Plan {
         if (getBeliefbase().getBelief("cuadro_instalado").getFact() != null) {
             System.out.println("No es posible pintar un cuadro nuevo ya que hay un cuadro instalado en el caballete.");
             IMessageEvent refuse = createMessageEvent("refuse_caballete");
+            refuse.setContent(content);
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         } else {
@@ -33,6 +34,7 @@ public class PintarNuevoCuadroPreguntaPlan extends Plan {
             getBeliefbase().getBelief("tiempo_fin_caballete").setFact(tiempo + Accion.TIEMPO_MEDIO);
 
             IMessageEvent agree = createMessageEvent("agree_caballete");
+            agree.setContent(content);
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 
