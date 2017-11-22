@@ -26,9 +26,7 @@ public class SacarFotoPreguntaPlan extends Plan {
         IMessageEvent peticion = ((IMessageEvent) getInitialEvent());
         SacarFoto content = (SacarFoto) peticion.getContent();
 
-        Foto foto = content.getFoto();
         Boolean ocupado = (Boolean) getBeliefbase().getBelief("ocupado_camara").getFact();
-        // Disminuye en uno la cantidad de usos restantes hasta el deterioro de la cámara.
         Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia_camara").getFact();
 
         if (obsolescencia <= 0) {
@@ -45,9 +43,9 @@ public class SacarFotoPreguntaPlan extends Plan {
             } else {
                 getBeliefbase().getBelief("ocupado_camara").setFact(Boolean.TRUE);
                 getBeliefbase().getBelief("mensaje_camara").setFact(peticion);
+
                 int tiempo = (int) getBeliefbase().getBelief("tiempo_foto").getFact();
                 getBeliefbase().getBelief("tiempo_fin_foto").setFact(tiempo + Accion.TIEMPO_MEDIO);
-
 
                 IMessageEvent agree = createMessageEvent("agree_camara");
                 agree.setContent(content);

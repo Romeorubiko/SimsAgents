@@ -17,7 +17,7 @@
         <capability name="dfcap" file="jadex.planlib.DF"/>
     </capabilities>
     <beliefs>
-        <belief name="ocupado_camaraFoto" class="Boolean">
+        <belief name="ocupado_camara" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
         <belief name="tiempo_foto" class="int" updaterate="100">
@@ -27,7 +27,7 @@
         <belief name="tiempo_fin_foto" class="int">
             <fact>(int) 0</fact>
         </belief>
-        <belief name="mensaje_camaraFoto" class="IMessageEvent"/>
+        <belief name="mensaje_camara" class="IMessageEvent"/>
         <belief name="obsolescencia" class="Integer">
             <fact>new Integer(100)</fact>
         </belief>
@@ -39,6 +39,11 @@
             </maintaincondition>
         </maintaingoal>
         <maintaingoal name="sacar_foto_retrato_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_foto >= $beliefbase.tiempo_foto
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="reparar_camara_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin_foto >= $beliefbase.tiempo_foto
             </maintaincondition>
@@ -56,6 +61,9 @@
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_interaccionSocial_sacar_foto_retrato">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_mecanica_reparar_camara">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
     </goals>
@@ -87,6 +95,20 @@
                 <goal ref="sacar_foto_retrato_tiempo_superado"/>
             </trigger>
         </plan>
+
+        <plan name="RepararCamaraPreguntaPlan">
+            <body class="dormitorio.camara.RepararCamaraPreguntaPlan"/>
+            <trigger>
+                <messageevent ref="request_reparar_camara"/>
+            </trigger>
+        </plan>
+
+        <plan name="RepararCamaraRespuestaPlan">
+            <body class="dormitorio.camara.RepararCamaraRespuestaPlan"/>
+            <trigger>
+                <goal ref="reparar_camara_tiempo_superado"/>
+            </trigger>
+        </plan>
     </plans>
     <events>
         <messageevent name="request_foto" direction="receive" type="fipa">
@@ -96,7 +118,23 @@
             <parameter name="content" class="ontologia.acciones.SacarFoto"/>
         </messageevent>
 
+        <messageevent name="request_reparar_camara" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.RepararCamara"/>
+        </messageevent>
+
         <messageevent name="foto_realizada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="camara_reparada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
@@ -174,6 +212,15 @@
                 <value>SFipa.NUGGETS_XML</value>
             </parameter>
         </messageevent>
+
+        <messageevent name="refuse_camara_no_estropeada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
     </events>
     <configurations>
         <configuration name="default">
@@ -211,11 +258,18 @@
                     </parameter>
                 </initialgoal>
                 <initialgoal ref="df_interaccionSocial_sacar_foto_retrato">
-
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
                             SFipa.createServiceDescription("InteraccionSocial", "SacarFotoRetrato",""))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_mecanica_reparar_camara">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Mecanica", "RepararCamara",""))
                         </value>
                     </parameter>
                 </initialgoal>
