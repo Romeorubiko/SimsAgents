@@ -166,7 +166,7 @@
             </parameter>
         </messageevent>
 
-        <messageevent name="refuse_camara" direction="send" type="fipa">
+        <messageevent name="refuse_camara_ocupada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
             </parameter>

@@ -19,8 +19,6 @@ import ontologia.predicados.CamaraEstropeadaSacarFotoRetrato;
 import ontologia.predicados.FotoRealizada;
 
 public class SacarFotoRetratoPreguntaPlan extends Plan {
-    //TENER EN CUENTA DONDE RESTAMOS LA OBSOLESCENCIA !.
-
     public SacarFotoRetratoPreguntaPlan() {
     }
 
@@ -36,19 +34,19 @@ public class SacarFotoRetratoPreguntaPlan extends Plan {
         Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia_camara").getFact();
 
         if (obsolescencia <= 0) {
-            IMessageEvent refuse = createMessageEvent("camara_estropeada_sacar_foto_retrato");
-            refuse.setContent(content);
-            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
-            sendMessage(refuse);
+            IMessageEvent failure = createMessageEvent("camara_estropeada_sacar_foto_retrato");
+            failure.setContent(content);
+            failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            sendMessage(failure);
         } else {
             if (ocupado) {
                 //Camara ocupada
-                IMessageEvent refuse = createMessageEvent("refuse_camara");
+                IMessageEvent refuse = createMessageEvent("refuse_camara_ocupada");
                 refuse.setContent(content);
                 refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(refuse);
             } else {
-                //Si capara libre pregunto si el otro sim quiere posar conmigo
+                //Si camara libre pregunto si el otro sim quiere posar conmigo
                 IMessageEvent posar = createMessageEvent("posar");
                 IMessageEvent respuestaOtroSim = sendMessageAndWait(posar);
                 if (respuestaOtroSim.getParameter("performative").getValue().equals(SFipa.AGREE)) {

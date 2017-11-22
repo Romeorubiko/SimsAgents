@@ -8,6 +8,8 @@ import ontologia.Accion;
 import ontologia.acciones.PintarNuevoCuadro;
 import ontologia.acciones.SeguirPintando;
 import ontologia.conceptos.Cuadro;
+import ontologia.predicados.CaballeteOcupado;
+import ontologia.predicados.CuadroInstalado;
 
 public class SeguirPintandoPreguntaPlan extends Plan {
 
@@ -21,13 +23,14 @@ public class SeguirPintandoPreguntaPlan extends Plan {
 
         if (getBeliefbase().getBelief("cuadro_instalado").getFact() == null) {
             System.out.println("No hay un cuadro instalado en el caballete.");
-            IMessageEvent refuse = createMessageEvent("refuse_caballete");
+            IMessageEvent refuse = createMessageEvent("refuse_cuadro_instalado");
+            refuse.setContent(new CuadroInstalado());
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         } else {
             if (getBeliefbase().getBelief("ocupado_caballete").getFact().equals(Boolean.TRUE)) {
-                IMessageEvent refuse = createMessageEvent("refuse_caballete");
-                refuse.setContent(content);
+                IMessageEvent refuse = createMessageEvent("refuse_caballete_ocupado");
+                refuse.setContent(new CaballeteOcupado());
                 refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(refuse);
             } else {

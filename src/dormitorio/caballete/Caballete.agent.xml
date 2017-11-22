@@ -119,7 +119,15 @@
                 <value>SFipa.NUGGETS_XML</value>
             </parameter>
         </messageevent>
-        <messageevent name="refuse_caballete" direction="send" type="fipa">
+        <messageevent name="refuse_cuadro_instalado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="refuse_caballete_ocupado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
             </parameter>
