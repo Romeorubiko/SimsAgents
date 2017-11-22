@@ -16,9 +16,6 @@
         <capability name="dfcap" file="jadex.planlib.DF"/>
     </capabilities>
     <beliefs>
-        <belief name="ocupado_estanteria" class="Boolean">
-            <fact>new Boolean(false)</fact>
-        </belief>
         <belief name="tiempo_estanteria" class="int" updaterate="100">
             <fact>(int) (System.currentTimeMillis()/1000)</fact>
         </belief>

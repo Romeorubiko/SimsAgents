@@ -27,8 +27,6 @@ public class LeerLibroRespuestaPlan extends Plan {
         ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_fin_estanteria").getFact();
         getBeliefbase().getBelief("tiempos_fin_estanteria").setFact(arrayTiempos);
 
-        getBeliefbase().getBelief("ocupado_estanteria").setFact(Boolean.FALSE);
-
         if (arrayTiempos.isEmpty()) {
             getGoalbase().getGoal("leer_libro_tiempo_superado").drop();
         }
