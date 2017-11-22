@@ -52,6 +52,11 @@
                 $beliefbase.tiempo_fin >= $beliefbase.tiempo
             </maintaincondition>
         </maintaingoal>
+        <maintaingoal name="reparar_ordenador_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin >= $beliefbase.tiempo
+            </maintaincondition>
+        </maintaingoal>
         <maintaingoalref name="df_diversion_chatear">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
@@ -71,6 +76,9 @@
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_diversion_navegar_internet">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_mecanica_reparar_ordenador">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
     </goals>
@@ -128,6 +136,19 @@
             </trigger>
         </plan>
 
+        <plan name="RepararOrdenadorPreguntaPlan">
+            <body class="dormitorio.ordenador.RepararOrdenadorPreguntaPlan"/>
+            <trigger>
+                <messageevent ref="request_reparar_ordenador"/>
+            </trigger>
+        </plan>
+        <plan name="RepararOrdenadorRespuestaPlan">
+            <body class="dormitorio.ordenador.RepararOrdenadorRespuestaPlan"/>
+            <trigger>
+                <goal ref="reparar_ordenador_tiempo_superado"/>
+            </trigger>
+        </plan>
+
     </plans>
     <events>
         <messageevent name="request_navegar" direction="receive" type="fipa">
@@ -135,6 +156,22 @@
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
             <parameter name="content" class="ontologia.acciones.NavegarPorInternet"/>
+        </messageevent>
+
+        <messageevent name="request_reparar_ordenador" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.RepararOrdenador"/>
+        </messageevent>
+
+        <messageevent name="ordenador_reparado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="navegacion_por_internet_realizada" direction="send" type="fipa">
@@ -241,7 +278,15 @@
             </parameter>
         </messageevent>
 
-        <messageevent name="refuse" direction="send" type="fipa">
+        <messageevent name="refuse_ordenador_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="refuse_ordenador_no_estropeado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
             </parameter>
@@ -307,6 +352,14 @@
                         <value>
                             SFipa.createAgentDescription(null,
                             SFipa.createServiceDescription("Diversion", "NavegarInternet", ""))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_mecanica_reparar_ordenador">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Mecanica", "RepararOrdenador", ""))
                         </value>
                     </parameter>
                 </initialgoal>
