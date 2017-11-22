@@ -39,29 +39,15 @@ public class SacarFotoRetratoRespuestaPlan extends Plan {
 
         if (retrato.getFotoSize() == Foto.FotoSize.LARGE && fotografia.getNivel() >= 4) {
             diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-            content.setDiversion(diversion);
-
             energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-            content.setEnergia(energia);
-
             interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
-            content.setInteraccionSocial(interaccionSocial);
-
             fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
-            content.setFotografia(fotografia);
         }
         if ((retrato.getFiltro() == Foto.Filtro.SEPIA || retrato.getFiltro() == Foto.Filtro.VIGNETTE) && fotografia.getNivel() >= 3) {
             diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-            content.setDiversion(diversion);
-
             energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-            content.setEnergia(energia);
-
             interaccionSocial.setGrado(interaccionSocial.getGrado() + Habilidad.HB_NORMAL);
-            content.setInteraccionSocial(interaccionSocial);
-
             fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
-            content.setFotografia(fotografia);
         }
 
         //CREO UN SEGUNDO CONSTRUCTOR EN FOTO REALIZADA CON LOS ATRIBUTOS DE FOTO RETRATO

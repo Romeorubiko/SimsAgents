@@ -28,10 +28,7 @@ public class NavegarPorInternetRespuestaPlan extends Plan {
         Diversion diversion = content.getDiversion();
 
         energia.setGrado(energia.getGrado() - Necesidad.NC_POCO);
-        content.setEnergia(energia);
-
         diversion.setGrado(diversion.getGrado() + Necesidad.NC_NORMAL);
-        content.setDiversion(diversion);
 
         IMessageEvent respuesta = createMessageEvent("navegacion_por_internet_realizada");
         NavegacionPorInternetRealizada navegacionPorInternetRealizada = new NavegacionPorInternetRealizada(energia, diversion);

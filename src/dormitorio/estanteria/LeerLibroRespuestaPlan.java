@@ -41,10 +41,7 @@ public class LeerLibroRespuestaPlan extends Plan {
         respuesta.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
 
         diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-        content.setDiversion(diversion);
-
         energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-        content.setEnergia(energia);
 
         switch (libro.getGenero()) {
             case CARISMA:
@@ -86,7 +83,7 @@ public class LeerLibroRespuestaPlan extends Plan {
                 break;
         }
 
-        LibroLeido libroLeido = new LibroLeido(energia, diversion, habilidad);
+        LibroLeido libroLeido = new LibroLeido(energia, diversion, content.getHabilidad());
         respuesta.setContent(libroLeido);
 
         sendMessage(respuesta);

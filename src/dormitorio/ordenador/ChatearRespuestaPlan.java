@@ -30,13 +30,8 @@ public class ChatearRespuestaPlan extends Plan {
         Diversion diversion = content.getDiversion();
 
         energia.setGrado(energia.getGrado() - Necesidad.NC_POCO);
-        content.setEnergia(energia);
-
         interaccionSocial.setGrado(interaccionSocial.getGrado() + Necesidad.NC_NORMAL);
-        content.setInteraccionSocial(interaccionSocial);
-
         diversion.setGrado(diversion.getGrado() + Necesidad.NC_NORMAL);
-        content.setDiversion(diversion);
 
         IMessageEvent respuesta = createMessageEvent("chat_finalizado");
         ChatFinalizado chatFinalizado = new ChatFinalizado(energia, interaccionSocial, diversion);
