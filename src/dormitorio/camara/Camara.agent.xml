@@ -232,7 +232,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Fotografia", "SacarFoto",""))
+                            SFipa.createServiceDescription("Fotografia", "SacarFoto", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -240,7 +240,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "SacarFoto",""))
+                            SFipa.createServiceDescription("Diversion", "SacarFoto", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -248,7 +248,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Fotografia", "SacarFotoRetrato",""))
+                            SFipa.createServiceDescription("Fotografia", "SacarFotoRetrato", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -256,7 +256,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "SacarFotoRetrato",""))
+                            SFipa.createServiceDescription("Diversion", "SacarFotoRetrato", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -264,7 +264,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("InteraccionSocial", "SacarFotoRetrato",""))
+                            SFipa.createServiceDescription("InteraccionSocial", "SacarFotoRetrato", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -272,7 +272,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Mecanica", "RepararCamara",""))
+                            SFipa.createServiceDescription("Mecanica", "RepararCamara", null))
                         </value>
                     </parameter>
                 </initialgoal>

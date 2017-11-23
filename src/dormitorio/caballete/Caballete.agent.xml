@@ -143,7 +143,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "PintarNuevoCuadro", ""))
+                            SFipa.createServiceDescription("Diversion", "PintarNuevoCuadro", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -151,7 +151,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Pintura", "PintarNuevoCuadro", ""))
+                            SFipa.createServiceDescription("Pintura", "PintarNuevoCuadro", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -159,7 +159,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "SeguirPintando", ""))
+                            SFipa.createServiceDescription("Diversion", "SeguirPintando", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -167,7 +167,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Pintura", "SeguirPintando", ""))
+                            SFipa.createServiceDescription("Pintura", "SeguirPintando", null))
                         </value>
                     </parameter>
                 </initialgoal>

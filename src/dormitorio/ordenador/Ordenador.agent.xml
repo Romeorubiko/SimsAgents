@@ -303,7 +303,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "Chatear", ""))
+                            SFipa.createServiceDescription("Diversion", "Chatear", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -311,7 +311,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("InteraccionSocial", "Chatear", ""))
+                            SFipa.createServiceDescription("InteraccionSocial", "Chatear", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -319,7 +319,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "Escribir", ""))
+                            SFipa.createServiceDescription("Diversion", "Escribir", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -327,7 +327,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Escritura", "Escribir", ""))
+                            SFipa.createServiceDescription("Escritura", "Escribir", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -335,7 +335,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "JugarVideojuego", ""))
+                            SFipa.createServiceDescription("Diversion", "JugarVideojuego", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -343,7 +343,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Logica", "JugarVideojuego", ""))
+                            SFipa.createServiceDescription("Logica", "JugarVideojuego", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -351,7 +351,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "NavegarInternet", ""))
+                            SFipa.createServiceDescription("Diversion", "NavegarInternet", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -359,7 +359,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Mecanica", "RepararOrdenador", ""))
+                            SFipa.createServiceDescription("Mecanica", "RepararOrdenador", null))
                         </value>
                     </parameter>
                 </initialgoal>
