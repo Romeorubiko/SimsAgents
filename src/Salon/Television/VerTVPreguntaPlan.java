@@ -35,10 +35,12 @@ public class VerTVPreguntaPlan extends Plan {
          */
         if(haciendoEjercicioTV){
             IMessageEvent refuse = createMessageEvent("sim_haciendo_ejercicio_tv");
+            refuse.setContent(request.getContent());
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         }else{
             IMessageEvent agree = createMessageEvent("sim_no_haciendo_ejercicio_tv");
+            agree.setContent(request.getContent());
             agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 

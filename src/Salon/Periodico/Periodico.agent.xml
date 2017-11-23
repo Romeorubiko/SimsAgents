@@ -113,23 +113,22 @@
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<parameter name="content" class="LeerPeriodicoPreguntaPlan"
-					   direction="fixed">
-			</parameter>
+			<parameter name="content" class="LeerPeriodicoPreguntaPlan" direction="fixed"> </parameter>
 		</messageevent>
 
 		<messageevent name="hacer_crucigrama" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<parameter name="content" class="HacerCrucigramaPreguntaPlan"
-					   direction="fixed">
-			</parameter>
+			<parameter name="content" class="HacerCrucigramaPreguntaPlan" direction="fixed"> </parameter>
 		</messageevent>
 
 		<messageevent name="periodico_ocupado" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
 			</parameter>
 		</messageevent>
 
@@ -137,17 +136,26 @@
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.AGREE</value>
 			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 		</messageevent>
 
 		<messageevent name="has_leido_periodico" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.INFORM</value>
 			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 		</messageevent>
 
 		<messageevent name="has_hecho_crucigrama" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
 			</parameter>
 		</messageevent>
 

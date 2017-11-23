@@ -26,6 +26,7 @@ public class HacerCrucigramaPreguntaPlan extends Plan {
 
         if(ocupado){
             IMessageEvent refuse = createMessageEvent("periodico_ocupado");
+            refuse.setContent(request.getContent());
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         }else{
@@ -40,6 +41,7 @@ public class HacerCrucigramaPreguntaPlan extends Plan {
             creenciaTiempoFinPeriodico.setFact(tiempo + Accion.TIEMPO_CORTO);
 
             IMessageEvent agree = createMessageEvent("periodico_libre");
+            agree.setContent(request.getContent());
             agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 

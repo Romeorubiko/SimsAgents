@@ -39,10 +39,12 @@ public class EjercicioTVPreguntaPlan extends Plan {
          */
         if (simViendoTV) {
             IMessageEvent refuse = createMessageEvent("sim_viendo_tv");
+            refuse.setContent(request.getContent());
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         } else {
             IMessageEvent agree = createMessageEvent("sim_no_viendo_tv");
+            agree.setContent(request.getContent());
             agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 

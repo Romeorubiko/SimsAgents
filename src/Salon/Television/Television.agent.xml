@@ -51,7 +51,20 @@
 		<belief name="haciendo_ejercicio_tv" class="Boolean">
 			<fact> new Boolean(false)</fact>
 		</belief>
-		
+
+		<!-- Si hay un Sim reparando la tv o no -->
+		<belief name="reparando_tv" class="Boolean">
+			<fact> new Boolean(false)</fact>
+		</belief>
+
+		<!-- Contenido del request que le llega al agente pidiendo reparar la tv. Necesario para ejecutar segundo plan  -->
+		<belief name="mensaje_tv_rota" class="IMessageEvent"/>
+
+		<!-- Tiempo en el que el agente termina de reparar la tv -->
+		<belief name="tiempo_fin_reparar_tv" class="int">
+			<fact> (int) 0 </fact>
+		</belief>
+
 	</beliefs>
 	<goals>
 		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha visto la TV  se ejecute el segundo plan con el request-->
@@ -65,6 +78,13 @@
 		<maintaingoal name="ejercicio_tv_tiempo_superado">
 			<maintaincondition>
 				$beliefbase.tiempos_fin_tv.get(0) >= $beliefbase.tiempo_actual
+			</maintaincondition>
+		</maintaingoal>
+
+		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha reparado la TV  se ejecute el segundo plan con el request -->
+		<maintaingoal name="reparar_tv_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempos_fin_reparar_tv.get(0) >= $beliefbase.tiempo_actual
 			</maintaincondition>
 		</maintaingoal>
 
@@ -122,16 +142,30 @@
 				<goal ref="ejercicio_tv_tiempo_superado"/>
 			</trigger>
 		</plan>
-		
+
+		<!-- Primer plan para reparar la TV. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		<plan name="RepararTVPreguntaPlan">
+			<body class="Salon.Television.RepararTVPreguntaPlan"/>
+			<trigger>
+				<messageevent ref="reparar_tv"/>
+			</trigger>
+		</plan>
+
+		<!-- Segundo plan para reparar la TV. Se ejecuta cuando termina el tiempo de reparar la TV y modifica los recursos del Sim-->
+		<plan name="RepararTVRespuestaPlan">
+			<body class="Salon.Television.RepararTVRespuestalan"/>
+			<trigger>
+				<goal ref="reparar_tv_tiempo_superado"/>
+			</trigger>
+		</plan>
+
 	</plans>
 	<events>
 		<messageevent name="ver_tv" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<parameter name="content" class="VerTVPreguntaPlan"
-direction="fixed">
-			</parameter>
+			<parameter name="content" class="VerTVPreguntaPlan" direction="fixed"> </parameter>
 
 		</messageevent>
 		
@@ -139,9 +173,15 @@ direction="fixed">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<parameter name="content" class="EjercicioTVPreguntaPlan"
-direction="fixed">
+			<parameter name="content" class="EjercicioTVPreguntaPlan" direction="fixed"> </parameter>
+
+		</messageevent>
+
+		<messageevent name="reparar_tv" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
 			</parameter>
+			<parameter name="content" class="RepararTVPreguntaPlan" direction="fixed"> </parameter>
 
 		</messageevent>
 		
@@ -149,11 +189,17 @@ direction="fixed">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
 			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 		</messageevent>
 
 		<messageevent name="sim_viendo_tv" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
 			</parameter>
 		</messageevent>
 		
@@ -161,11 +207,17 @@ direction="fixed">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
 			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 		</messageevent>
 		
 		<messageevent name="tv_estropeada_ejercicio" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
 			</parameter>
 		</messageevent>
 		
@@ -173,11 +225,17 @@ direction="fixed">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.AGREE</value>
 			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 		</messageevent>
 
 		<messageevent name="sim_no_viendo_tv" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
 			</parameter>
 		</messageevent>
 		
@@ -185,11 +243,17 @@ direction="fixed">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.INFORM</value>
 			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 		</messageevent>
 		
 		<messageevent name="has_hecho_ejercicio_tv" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
 			</parameter>
 		</messageevent>
 		
