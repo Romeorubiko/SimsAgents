@@ -1,22 +1,14 @@
 package dormitorio.camara;
 
-import jadex.adapter.fipa.SFipa;
+import jadex.adapter.fipa.*;
 import jadex.runtime.IGoal;
 import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
-import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
 import ontologia.acciones.SacarFotoRetrato;
-import ontologia.conceptos.Foto;
 import ontologia.conceptos.Retrato;
-import ontologia.conceptos.habilidades.Fotografia;
-import ontologia.conceptos.habilidades.Habilidad;
-import ontologia.conceptos.necesidades.Diversion;
-import ontologia.conceptos.necesidades.Energia;
-import ontologia.conceptos.necesidades.InteraccionSocial;
-import ontologia.conceptos.necesidades.Necesidad;
-import ontologia.predicados.CamaraEstropeadaSacarFotoRetrato;
-import ontologia.predicados.FotoRealizada;
+
+import java.util.Random;
 
 public class SacarFotoRetratoPreguntaPlan extends Plan {
     public SacarFotoRetratoPreguntaPlan() {
@@ -48,7 +40,9 @@ public class SacarFotoRetratoPreguntaPlan extends Plan {
             } else {
                 //Si camara libre pregunto si el otro sim quiere posar conmigo
                 IMessageEvent posar = createMessageEvent("posar");
+                posar.getParameterSet(SFipa.RECEIVERS).addValue(buscarAgente());
                 IMessageEvent respuestaOtroSim = sendMessageAndWait(posar);
+
                 if (respuestaOtroSim.getParameter("performative").getValue().equals(SFipa.AGREE)) {
                     getBeliefbase().getBelief("ocupado_camara").setFact(Boolean.TRUE);
                     getBeliefbase().getBelief("mensaje_camara").setFact(peticion);
@@ -72,5 +66,19 @@ public class SacarFotoRetratoPreguntaPlan extends Plan {
 
             }
         }
+    }
+
+    private AgentIdentifier buscarAgente() {
+        ServiceDescription serviceDescription = new ServiceDescription("Posar", "", "");
+        AgentDescription agentDescription = new AgentDescription();
+        agentDescription.addService(serviceDescription);
+        SearchConstraints sc = new SearchConstraints();
+        sc.setMaxResults(-1);
+        IGoal busqueda = createGoal("df_search");
+        busqueda.getParameter("constraints").setValue(sc);
+        busqueda.getParameter("description").setValue(agentDescription);
+        dispatchSubgoalAndWait(busqueda);
+        AgentDescription[] result = (AgentDescription[]) busqueda.getParameterSet("result").getValues();
+        return result[new Random().nextInt(result.length)].getName();
     }
 }

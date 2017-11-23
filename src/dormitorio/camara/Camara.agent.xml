@@ -66,6 +66,9 @@
         <maintaingoalref name="df_mecanica_reparar_camara">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
+        <achievegoalref name="df_search">
+            <concrete ref="dfcap.df_search"/>
+        </achievegoalref>
     </goals>
     <plans>
         <plan name="SacarFotoPreguntaPlan">
