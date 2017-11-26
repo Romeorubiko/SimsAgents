@@ -52,6 +52,11 @@
                 $beliefbase.tiempo_fin >= $beliefbase.tiempo
             </maintaincondition>
         </maintaingoal>
+        <maintaingoal name="reparar_ordenador_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin >= $beliefbase.tiempo
+            </maintaincondition>
+        </maintaingoal>
         <maintaingoalref name="df_diversion_chatear">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
@@ -71,6 +76,9 @@
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
         <maintaingoalref name="df_diversion_navegar_internet">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_mecanica_reparar_ordenador">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
     </goals>
@@ -128,6 +136,19 @@
             </trigger>
         </plan>
 
+        <plan name="RepararOrdenadorPreguntaPlan">
+            <body class="dormitorio.ordenador.RepararOrdenadorPreguntaPlan"/>
+            <trigger>
+                <messageevent ref="request_reparar_ordenador"/>
+            </trigger>
+        </plan>
+        <plan name="RepararOrdenadorRespuestaPlan">
+            <body class="dormitorio.ordenador.RepararOrdenadorRespuestaPlan"/>
+            <trigger>
+                <goal ref="reparar_ordenador_tiempo_superado"/>
+            </trigger>
+        </plan>
+
     </plans>
     <events>
         <messageevent name="request_navegar" direction="receive" type="fipa">
@@ -137,11 +158,29 @@
             <parameter name="content" class="ontologia.acciones.NavegarPorInternet"/>
         </messageevent>
 
+        <messageevent name="request_reparar_ordenador" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.RepararOrdenador"/>
+        </messageevent>
+
+        <messageevent name="ordenador_reparado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+
         <messageevent name="navegacion_por_internet_realizada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.NavegacionPorInternetRealizada"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="request_chatear" direction="receive" type="fipa">
@@ -156,7 +195,9 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.ChatFinalizado"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="request_jugar" direction="receive" type="fipa">
@@ -171,7 +212,9 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.JuegoFinalizado"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="request_escribir" direction="receive" type="fipa">
@@ -185,47 +228,70 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.EscrituraRealizada"/>
-
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="aparato_estropeado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.AparatoEstropeadoJugar"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="ordenador_estropeado_chatear" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.OrdenadorEstropeadoChatear"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="ordenador_estropeado_escribir" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.OrdenadorEstropeadoEscribir"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="ordenador_estropeado_navegar_internet" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.OrdenadorEstropeadoNavegarInternet"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="agree" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.AGREE</value>
             </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
-        <messageevent name="refuse" direction="send" type="fipa">
+        <messageevent name="refuse_ordenador_ocupado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="refuse_ordenador_no_estropeado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
             </parameter>
         </messageevent>
     </events>
@@ -237,7 +303,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "Chatear", ""))
+                            SFipa.createServiceDescription("Diversion", "Chatear", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -245,7 +311,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("InteraccionSocial", "Chatear", ""))
+                            SFipa.createServiceDescription("InteraccionSocial", "Chatear", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -253,7 +319,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "Escribir", ""))
+                            SFipa.createServiceDescription("Diversion", "Escribir", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -261,7 +327,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Escritura", "Escribir", ""))
+                            SFipa.createServiceDescription("Escritura", "Escribir", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -269,7 +335,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "JugarVideojuego", ""))
+                            SFipa.createServiceDescription("Diversion", "JugarVideojuego", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -277,7 +343,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Logica", "JugarVideojuego", ""))
+                            SFipa.createServiceDescription("Logica", "JugarVideojuego", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -285,7 +351,15 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "NavegarInternet", ""))
+                            SFipa.createServiceDescription("Diversion", "NavegarInternet", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_mecanica_reparar_ordenador">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Mecanica", "RepararOrdenador", null))
                         </value>
                     </parameter>
                 </initialgoal>

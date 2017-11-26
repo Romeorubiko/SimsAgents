@@ -27,8 +27,6 @@ public class LeerLibroRespuestaPlan extends Plan {
         ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_fin_estanteria").getFact();
         getBeliefbase().getBelief("tiempos_fin_estanteria").setFact(arrayTiempos);
 
-        getBeliefbase().getBelief("ocupado_estanteria").setFact(Boolean.FALSE);
-
         if (arrayTiempos.isEmpty()) {
             getGoalbase().getGoal("leer_libro_tiempo_superado").drop();
         }
@@ -43,10 +41,7 @@ public class LeerLibroRespuestaPlan extends Plan {
         respuesta.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
 
         diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-        content.setDiversion(diversion);
-
         energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-        content.setEnergia(energia);
 
         switch (libro.getGenero()) {
             case CARISMA:
@@ -88,7 +83,7 @@ public class LeerLibroRespuestaPlan extends Plan {
                 break;
         }
 
-        LibroLeido libroLeido = new LibroLeido(energia, diversion, habilidad);
+        LibroLeido libroLeido = new LibroLeido(energia, diversion, content.getHabilidad());
         respuesta.setContent(libroLeido);
 
         sendMessage(respuesta);

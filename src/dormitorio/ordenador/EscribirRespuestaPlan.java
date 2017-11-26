@@ -30,13 +30,8 @@ public class EscribirRespuestaPlan extends Plan {
         Escritura escritura = content.getEscritura();
 
         energia.setGrado(energia.getGrado() - Necesidad.NC_POCO);
-        content.setEnergia(energia);
-
         diversion.setGrado(diversion.getGrado() + Necesidad.NC_NORMAL);
-        content.setDiversion(diversion);
-
         escritura.setExperiencia(escritura.getExperiencia() + Habilidad.HB_NORMAL);
-        content.setEscritura(escritura);
 
         IMessageEvent respuesta = createMessageEvent("escritura_realizada");
         EscrituraRealizada escrituraRealizada = new EscrituraRealizada(energia, diversion, escritura);

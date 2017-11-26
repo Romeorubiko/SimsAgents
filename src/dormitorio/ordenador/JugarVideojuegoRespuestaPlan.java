@@ -32,15 +32,11 @@ public class JugarVideojuegoRespuestaPlan extends Plan {
         Logica logica = content.getLogica();
 
         energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-        content.setEnergia(energia);
-
         diversion.setGrado(content.getDiversion().getGrado() + Necesidad.NC_NORMAL);
-        content.setDiversion(diversion);
 
         switch (juego.getTipo()) {
             case AJEDREZ:
                 logica.setExperiencia(logica.getExperiencia() + Habilidad.HB_NORMAL);
-                content.setLogica(logica);
                 break;
             default:
                 break;

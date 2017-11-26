@@ -6,6 +6,7 @@ import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import ontologia.Accion;
 import ontologia.acciones.Chatear;
+import ontologia.acciones.NavegarPorInternet;
 import ontologia.conceptos.necesidades.Diversion;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.InteraccionSocial;
@@ -21,9 +22,11 @@ public class NavegarPorInternetPreguntaPlan extends Plan {
     @Override
     public void body() {
         IMessageEvent peticion = ((IMessageEvent) getInitialEvent());
+        NavegarPorInternet content = (NavegarPorInternet) peticion.getContent();
 
         if (getBeliefbase().getBelief("ocupado").getFact().equals(Boolean.TRUE)) {
             IMessageEvent refuse = createMessageEvent("refuse");
+            refuse.setContent(content);
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         } else {
@@ -34,11 +37,11 @@ public class NavegarPorInternetPreguntaPlan extends Plan {
             Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact();
 
             IMessageEvent agree = createMessageEvent("agree");
+            agree.setContent(content);
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 
             if (obsolescencia <= 0) {
-                Chatear content = (Chatear) peticion.getContent();
                 Energia energia = content.getEnergia();
                 Diversion diversion = content.getDiversion();
 

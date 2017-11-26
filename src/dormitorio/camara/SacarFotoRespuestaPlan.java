@@ -38,34 +38,20 @@ public class SacarFotoRespuestaPlan extends Plan {
 
         if (foto.getTipo() == Foto.TiposFoto.PANORAMICA && fotografia.getNivel() >= 4) {
             energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-            content.setEnergia(energia);
             diversion.setGrado(diversion.getGrado() + Necesidad.NC_NORMAL);
-            content.setDiversion(diversion);
             fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
-            content.setFotografia(fotografia);
-
         }
 
         if (foto.getSize() == Foto.FotoSize.LARGE && fotografia.getNivel() >= 4) {
             energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-            content.setEnergia(energia);
-
             diversion.setGrado(diversion.getGrado() + Necesidad.NC_NORMAL);
-            content.setDiversion(diversion);
-
             fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
-            content.setFotografia(fotografia);
         }
 
         if ((foto.getFiltro() == Foto.Filtro.SEPIA || foto.getFiltro() == Foto.Filtro.VIGNETTE) && fotografia.getNivel() >= 3) {
             energia.setGrado(content.getEnergia().getGrado() - Necesidad.NC_POCO);
-            content.setEnergia(energia);
-
             diversion.setGrado(diversion.getGrado() + Necesidad.NC_NORMAL);
-            content.setDiversion(diversion);
-
             fotografia.setExperiencia((fotografia.getExperiencia() + Habilidad.HB_NORMAL));
-            content.setFotografia(fotografia);
         }
 
         FotoRealizada fotoRealizada = new FotoRealizada(energia, diversion, fotografia);

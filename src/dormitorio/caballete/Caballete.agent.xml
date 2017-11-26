@@ -99,23 +99,40 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.CuadroPintado"/>
-
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
         <messageevent name="cuadro_terminado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.CuadroTerminado"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
         <messageevent name="agree_caballete" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.AGREE</value>
             </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
-        <messageevent name="refuse_caballete" direction="send" type="fipa">
+        <messageevent name="refuse_cuadro_instalado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="refuse_caballete_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
             </parameter>
         </messageevent>
     </events>
@@ -126,7 +143,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "PintarNuevoCuadro", ""))
+                            SFipa.createServiceDescription("Diversion", "PintarNuevoCuadro", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -134,7 +151,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Pintura", "PintarNuevoCuadro", ""))
+                            SFipa.createServiceDescription("Pintura", "PintarNuevoCuadro", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -142,7 +159,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "SeguirPintando", ""))
+                            SFipa.createServiceDescription("Diversion", "SeguirPintando", null))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -150,7 +167,7 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Pintura", "SeguirPintando", ""))
+                            SFipa.createServiceDescription("Pintura", "SeguirPintando", null))
                         </value>
                     </parameter>
                 </initialgoal>
