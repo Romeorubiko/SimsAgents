@@ -23,9 +23,10 @@ public class OrinarSueloTerminarPlan extends Plan {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void body() {
-		if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_orinar_suelo").getFact()).size() == 1) {
+
+		/*if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_orinar_suelo").getFact()).size() == 1) {
 			getGoalbase().getGoal("terminar_orinar_suelo").drop();
-		}
+		}*/
 
 		IMessageEvent peticion = ((ArrayList<IMessageEvent>) getBeliefbase()
 				.getBelief("mensajes_orinar_suelo").getFact()).get(0);

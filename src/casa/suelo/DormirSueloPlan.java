@@ -20,11 +20,11 @@ public class DormirSueloPlan extends Plan {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void body() {
-		RMessageEvent peticion = ((RMessageEvent) getInitialEvent());
+		IMessageEvent peticion = ((IMessageEvent) getInitialEvent());
 
 		ArrayList<IMessageEvent> arrayMensajes = (ArrayList<IMessageEvent>) getBeliefbase()
 				.getBelief("mensajes_dormir_suelo").getFact();
-		arrayMensajes.add(agree);
+		arrayMensajes.add(peticion);
 		getBeliefbase().getBelief("mensajes_dormir_suelo").setFact(arrayMensajes);
 
 		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_dormir_suelo")
@@ -32,9 +32,9 @@ public class DormirSueloPlan extends Plan {
 		arrayTiempos.add((int) (System.currentTimeMillis() + Accion.TIEMPO_LARGO));
 		getBeliefbase().getBelief("tiempos_dormir_suelo").setFact(arrayTiempos);
 
-		if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_dormir_suelo").getFact()).size() == 1) {
+		/*if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_dormir_suelo").getFact()).size() == 1) {
 			IGoal goal = createGoal("terminar_dormir_suelo");
 			dispatchSubgoal(goal);
-		}
+		}*/
 	}
 }
