@@ -10,7 +10,7 @@ import jadex.runtime.IMessageEvent;
 import ontologia.Accion;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
-
+import ontologia.acciones.Beber;
 
 
 public class BeberMinibarPlan extends Plan {
@@ -18,10 +18,12 @@ public class BeberMinibarPlan extends Plan {
 
         RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
+        Beber content = (Beber) peticion.getContent();
 
         if(ocupado.booleanValue()) {
             IMessageEvent refuse = createMessageEvent("minibar_ocupado");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            refuse.setContent(content);
             sendMessage(refuse);
         }
         else {
@@ -29,6 +31,7 @@ public class BeberMinibarPlan extends Plan {
 
             IMessageEvent agree = createMessageEvent("minibar_no_ocupada");
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            agree.setContent(content);
             sendMessage(agree);
 
             getBeliefbase().getBelief("mensaje_beber_minibar").setFact(peticion);
@@ -36,8 +39,8 @@ public class BeberMinibarPlan extends Plan {
             int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_CORTO;
             getBeliefbase().getBelief("tiempo_fin_minibar").setFact(new Integer(end_timer));
 
-            IGoal goal= createGoal("terminar_beber_minibar");
-            dispatchSubgoal(goal);
+            /*IGoal goal= createGoal("terminar_beber_minibar");
+            dispatchSubgoal(goal);*/
 
 
 

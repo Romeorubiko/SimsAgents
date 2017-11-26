@@ -19,7 +19,7 @@ import ontologia.predicados.HasBebido;
 public class BeberMinibarTerminarPlan extends Plan {
     public void body() {
 
-        getGoalbase().getGoal("terminar_beber_minibar").drop();
+        //getGoalbase().getGoal("terminar_beber_minibar").drop();
         getBeliefbase().getBelief("tiempo_fin_minibar").setFact(new Integer (0));
 
         RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_beber_minibar").getFact();
