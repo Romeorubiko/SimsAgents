@@ -24,9 +24,9 @@ public class DormirSueloTerminarPlan extends Plan {
 	@Override
 	public void body() {
 
-		if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_dormir_suelo").getFact()).size() == 1) {
+		/*if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_dormir_suelo").getFact()).size() == 1) {
 			getGoalbase().getGoal("terminar_dormir_suelo").drop();
-		}
+		}*/
 
 		IMessageEvent peticion = ((ArrayList<IMessageEvent>) getBeliefbase()
 				.getBelief("mensajes_dormir_suelo").getFact()).get(0);

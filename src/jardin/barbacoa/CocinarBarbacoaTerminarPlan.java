@@ -23,7 +23,8 @@ import ontologia.predicados.PerritosQuemados;
 public class CocinarBarbacoaTerminarPlan extends Plan {
     public void body() {
 
-        getGoalbase().getGoal("terminar_cocinar_barbacoa").drop();
+        //getGoalbase().getGoal("terminar_cocinar_barbacoa").drop();
+
         getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer (0));
 
         RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_cocinar_barbacoa").getFact();

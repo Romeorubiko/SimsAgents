@@ -20,7 +20,8 @@ import ontologia.predicados.HasReparado;
 
 public class RepararBarbacoaTerminarPlan extends Plan {
     public void body() {
-        getGoalbase().getGoal("terminar_reparar_barbacoa").drop();
+        //getGoalbase().getGoal("terminar_reparar_barbacoa").drop();
+
         getBeliefbase().getBelief("tiempo_fin_reparar_barbacoa").setFact(new Integer (0));
 
         RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_reparar_barbacoa").getFact();
@@ -31,7 +32,10 @@ public class RepararBarbacoaTerminarPlan extends Plan {
         Mecanica m = contenido.getMecanica();
 
         h.setGrado(h.getGrado()- Necesidad.NC_POCO);
-        e.setGrado(e.getGrado()-Necesidad.NC_POCO);
+
+        //A más nivel se gasta menos energía parar reparar la barbacoa
+        e.setGrado(e.getGrado()-Necesidad.NC_POCO/m.getNivel());
+
         m.setExperiencia(m.getExperiencia()+ Habilidad.HB_NORMAL);
 
         HasReparado response = new HasReparado(e, h, m);

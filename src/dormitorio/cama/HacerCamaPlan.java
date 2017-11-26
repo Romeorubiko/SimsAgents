@@ -12,7 +12,7 @@ import jadex.runtime.IMessageEvent;
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
-
+import ontologia.acciones.HacerLaCama;
 
 
 public class HacerCamaPlan extends Plan {
@@ -21,15 +21,18 @@ public class HacerCamaPlan extends Plan {
         RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
         Boolean hecha = (Boolean) getBeliefbase().getBelief("cama_hecha").getFact();
+        HacerLaCama content = (HacerLaCama) peticion.getContent();
 
         if(ocupado.booleanValue()) {
             IMessageEvent refuse = createMessageEvent("cama_ocupada");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            refuse.setContent(content);
             sendMessage(refuse);;
         }
         else if (hecha.booleanValue()) {
             IMessageEvent refuse = createMessageEvent("cama_ya_hecha");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            refuse.setContent(content);
             sendMessage(refuse);
         }
 
@@ -38,6 +41,7 @@ public class HacerCamaPlan extends Plan {
 
             IMessageEvent agree = createMessageEvent("cama_no_ocupada");
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            agree.setContent(content);
             sendMessage(agree);
 
             getBeliefbase().getBelief("mensaje_hacer_cama").setFact(peticion);
@@ -45,8 +49,8 @@ public class HacerCamaPlan extends Plan {
             int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_CORTO;
             getBeliefbase().getBelief("tiempo_fin_hacer_cama").setFact(new Integer(end_timer));
 
-            IGoal goal= createGoal("terminar_hacer_cama");
-            dispatchSubgoal(goal);
+            /*IGoal goal= createGoal("terminar_hacer_cama");
+            dispatchSubgoal(goal);*/
         }
     }
 }

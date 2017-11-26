@@ -95,17 +95,26 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
             </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="minibar_no_ocupado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.AGREE</value>
             </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="has_bebido" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
             </parameter>
         </messageevent>
     </events>

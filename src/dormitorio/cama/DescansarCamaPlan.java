@@ -9,6 +9,7 @@ import jadex.adapter.fipa.SFipa;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
 import jadex.runtime.*;
+import ontologia.acciones.Descansar;
 
 
 public class DescansarCamaPlan extends Plan {
@@ -16,10 +17,12 @@ public class DescansarCamaPlan extends Plan {
 
         RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
+        Descansar content = (Descansar) peticion.getContent();
 
         if(ocupado.booleanValue()) {
             IMessageEvent refuse = createMessageEvent("cama_ocupada");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            refuse.setContent(content);
             sendMessage(refuse);
         }
         else {
@@ -27,6 +30,7 @@ public class DescansarCamaPlan extends Plan {
 
             IMessageEvent agree = createMessageEvent("cama_no_ocupada");
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            agree.setContent(content);
             sendMessage(agree);
 
             getBeliefbase().getBelief("mensaje_descansar_cama").setFact(peticion);
@@ -34,8 +38,8 @@ public class DescansarCamaPlan extends Plan {
             int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_LARGO;
             getBeliefbase().getBelief("tiempo_fin_descansar_cama").setFact(new Integer(end_timer));
 
-            IGoal goal= createGoal("terminar_descansar_cama");
-            dispatchSubgoal(goal);
+            /*IGoal goal= createGoal("terminar_descansar_cama");
+            dispatchSubgoal(goal);*/
         }
     }
 

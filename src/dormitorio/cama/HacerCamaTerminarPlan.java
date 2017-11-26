@@ -19,7 +19,7 @@ import ontologia.predicados.CamaHecha;
 public class HacerCamaTerminarPlan extends Plan {
     public void body() {
 
-        getGoalbase().getGoal("terminar_hacer_cama").drop();
+        //getGoalbase().getGoal("terminar_hacer_cama").drop();
         getBeliefbase().getBelief("tiempo_fin_hacer_cama").setFact(new Integer (0));
         RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_hacer_cama").getFact();
         HacerLaCama contenido = (HacerLaCama) peticion.getContent();
