@@ -33,6 +33,7 @@ public class CocinarBarbacoaPlan extends Plan {
         if(ocupado.booleanValue()) {
             IMessageEvent refuse = createMessageEvent("barbacoa_ocupada");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            refuse.setContent(content);
             sendMessage(refuse);
         }
         else{
@@ -40,6 +41,7 @@ public class CocinarBarbacoaPlan extends Plan {
 
             IMessageEvent agree = createMessageEvent("barbacoa_cocinar_no_ocupada");
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            agree.setContent(content);
             sendMessage(agree);
 
             if (estropeado.booleanValue()) {
@@ -66,11 +68,14 @@ public class CocinarBarbacoaPlan extends Plan {
 
                 getBeliefbase().getBelief("mensaje_cocinar_barbacoa").setFact(peticion);
 
-                int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
+                int nivel = c.getNivel();
+
+                //Cuánto más nivel de cocina, más rápido cocina el sim
+                int end_timer = (int) System.currentTimeMillis() + (Accion.TIEMPO_MEDIO/nivel);
                 getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer(end_timer));
 
-                IGoal goal= createGoal("terminar_cocinar_barbacoa");
-                dispatchSubgoal(goal);
+                /*IGoal goal= createGoal("terminar_cocinar_barbacoa");
+                dispatchSubgoal(goal);*/
             }
 
 
