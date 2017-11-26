@@ -23,7 +23,7 @@ import ontologia.predicados.HasEntrenado;
 public class EntrenarTerminarPlan extends Plan {
     public void body() {
 
-        getGoalbase().getGoal("terminar_entrenar").drop();
+        //getGoalbase().getGoal("terminar_entrenar").drop();
         getBeliefbase().getBelief("tiempo_fin_entrenar").setFact(new Integer (0));
         RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_entrenar").getFact();
         Entrenar contenido = (Entrenar) peticion.getContent();
@@ -34,7 +34,8 @@ public class EntrenarTerminarPlan extends Plan {
         Hambre hmb = contenido.getHambre();
         Deporte d = contenido.getDeporte();
 
-        e.setGrado(e.getGrado()- Necesidad.NC_POCO);
+        //A más nivel gasta menos energía
+        e.setGrado(e.getGrado()- Necesidad.NC_POCO/d.getNivel());
         h.setGrado(h.getGrado()-Necesidad.NC_POCO);
         hmb.setGrado(hmb.getGrado()-Necesidad.NC_POCO);
         d.setExperiencia(d.getExperiencia()+ Habilidad.HB_MUCHO);

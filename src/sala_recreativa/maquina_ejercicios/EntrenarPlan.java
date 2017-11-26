@@ -23,6 +23,7 @@ public class EntrenarPlan extends Plan{
         if(ocupado.booleanValue()) {
             IMessageEvent refuse = createMessageEvent("maquina_ejercicios_ocupada");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            refuse.setContent(content);
             sendMessage(refuse);
         }
         else {
@@ -30,6 +31,7 @@ public class EntrenarPlan extends Plan{
 
             IMessageEvent agree = createMessageEvent("maquina_ejercicios_no_ocupada");
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            agree.setContent(content);
             sendMessage(agree);
 
             getBeliefbase().getBelief("mensaje_entrenar").setFact(peticion);
@@ -37,8 +39,8 @@ public class EntrenarPlan extends Plan{
             int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
             getBeliefbase().getBelief("tiempo_fin_entrenar").setFact(new Integer(end_timer));
 
-            IGoal goal= createGoal("terminar_entrenar");
-            dispatchSubgoal(goal);
+            /*IGoal goal= createGoal("terminar_entrenar");
+            dispatchSubgoal(goal);*/
 
         }
 
