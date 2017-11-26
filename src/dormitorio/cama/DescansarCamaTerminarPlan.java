@@ -17,7 +17,7 @@ import ontologia.predicados.HasDescansado;
 public class DescansarCamaTerminarPlan extends Plan {
     public void body() {
 
-        getGoalbase().getGoal("terminar_descansar_cama").drop();
+       // getGoalbase().getGoal("terminar_descansar_cama").drop();
         getBeliefbase().getBelief("tiempo_fin_descansar_cama").setFact(new Integer (0));
 
         RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_descansar_cama").getFact();
