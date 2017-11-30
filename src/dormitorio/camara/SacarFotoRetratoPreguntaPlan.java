@@ -41,6 +41,7 @@ public class SacarFotoRetratoPreguntaPlan extends Plan {
                 //Si camara libre pregunto si el otro sim quiere posar conmigo
                 IMessageEvent posar = createMessageEvent("posar");
                 posar.getParameterSet(SFipa.RECEIVERS).addValue(buscarAgente());
+                posar.getParameterSet(SFipa.CONVERSATION_ID).addValue(SFipa.createUniqueId("posar"));
                 IMessageEvent respuestaOtroSim = sendMessageAndWait(posar);
 
                 if (respuestaOtroSim.getParameter("performative").getValue().equals(SFipa.AGREE)) {
