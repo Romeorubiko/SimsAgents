@@ -65,7 +65,7 @@ public class LeerPeriodicoRespuestaPlan extends Plan {
         content.setEscritura(escritura);
 
         IMessageEvent inform = createMessageEvent("has_leido_periodico");
-        HasLeidoPeriodico hasLeidoPeriodico= new HasLeidoPeriodico(energia,diversion,logica,escritura);
+        HasLeidoPeriodico hasLeidoPeriodico= new HasLeidoPeriodico(diversion,energia,logica,escritura);
         inform.setContent(hasLeidoPeriodico);
         inform.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
         sendMessage(inform);

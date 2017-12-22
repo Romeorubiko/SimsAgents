@@ -58,7 +58,7 @@
 		</belief>
 
 		<!-- Contenido del request que le llega al agente pidiendo reparar la tv. Necesario para ejecutar segundo plan  -->
-		<belief name="mensaje_tv_rota" class="IMessageEvent"/>
+		<belief name="mensaje_reparar_tv" class="IMessageEvent"/>
 
 		<!-- Tiempo en el que el agente termina de reparar la tv -->
 		<belief name="tiempo_fin_reparar_tv" class="int">
@@ -249,6 +249,15 @@
 		</messageevent>
 		
 		<messageevent name="has_hecho_ejercicio_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="has_reparado_tv" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.INFORM</value>
 			</parameter>

@@ -32,7 +32,7 @@ public class RepararTVPreguntaPlan extends Plan{
         RBelief creenciaSimReparandoTV=(RBelief) bb.getBelief("reparando_tv");
         Boolean simReparandoTV= (Boolean) creenciaSimReparandoTV.getFact();
 
-        if(simViendoTV || haciendoEjercicioTV || simReparandoTV){
+        if(simReparandoTV){
             IMessageEvent refuse = createMessageEvent("tv_ocupada");
             refuse.setContent(request.getContent());
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
@@ -48,7 +48,7 @@ public class RepararTVPreguntaPlan extends Plan{
 
             RBelief creenciaTiempoFinRepararTV=(RBelief) bb.getBelief("tiempo_fin_reparar_tv");
             RBelief creenciaTiempo=(RBelief) bb.getBelief("tiempo_actual");
-            RBelief creenciaMensaje=(RBelief) bb.getBelief("mensaje_tv_rota");
+            RBelief creenciaMensaje=(RBelief) bb.getBelief("mensaje_reparar_tv");
 
             Integer tiempo= (Integer)creenciaTiempo.getFact();
             creenciaTiempoFinRepararTV.setFact(tiempo + Accion.TIEMPO_CORTO);
