@@ -13,9 +13,9 @@ import ontologia.conceptos.necesidades.Higiene;
 import ontologia.conceptos.necesidades.Necesidad;
 import ontologia.predicados.HasReparadoTV;
 
-public class RepararTVRepuestaPlan extends Plan {
+public class RepararTVRespuestaPlan extends Plan{
 
-    public RepararTVRepuestaPlan() {
+    public RepararTVRespuestaPlan(){
     }
 
     /**
@@ -31,7 +31,6 @@ public class RepararTVRepuestaPlan extends Plan {
         RBelief creenciaTiempoRepararTV=(RBelief) bb.getBelief("tiempo_fin_reparar_tv");
         creenciaTiempoRepararTV.setValue(0);
         getGoalbase().getGoal("reparar_tv_tiempo_superado").drop();
-        creenciaSimReparandoTV.setFact(true);
 
         RepararTv content = (RepararTv) request.getContent();
 

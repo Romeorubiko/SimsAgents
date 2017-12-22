@@ -9,6 +9,7 @@ import jadex.runtime.impl.RBeliefbase;
 import ontologia.Accion;
 
 public class RepararTVPreguntaPlan extends Plan{
+
     public RepararTVPreguntaPlan() {
     }
 
