@@ -1,5 +1,6 @@
 package ontologia.acciones;
 
+import jadex.adapter.fipa.AgentIdentifier;
 import ontologia.Accion;
 import ontologia.conceptos.habilidades.*;
 import ontologia.conceptos.necesidades.*;
@@ -14,6 +15,7 @@ public class BailarConSim extends Accion {
     private Higiene higiene;
     private Hambre hambre;
     private Deporte fisico;
+    private AgentIdentifier sim;
 
     public BailarConSim() {
     }
@@ -74,4 +76,8 @@ public class BailarConSim extends Accion {
     public void setDeporte(Deporte f) {
         fisico = f;
     }
+
+	public AgentIdentifier getSim() {
+		return sim;
+	}
 }
