@@ -40,8 +40,8 @@ public class EscucharMusicaRespuestaPlan extends Plan {
 		content.setDiversion(diversion);
 
 		/*
-		 * Env o del mensaje al Sim inform ndole de que ha escuchado m sica con  xito a
-		 * trav s del predicado correspondiente
+		 * Envio del mensaje al Sim informandole de que ha escuchado musica con exito a
+		 * traves del predicado correspondiente
 		 */
 		IMessageEvent inform = createMessageEvent("has_escuchado_musica");
 		HasEscuchadoMusica hasEscuchadoMusica = new HasEscuchadoMusica(energia, diversion);
@@ -49,11 +49,11 @@ public class EscucharMusicaRespuestaPlan extends Plan {
 		inform.setContent(hasEscuchadoMusica);
 		sendMessage(inform);
 
-		/* Actualizaci n de las creencias del equipo de m sica */
+		/* Actualizacion de las creencias del equipo de musica */
 		/*
-		 * Puesto que el Sim ha terminado de escuchar m sica se elimina la primera
-		 * posici n del array de mensajes y la primera posici n del array de tiempos de
-		 * finalizaci n
+		 * Puesto que el Sim ha terminado de escuchar musica se elimina la primera
+		 * posicion del array de mensajes y la primera posicion del array de tiempos de
+		 * finalizacion
 		 */
 		arrayMensajes.remove(0);
 		creenciaMensajes.setFact(arrayMensajes);
@@ -65,8 +65,8 @@ public class EscucharMusicaRespuestaPlan extends Plan {
 		creenciaTiempo.setValue(arrayTiempos);
 
 		/*
-		 * Si el array de tiempos est  vac o, significa que no hay m s sims escuchadno
-		 * m sica por lo tanto el objetivo correspondiente de desactiva
+		 * Si el array de tiempos esta vacio, significa que no hay mas sims escuchadno
+		 * musica por lo tanto el objetivo correspondiente de desactiva
 		 */
 		if (arrayTiempos.isEmpty()) {
 			getGoalbase().getGoal("escuchar_musica_tiempo_superado").drop();

@@ -18,26 +18,27 @@ public class EscucharMusicaPreguntaPlan extends Plan {
 	}
 
 	public void body() {
-		/* Obtención del request que inicia el plan */
+		/* Obtencion del request que inicia el plan */
 		IMessageEvent request = (IMessageEvent) getInitialEvent();
 		EscucharMusica content = (EscucharMusica) request.getContent();
 		Diversion diversion = content.getDiversion();
 		Energia energia = content.getEnergia();
 
-		/* Obtención de las creencias del agente */
+		/* Obtencion de las creencias del agente */
 		RBelief creenciaMusicaSonando = (RBelief) getBeliefbase().getBelief("musica_sonando"); // El tipo de música que
 		Musica musicaSonando = (Musica) creenciaMusicaSonando.getFact();						// está sonando
 		RBelief creenciaObsolescencia = (RBelief) getBeliefbase().getBelief("obsolescencia");// Si el equipo está
 		int obsolescencia = (int) creenciaObsolescencia.getFact(); 								// estropeado
 
-		/* Al escuchar música siempre se aceptan las peticiones */
+		/* Al escuchar musica siempre se aceptan las peticiones */
 		IMessageEvent agree = createMessageEvent("peticion_aceptada");
+		agree.setContent(content);
 		agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet(SFipa.SENDER).getValues());
 		sendMessage(agree);
 
-		/* Se comprueba si el equipo de música está roto */
+		/* Se comprueba si el equipo de musica esta roto */
 		if (obsolescencia <= 0) {
-			/* La música deja de sonar */
+			/* La musica deja de sonar */
 			if (!musicaSonando.equals(null)) {
 				creenciaMusicaSonando.setFact(null);
 			}
@@ -56,7 +57,7 @@ public class EscucharMusicaPreguntaPlan extends Plan {
 
 			/*
 			 * Se obtienen los arrays que contienen los tiempos y mensajes de los sims que
-			 * están a la espera de que se modifiquen sus recursos
+			 * estan a la espera de que se modifiquen sus recursos
 			 */
 
 			RBelief creenciaMensajes = (RBelief) getBeliefbase().getBelief("mensajes_escuchar_musica");
@@ -67,22 +68,22 @@ public class EscucharMusicaPreguntaPlan extends Plan {
 			ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) creenciaTiemposFin.getFact();
 
 			/*
-			 * Se actualiza el Array de Mensajes añadiendo el mensaje del sim actual en la
-			 * última posicion
+			 * Se actualiza el Array de Mensajes anadiendo el mensaje del sim actual en la
+			 * ultima posicion
 			 */
 			arrayMensajes.add(request);
 			creenciaMensajes.setFact(arrayMensajes);
 
 			/*
-			 * Se actualiza el array de tiempos de finalización añadiendo el tiempo de
-			 * finalización de la acción para el Sim actual a la última posición
+			 * Se actualiza el array de tiempos de finalizacion anadiendo el tiempo de
+			 * finalizacion de la accion para el Sim actual a la ultima posicion
 			 */
 			RBelief creenciaTiempo = (RBelief) getBeliefbase().getBelief("tiempo_actual");
 			Integer tiempo = (Integer) creenciaTiempo.getFact();
 			arrayTiempos.add(tiempo + Accion.TIEMPO_CORTO);
 			creenciaTiemposFin.setFact(arrayTiempos);
 
-			/* Si es el primero en escuchar música se lanza el objetivo */
+			/* Si es el primero en escuchar musica se lanza el objetivo */
 			if (arrayTiempos.size() == 1) {
 				IGoal goal = createGoal("escuchar_musica_tiempo_superado");
 				dispatchTopLevelGoal(goal);
