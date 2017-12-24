@@ -50,11 +50,11 @@
 			<concrete ref="dfcap.df_keep_registered"/>
 		</maintaingoalref>
 		<!-- Objetivo para que cuando termina el tiempo de llamada se ejecute el segundo plan -->
-		<maintaingoal name="llamar_sim_tiempo_superado">
-			<maintaincondition>
-				$beliefbase.tiempo_fin_llamada >= $beliefbase.tiempo_actual 
-			</maintaincondition>
-		</maintaingoal>
+		<performgoal name="performlookforwaste" retry="true" exclude="never">
+		  <contextcondition>
+			$beliefbase.daytime
+		  </contextcondition>
+		</performgoal>
 
 		<!-- Objetivo para que cuando termina el tiempo que dura la broma se ejecute el segundo plan -->
 		<maintaingoal name="gastar_broma_tiempo_superado">
@@ -121,11 +121,17 @@
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
 			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 		</messageevent>
 		
 		<messageevent name="peticion_rechazada" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
 			</parameter>
 		</messageevent>
 		
@@ -133,11 +139,17 @@
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
 			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 		</messageevent>
 		
 		<messageevent name="broma_fallida" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
 			</parameter>
 		</messageevent>
 
@@ -145,11 +157,17 @@
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.INFORM_REF</value>
 			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 		</messageevent>
 		
 		<messageevent name="has_gastado_broma" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.INFORM_REF</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
 			</parameter>
 		</messageevent>
 	</events>
