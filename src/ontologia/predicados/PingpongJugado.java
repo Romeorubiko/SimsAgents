@@ -15,6 +15,10 @@ public class PingpongJugado extends Predicado {
     public PingpongJugado() {
     }
 
+    public PingpongJugado(Energia energia, Higiene h, Diversion d, InteraccionSocial i, Deporte de) {
+
+    }
+
     public Energia getEnergia() {
         return energia;
     }

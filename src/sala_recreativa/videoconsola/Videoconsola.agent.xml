@@ -1,0 +1,209 @@
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+                        http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="Videoconsola"
+       package="salarecreativa.videoconsola">
+    <imports>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+    </imports>
+
+
+
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+
+
+
+    <beliefs>
+        <belief name="obsolescencia" class="Integer">
+            <fact>new Integer(100)</fact>
+        </belief>
+        <belief name="ocupado" class="Boolean">
+            <fact>new Boolean(false)</fact>
+        </belief>
+        <belief name="ocupado2" class="Boolean">
+            <fact>new Boolean(false)</fact>
+        </belief>
+        <belief name="tiempo" class="int">
+            <fact>(int) (System.currentTimeMillis()/1000)</fact>
+        </belief>
+        <belief name="tiempo2" class="int">
+            <fact>(int) (System.currentTimeMillis()/1000)</fact>
+        </belief>
+        <belief name="tiempo_fin" class="int">
+            <fact>(int) 0</fact>
+        </belief>
+        <belief name="mensaje" class="IMessageEvent"/>
+        <belief name="mensaje2" class="IMessageEvent"/>
+    </beliefs>
+
+
+
+    <goals>
+        <maintaingoal name="jugar_videojuego_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin >= $beliefbase.tiempo
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="jugar_videojuego_tiempo_superado_2">
+            <maintaincondition>
+                $beliefbase.tiempo_fin >= $beliefbase.tiempo2
+            </maintaincondition>
+        </maintaingoal>
+        
+        <maintaingoalref name="df_diversion_jugar_videojuego">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_logica_jugar_videojuego">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+
+        <maintaingoalref name="df_diversion_jugar_partida_consola">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_interaccion_jugar_partida_consola">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+    </goals>
+
+
+
+    <plans>
+        <plan name="JugarVideojuegoPregunta">
+            <body class="salarecreativa.videoconsola.JugarVideojuegoPregunta"/>
+            <trigger>
+                <messageevent ref="request_jugar"/>
+            </trigger>
+        </plan>
+        <plan name="JugarVideojuegoRespuesta">
+            <body class="salarecreativa.videoconsola.JugarVideojuegoRespuesta"/>
+            <trigger>
+                <goal ref="jugar_videojuego_tiempo_superado"/>
+            </trigger>
+        </plan>
+
+
+        <plan name="JugarPartidaConsolaPregunta">
+            <body class="salarecreativa.videoconsola.JugarPartidaConsolaPregunta"/>
+            <trigger>
+                <messageevent ref="request_jugar_cooperativo"/>
+            </trigger>
+        </plan>
+        <plan name="JugarPartidaConsolaRespuesta">
+            <body class="salarecreativa.videoconsola.JugarPartidaConsolaRespuesta"/>
+            <trigger>
+                <goal ref="jugar_videojuego_tiempo_superado_2"/>
+            </trigger>
+        </plan>
+    </plans>
+
+
+
+    <events>
+        <messageevent name="request_jugar" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.JugarVideojuego"/>
+        </messageevent>
+
+        <messageevent name="request_jugar_cooperativo" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.JugarPartidaConsola"/>
+        </messageevent>
+        
+
+        <messageevent name="juego_finalizado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.JuegoFinalizado"/>
+        </messageevent>
+
+        <messageevent name="juego_cooperativo_finalizado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.PartidoConsolaFinalizado"/>
+        </messageevent>
+
+
+        <messageevent name="aparato_estropeado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.AparatoEstropeadoJugar"/>
+        </messageevent>
+
+        <messageevent name="consola_estropeada_partida" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.ConsolaEstropeadaPartida"/>
+        </messageevent>
+
+
+        <messageevent name="agree" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="refuse" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+        </messageevent>
+    </events>
+
+
+
+    <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="df_diversion_jugar_videojuego">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "JugarVideojuego", "Videoconsola"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_logica_jugar_videojuego">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Logica", "JugarVideojuego", "Videoconsola"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+
+                <initialgoal ref="df_diversion_jugar_partida_consola">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "JugarPartidaConsola", "Videoconsola"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_interaccion_jugar_partida_consola">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("InteraccionSocial", "JugarPartidaConsola", "Videoconsola"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+            </goals>
+        </configuration>
+    </configurations>
+</agent>

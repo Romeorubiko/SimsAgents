@@ -1,0 +1,206 @@
+<!--
+	<H3>Agente Teléfono </H3>
+-->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	name="Telefono"
+	package="Salon.Telefono">
+	
+	<imports>
+		<import>jadex.runtime.*</import>
+		<import>jadex.planlib.*</import>
+		<import>ontologia.acciones.*</import>
+		<import>ontologia.conceptos.*</import>
+		<import>ontologia.predicados.*</import>
+	</imports>
+	
+	<capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+	
+	<beliefs>
+		<!-- Si el teléfono está ocupado o libre -->
+		<belief name="telefono_ocupado" class="Boolean">
+			<fact> new Boolean(false)</fact>
+		</belief>
+		<!-- Tiempo transcurrido desde que se activa el agente -->
+		<belief name="tiempo_actual" class="int" updaterate="100">
+			<fact> (int) (System.currentTimeMillis()/1000) </fact>
+		</belief>
+	    <!-- Tiempo en el que termina una llamada  -->
+		<belief name="tiempo_fin_llamada" class="int">
+			<fact> (int) 0 </fact>
+		</belief>
+		<!-- Tiempo en el que termina una broma  -->
+		<belief name="tiempo_fin_broma" class="int">
+			<fact> (int) 0 </fact>
+		</belief>
+		<!-- Contenido del request que le llega al agente, necesario para ejecutar segundo plan  -->
+		<belief name="mensaje" class="IMessageEvent"/>
+	</beliefs>
+	
+	<goals>
+		<!-- Objetivos para registrar los servicios que ofrece el agente en el DF-->
+		<maintaingoalref name="df_llamar_sim_interaccion">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		<maintaingoalref name="df_llamar_sim_carisma">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		<maintaingoalref name="df_gastar_broma_telefonica_diversion">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+		<!-- Objetivo para que cuando termina el tiempo de llamada se ejecute el segundo plan -->
+		<performgoal name="performlookforwaste" retry="true" exclude="never">
+		  <contextcondition>
+			$beliefbase.daytime
+		  </contextcondition>
+		</performgoal>
+
+		<!-- Objetivo para que cuando termina el tiempo que dura la broma se ejecute el segundo plan -->
+		<maintaingoal name="gastar_broma_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempo_fin_broma >= $beliefbase.tiempo_actual
+			</maintaincondition>
+		</maintaingoal>
+	</goals>
+	
+	<plans>
+		<!-- Planes que se encargan de recibir los request del Sim y evalúan si aceptarlos o no.
+			 Cada plan evaluará un tipo de request según los mensajes permitidos: llamar_sim o gastar_broma -->
+		<plan name="LlamarSimPregunta">
+			<body class="LlamarSimPreguntaPlan"/>
+			<trigger>
+				<messageevent ref="llamar_sim"/>
+			</trigger>
+		</plan>
+		
+		
+		<plan name="GastarBromaPregunta">
+			<body class="GastarBromaPreguntaPlan"/>
+			<trigger>
+				<messageevent ref="gastar_broma"/>
+			</trigger>
+		</plan>
+
+		<!-- Planes que se ejecutan si el request del Sim ha sido aceptado. Estos
+			 planes son los encargados de modificar los respectivos recursos del Sim dependiendo del
+			 mensaje que haya enviado al teléfono.-->
+		<plan name="LlamarSimRespuesta">
+			<body class="LlamarSimRespuestaPlan"/>
+			<trigger>
+				<goal ref="llamar_sim_tiempo_superado"></goal>
+			</trigger>
+		</plan>
+
+		<plan name="GastarBromaRespuesta">
+			<body class="GastarBromaRespuestaPlan"/>
+			<trigger>
+				<goal ref="gastar_broma_tiempo_superado"></goal>
+			</trigger>
+		</plan>
+	</plans>
+	
+	<events>
+		<messageevent name="llamar_sim" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="LlamarSimPreguntaPlan" direction="fixed">
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="gastar_broma" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="GastarBromaPreguntaPlan" direction="fixed">
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="peticion_aceptada" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="peticion_rechazada" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="llamada_fallida" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="broma_fallida" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="has_llamado" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM_REF</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_gastado_broma" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM_REF</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+	</events>
+	
+	  <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="df_llamar_sim_interaccion">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Interaccion Social", "LlamarSim", "Telefono"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+				<initialgoal ref="df_llamar_sim_carisma">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Carisma", "LlamarSim", "Telefono"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+				<initialgoal ref="df_gastar_broma_telefonica_diversion">
+                    <parameter ref="description">
+                        <value>
+							SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "GastarBromaTel", "Telefono"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+            </goals>
+        </configuration>
+    </configurations>
+	
+</agent>

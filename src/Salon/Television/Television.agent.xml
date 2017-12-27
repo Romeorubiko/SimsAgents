@@ -1,0 +1,323 @@
+<!--
+	<H3>Agente television</H3>
+-->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	name="Television"
+	package="Salon.Television">
+
+	<imports>
+		<import>jadex.runtime.*</import>
+		<import>jadex.planlib.*</import>
+		<import>jadex.util.*</import>
+		<import>jadex.adapter.fipa.*</import>
+		<import>java.util.logging.*</import>
+		<import>java.util.*</import>
+	</imports>
+
+	<capabilities>
+		<capability name="dfcap" file="jadex.planlib.DF"/>
+	</capabilities>
+
+	<beliefs>
+
+		<!-- Contiene el número de veces que queda para que la TV se estropee -->
+		<belief name="obsolescencia_tv" class="Integer">
+			<fact> new Integer(10)</fact>
+		</belief>
+
+		<!-- Tiempo transcurrido desde que se activa el agente -->
+		<belief name="tiempo_actual" class="int" updaterate="100">
+			<fact> (int) (System.currentTimeMillis()/1000) </fact>
+		</belief>
+
+		<!-- Array tiempos fin ver TV -->
+		<belief name="tiempos_fin_ver_tv" class="ArrayList"/>
+
+		<!-- Array mensajes ver TV -->
+		<belief name="mensajes_ver_tv" class="ArrayList"/>
+
+		<!-- Array tiempos fin ejercicio TV -->
+		<belief name="tiempos_fin_ejercicio_tv" class="ArrayList"/>
+
+		<!-- Array mensajes ejercio TV -->
+		<belief name="mensajes_ejercicio_tv" class="ArrayList"/>
+
+		<!-- Si hay un sim viendo la tv o no -->
+		<belief name="viendo_tv" class="Boolean">
+			<fact> new Boolean(false)</fact>
+		</belief>
+
+		<!-- Si hay un Sim haciendo ejercicio o no -->
+		<belief name="haciendo_ejercicio_tv" class="Boolean">
+			<fact> new Boolean(false)</fact>
+		</belief>
+
+		<!-- Si hay un Sim reparando la tv o no -->
+		<belief name="reparando_tv" class="Boolean">
+			<fact> new Boolean(false)</fact>
+		</belief>
+
+		<!-- Contenido del request que le llega al agente pidiendo reparar la tv. Necesario para ejecutar segundo plan  -->
+		<belief name="mensaje_reparar_tv" class="IMessageEvent"/>
+
+		<!-- Tiempo en el que el agente termina de reparar la tv -->
+		<belief name="tiempo_fin_reparar_tv" class="int">
+			<fact> (int) 0 </fact>
+		</belief>
+
+	</beliefs>
+	<goals>
+		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha visto la TV  se ejecute el segundo plan con el request-->
+		<maintaingoal name="ver_tv_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempos_fin_tv.get(0) >= $beliefbase.tiempo_actual
+			</maintaincondition>
+		</maintaingoal>
+
+		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha hecho ejercio en la TV  se ejecute el segundo plan con el rquest -->
+		<maintaingoal name="ejercicio_tv_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempos_fin_tv.get(0) >= $beliefbase.tiempo_actual
+			</maintaincondition>
+		</maintaingoal>
+
+		<!-- Objetivo para que cuando se alcance el tiempo en el que el agente ha reparado la TV  se ejecute el segundo plan con el request -->
+		<maintaingoal name="reparar_tv_tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempos_fin_reparar_tv.get(0) >= $beliefbase.tiempo_actual
+			</maintaincondition>
+		</maintaingoal>
+
+		<!-- Objetivos para registrar los servicios que ofrece el agente en el DF y los correspondientes recursos y habilidades que modifica-->
+		<maintaingoalref name="df_diversion_ejercicio_tv">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_deporte_ejercicio_tv">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_diversion_ver_tv">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_cocina_ver_tv">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+		<maintaingoalref name="df_carisma_ver_tv">
+			<concrete ref="dfcap.df_keep_registered"/>
+		</maintaingoalref>
+
+	</goals>
+	<plans>
+		<!-- Primer plan ver TV. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		<plan name="VerTVPreguntaPlan">
+			<body class="Salon.Television.VerTVPreguntaPlan"/>
+			<trigger>
+				<messageevent ref="ver_tv"/>
+			</trigger>
+		</plan>
+
+		<!-- Segundo plan ver TV. Se ejecuta cuando termina el tiempo de ver TV y modifica los recursos del Sim-->
+		<plan name="VerTVRespuestaPlan">
+			<body class="Salon.Television.VerTVRespuestaPlan"/>
+			<trigger>
+				<goal ref="ver_tv_tiempo_superado"/>
+			</trigger>
+		</plan>
+
+		<!-- Primer plan hacer ejercicio en la TV. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		<plan name="EjercicioTVPreguntaPlan">
+			<body class="Salon.Television.EjercicioTVPreguntaPlan"/>
+			<trigger>
+				<messageevent ref="ejercicio_tv"/>
+			</trigger>
+		</plan>
+
+		<!-- Segundo plan hacer ejercicio TV. Se ejecuta cuando termina el tiempo de hacer ejercicio en la TV y modifica los recursos del Sim-->
+		<plan name="EjercicioTVRespuestaPlan">
+			<body class="Salon.Television.EjercicioTVRespuestaPlan"/>
+			<trigger>
+				<goal ref="ejercicio_tv_tiempo_superado"/>
+			</trigger>
+		</plan>
+
+		<!-- Primer plan para reparar la TV. Recibe el request del Sim y evalúa si aceptarlo o no-->
+		<plan name="RepararTVPreguntaPlan">
+			<body class="Salon.Television.RepararTVPreguntaPlan"/>
+			<trigger>
+				<messageevent ref="reparar_tv"/>
+			</trigger>
+		</plan>
+
+		<!-- Segundo plan para reparar la TV. Se ejecuta cuando termina el tiempo de reparar la TV y modifica los recursos del Sim-->
+		<plan name="RepararTVRespuestaPlan">
+			<body class="Salon.Television.RepararTVRespuestalan"/>
+			<trigger>
+				<goal ref="reparar_tv_tiempo_superado"/>
+			</trigger>
+		</plan>
+
+	</plans>
+	<events>
+		<messageevent name="ver_tv" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="VerTVPreguntaPlan" direction="fixed"> </parameter>
+
+		</messageevent>
+		
+		<messageevent name="ejercicio_tv" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="EjercicioTVPreguntaPlan" direction="fixed"> </parameter>
+
+		</messageevent>
+
+		<messageevent name="reparar_tv" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="RepararTVPreguntaPlan" direction="fixed"> </parameter>
+
+		</messageevent>
+		
+		<messageevent name="sim_haciendo_ejercicio_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="sim_viendo_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="tv_estropeada" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="tv_estropeada_ejercicio" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="sim_no_haciendo_ejercicio_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="sim_no_viendo_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_visto_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+		
+		<messageevent name="has_hecho_ejercicio_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="has_reparado_tv" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+		
+	</events>
+
+	<configurations>
+		<configuration name="default">
+			<goals>
+				<initialgoal ref="df_diversion_ejercicio_tv">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Diversion", "EjercicioTV", "Television"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+				<initialgoal ref="df_deporte_ejercicio_tv">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Deporte", "EjercicioTV", "Television"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+				<initialgoal ref="df_diversion_ver_tv">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Diversion", "VerTV", "Television"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+				<initialgoal ref="df_cocina_ver_tv">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Cocina", "VerTV", "Television"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+				<initialgoal ref="df_carisma_ver_tv">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Carisma", "VerTV", "Television"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+			</goals>
+		</configuration>
+	</configurations>
+
+</agent>

@@ -11,6 +11,10 @@ public class ConsolaEstropeadaPartida extends Predicado {
     private InteraccionSocial interaccion;
 
     public ConsolaEstropeadaPartida() {
+
+    }
+
+    public ConsolaEstropeadaPartida(Energia energia, Diversion diversion, InteraccionSocial interaccionsocial) {
     }
 
 

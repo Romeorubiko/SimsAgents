@@ -16,6 +16,14 @@ public class TVEstropeadaEjercicio extends Predicado {
     public TVEstropeadaEjercicio() {
     }
 
+    public TVEstropeadaEjercicio(Energia energia, Diversion diversion, Hambre hambre, Higiene higiene, Deporte fisico) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.hambre = hambre;
+        this.higiene = higiene;
+        this.fisico = fisico;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

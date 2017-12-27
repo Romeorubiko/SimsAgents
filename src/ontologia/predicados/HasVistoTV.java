@@ -13,6 +13,12 @@ public class HasVistoTV extends Predicado {
     public HasVistoTV() {
     }
 
+    public HasVistoTV(CanalTV canal, Energia energia, Diversion diversion) {
+        this.canal = canal;
+        this.energia = energia;
+        this.diversion = diversion;
+    }
+
     public CanalTV getCanalTV() {
         return canal;
     }

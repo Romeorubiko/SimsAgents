@@ -6,7 +6,7 @@ import ontologia.conceptos.necesidades.*;
 /**
  * Created by eldgb on 26-Oct-17.
  */
-public class EntrenarMaquinaEjercicios {
+public class Entrenar {
 
     private Energia energia;
 
@@ -14,8 +14,9 @@ public class EntrenarMaquinaEjercicios {
 
     private Deporte deporte;
 
+    private Hambre hambre;
 
-    public EntrenarMaquinaEjercicios() {
+    public Entrenar() {
     }
 
     public Energia getEnergia() {
@@ -40,5 +41,13 @@ public class EntrenarMaquinaEjercicios {
 
     public void setDeporte(Deporte s) {
         deporte = s;
+    }
+
+    public Hambre getHambre() {
+        return hambre;
+    }
+
+    public void setHambre(Hambre h) {
+        hambre = h;
     }
 }

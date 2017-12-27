@@ -13,6 +13,9 @@ public class HasTocado extends Predicado {
     public HasTocado() {
     }
 
+    public HasTocado(Energia e, Diversion d, Guitarra g) {
+    }
+
     public Energia getEnergia() {
         return energia;
     }

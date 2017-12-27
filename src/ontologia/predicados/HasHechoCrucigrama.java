@@ -13,6 +13,12 @@ public class HasHechoCrucigrama extends Predicado {
     public HasHechoCrucigrama() {
     }
 
+    public HasHechoCrucigrama(Energia energia, Diversion diversion, Logica logica) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.logica = logica;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

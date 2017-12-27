@@ -5,7 +5,7 @@ import ontologia.conceptos.habilidades.*;
 
 public class CanalTV extends Concepto {
 
-    private enum Canales {COCINA, PELICULAS, DEPORTES, SERIES}
+    public enum Canales {COCINA, PELICULAS, DEPORTES, SERIES}
 
     private Canales canal;
     private Cocina cocina;

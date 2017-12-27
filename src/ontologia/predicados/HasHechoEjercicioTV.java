@@ -16,6 +16,14 @@ public class HasHechoEjercicioTV extends Predicado {
     public HasHechoEjercicioTV() {
     }
 
+    public HasHechoEjercicioTV(Energia energia, Diversion diversion, Hambre hambre, Higiene higiene, Deporte fisico) {
+        this.energia = energia;
+        this.diversion = diversion;
+        this.hambre = hambre;
+        this.higiene = higiene;
+        this.fisico = fisico;
+    }
+
     public Energia getEnergia() {
         return energia;
     }

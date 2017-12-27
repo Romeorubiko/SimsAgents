@@ -13,6 +13,10 @@ public class PartidoConsolaFinalizado extends Predicado {
     public PartidoConsolaFinalizado() {
     }
 
+    public PartidoConsolaFinalizado(Energia energia, Diversion diversion, InteraccionSocial interaccionsocial) {
+
+    }
+
     public Energia getEnergia() {
         return energia;
     }

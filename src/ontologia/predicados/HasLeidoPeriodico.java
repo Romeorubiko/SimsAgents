@@ -1,48 +1,55 @@
 package ontologia.predicados;
 
-import ontologia.Predicado;
-import ontologia.conceptos.habilidades.*;
-import ontologia.conceptos.necesidades.*;
+import ontologia.conceptos.habilidades.Escritura;
+import ontologia.conceptos.necesidades.Diversion;
+import ontologia.conceptos.necesidades.Energia;
+import ontologia.conceptos.habilidades.Logica;
 
-public class HasLeidoPeriodico extends Predicado {
-
-    private Energia energia;
+public class HasLeidoPeriodico {
     private Diversion diversion;
+    private Energia energia;
     private Logica logica;
     private Escritura escritura;
 
     public HasLeidoPeriodico() {
     }
 
-    public Energia getEnergia() {
-        return energia;
-    }
-
-    public void setEnergia(Energia e) {
-        energia = e;
+    public HasLeidoPeriodico(Diversion diversion, Energia energia, Logica logica, Escritura escritura) {
+        this.diversion = diversion;
+        this.energia = energia;
+        this.logica = logica;
+        this.escritura = escritura;
     }
 
     public Diversion getDiversion() {
         return diversion;
     }
 
-    public void setDiversion(Diversion d) {
-        diversion = d;
+    public void setDiversion(Diversion diversion) {
+        this.diversion = diversion;
     }
 
-    public Escritura getEscritura() {
-        return escritura;
+    public Energia getEnergia() {
+        return energia;
     }
 
-    public void setEscritura(Escritura e) {
-        escritura = e;
+    public void setEnergia(Energia energia) {
+        this.energia = energia;
     }
 
     public Logica getLogica() {
         return logica;
     }
 
-    public void setLogica(Logica l) {
-        logica = l;
+    public void setLogica(Logica logica) {
+        this.logica = logica;
+    }
+
+    public Escritura getEscritura() {
+        return escritura;
+    }
+
+    public void setEscritura(Escritura escritura) {
+        this.escritura = escritura;
     }
 }

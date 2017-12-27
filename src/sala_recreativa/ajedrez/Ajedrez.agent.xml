@@ -1,0 +1,161 @@
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+                        http://jadex.sourceforge.net/jadex-0.96.xsd"
+       name="Ajedrez"
+       package="salarecreativa.ajedrez">
+    
+
+    <imports>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>ontologia.Accion</import>
+        <import>jadex.model.IMMessageEvent</import>
+    </imports>
+
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+
+
+
+    <beliefs>
+        <belief name="ocupado_ajedrez" class="Boolean">
+            <fact> new Boolean(false)</fact>
+        </belief>
+
+        <belief name="tiempo_ajedrez" class="int" updaterate="100">
+            <fact> (int) (System.currentTimeMillis()/1000) </fact>
+        </belief>
+
+        <belief name="tiempo_fin_ajedrez" class="int">
+            <fact> (int) 0 </fact>
+        </belief>
+
+        <belief name="mensaje_jugar_ajedrez" class="IMessageEvent"/>
+    </beliefs>
+
+
+    <goals>
+        <maintaingoal name="jugar_ajedrez_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_ajedrez >= $beliefbase.tiempo_ajedrez
+            </maintaincondition>
+        </maintaingoal>
+
+        <maintaingoalref name="df_diversion_jugar_ajedrez">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_logica_jugar_ajedrez">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+
+        <maintaingoalref name="df_energia_jugar_ajedrez">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+    </goals>
+
+
+    <plans>
+        <plan name="JugarAjedrezPregunta">
+            <body class="salarecreativa.ajedrez.JugarAjedrezPregunta"/>
+            <trigger>
+                <messageevent ref="jugar_ajedrez"/>
+            </trigger>
+        </plan>
+
+        <plan name="JugarAjedrezRespuesta">
+            <body class="salarecreativa.ajedrez.JugarAjedrezRespuesta"/>
+            <trigger>
+                <goal ref="jugar_ajedrez_tiempo_superado"></goal>
+            </trigger>
+        </plan>
+    </plans>
+
+
+    <events>
+        <messageevent name="jugar_ajedrez" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.JugarAjedrez"
+                       direction="fixed">
+            </parameter>
+        </messageevent>
+
+        <messageevent name="ajedrez_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.bridge.fipa.SFipa.REFUSE</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="ajedrez_no_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.bridge.fipa.SFipa.AGREE</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="ajedrez_jugado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.bridge.fipa.SFipa.INFORM</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="retar_ajedrez" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.RetarAjedrez"
+                       direction="fixed">
+            </parameter>
+        </messageevent>
+
+        <messageevent name="ajedrez_fallido" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
+            </parameter>
+            <parameter name="content" class="ontologia.predicados.AjedrezFallido"/>
+        </messageevent>
+    </events>
+
+
+
+    <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="jugar_ajedrez_tiempo_superado"/>
+
+                <initialgoal ref="df_diversion_jugar_ajedrez">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "JugarAjedrez", "Ajedrez"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+
+                <initialgoal ref="df_energia_jugar_ajedrez">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Energia", "JugarAjedrez", "Ajedrez"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+
+                <initialgoal ref="df_logica_jugar_ajedrez">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Logica", "JugarAjedrez", "Ajedrez"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+            </goals>
+        </configuration>
+    </configurations>
+</agent>

@@ -1,0 +1,118 @@
+<agent xmlns="http://jadex.sourceforge.net/jadex" name="Cafetera"
+	package="cocina.cafetera">
+<imports>
+		<import>jadex.runtime.*</import>
+		<import>jadex.planlib.*</import>
+		<import>jadex.util.*</import>
+		<import>jadex.adapter.fipa.*</import>
+		<import>java.util.logging.*</import>
+		<import>java.util.*</import>
+	</imports>
+
+	<capabilities>
+		<capability name="dfcap" file="jadex.planlib.DF" />
+	</capabilities>
+
+	<beliefs>
+		<!-- Obsolescencia de la cafetera -->
+		<belief name="obsolescencia" class="Integer">
+			<fact>new Integer(100)</fact>
+		</belief>
+		<!-- Ocupacion de la cafetera -->
+		<belief name="ocupado" class="Boolean">
+			<fact>new Boolean(false)</fact>
+		</belief>
+		<!-- Tiempo actual de la cafetera -->
+		<belief name="tiempo_cafetera" class="int" updaterate="750">
+			<fact> (int)(System.currentTimeMillis()/1000) </fact>
+		</belief>
+		<!-- Momento en el tiempo donde se finaliza la accion -->
+		<belief name="tiempo_fin" class="int">
+			<fact> (int) 0 </fact>
+		</belief>
+		<!-- Contenido del request que le llega al agente, necesario para ejecutar 
+			segundo plan -->
+		<belief name="mensaje_cafetera" class="IMessageEvent" />
+
+	</beliefs>
+	<goals>
+		<maintaingoal name="tiempo_superado">
+			<maintaincondition>
+				$beliefbase.tiempo_fin >=
+				$beliefbase.tiempo_lavaplatos
+			</maintaincondition>
+		</maintaingoal>
+		<maintaingoalref name="df_energia_beber_cafe">
+			<concrete ref="dfcap.df_keep_registered" />
+		</maintaingoalref>
+	</goals>
+	<plans>
+		<plan name="PermisoBeberCafePlan">
+			<body class="cocina.cafetera.PermisoBeberCafePlan" />
+			<trigger>
+				<messageevent ref="request_beber_cafe" />
+			</trigger>
+		</plan>
+		<plan name="RespuestaBeberCafePlan">
+			<body class="cocina.cafetera.RespuestaBeberCafePlan" />
+			<trigger>
+				<messageevent ref="cafe_bebido" />
+			</trigger>
+		</plan>
+	</plans>
+	<events>
+		<messageevent name="request_beber_cafe" direction="receive"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="content" class="PermisoBeberCafePlan"
+				direction="fixed">
+			</parameter>
+		</messageevent>
+
+		<messageevent name="cafetera_ocupada" direction="send"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="cafetera_no_ocupada" direction="send"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="cafe_bebido" direction="send"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+		<messageevent name="cafetera_estropeada" direction="send"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+		</messageevent>
+
+	</events>
+	<configurations>
+		<configuration name="default">
+			<goals>
+				<initialgoal ref="df_energia_beber_cafe">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Energia", "BeberCafe",
+							"Cafetera"))
+						</value>
+					</parameter>
+				</initialgoal>
+
+			</goals>
+		</configuration>
+	</configurations>
+</agent>
