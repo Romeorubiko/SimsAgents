@@ -4,27 +4,117 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
        name="Camara"
        package="dormitorio.camara">
-
+    <imports>
+        <import>jadex.planlib.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>jadex.runtime.IMessageEvent</import>
+    </imports>
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
     <beliefs>
+        <belief name="ocupado_camara" class="Boolean">
+            <fact>new Boolean(false)</fact>
+        </belief>
+        <belief name="tiempo_foto" class="int" updaterate="100">
+            <fact>(int) (System.currentTimeMillis()/1000)</fact>
+        </belief>
+
+        <belief name="tiempo_fin_foto" class="int">
+            <fact>(int) 0</fact>
+        </belief>
+        <belief name="mensaje_camara" class="IMessageEvent"/>
         <belief name="obsolescencia" class="Integer">
             <fact>new Integer(100)</fact>
         </belief>
     </beliefs>
+    <goals>
+        <maintaingoal name="sacar_foto_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_foto >= $beliefbase.tiempo_foto
+                &amp;&amp; $beliefbase.ocupado_caballete == true
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="sacar_foto_retrato_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_foto >= $beliefbase.tiempo_foto
+                &amp;&amp; $beliefbase.ocupado_caballete == true
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="reparar_camara_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_foto >= $beliefbase.tiempo_foto
+                &amp;&amp; $beliefbase.ocupado_caballete == true
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoalref name="df_fotografia_sacar_foto">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_sacar_foto">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_fotografia_sacar_foto_retrato">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_sacar_foto_retrato">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_interaccionSocial_sacar_foto_retrato">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_mecanica_reparar_camara">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <achievegoalref name="df_search">
+            <concrete ref="dfcap.df_search"/>
+        </achievegoalref>
+    </goals>
     <plans>
-        <plan name="SacarFotoPlan">
-            <body class="dormitorio.camara.SacarFotoPlan"/>
+        <plan name="SacarFotoPreguntaPlan">
+            <body class="dormitorio.camara.SacarFotoPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_foto"/>
             </trigger>
         </plan>
 
-        <plan name="SacarFotoRetratoPlan">
-            <body class="dormitorio.camara.SacarFotoRetratoPlan"/>
+        <plan name="SacarFotoRespuestaPlan">
+            <body class="dormitorio.camara.SacarFotoRespuestaPlan"/>
+            <trigger>
+                <goal ref="sacar_foto_tiempo_superado"/>
+            </trigger>
+        </plan>
+
+        <plan name="SacarFotoRetratoPreguntaPlan">
+            <body class="dormitorio.camara.SacarFotoRetratoPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_foto_retrato"/>
             </trigger>
         </plan>
 
+        <plan name="SacarFotoRetratoRespuestaPlan">
+            <body class="dormitorio.camara.SacarFotoRetratoPreguntaPlan"/>
+            <trigger>
+                <goal ref="sacar_foto_retrato_tiempo_superado"/>
+            </trigger>
+        </plan>
+
+        <plan name="RepararCamaraPreguntaPlan">
+            <body class="dormitorio.camara.RepararCamaraPreguntaPlan"/>
+            <trigger>
+                <messageevent ref="request_reparar_camara"/>
+            </trigger>
+        </plan>
+
+        <plan name="RepararCamaraRespuestaPlan">
+            <body class="dormitorio.camara.RepararCamaraRespuestaPlan"/>
+            <trigger>
+                <goal ref="reparar_camara_tiempo_superado"/>
+            </trigger>
+        </plan>
     </plans>
     <events>
         <messageevent name="request_foto" direction="receive" type="fipa">
@@ -33,11 +123,30 @@
             </parameter>
             <parameter name="content" class="ontologia.acciones.SacarFoto"/>
         </messageevent>
+
+        <messageevent name="request_reparar_camara" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.RepararCamara"/>
+        </messageevent>
+
         <messageevent name="foto_realizada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.FotoRealizada"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="camara_reparada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="request_foto_retrato" direction="receive" type="fipa">
@@ -46,36 +155,134 @@
             </parameter>
             <parameter name="content" class="ontologia.acciones.SacarFotoRetrato"/>
         </messageevent>
+
         <messageevent name="foto_retrato_realizada" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.FotoRealizada"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="camara_estropeada_sacar_foto" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.CamaraEstropeadaSacarFoto"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="camara_estropeada_sacar_foto_retrato" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
-                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+                <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.CamaraEstropeadaSacarFotoRetrato"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
+
         <messageevent name="posar" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="ontologia.acciones.Posar"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
+
         <messageevent name="sim_no_posa" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
             </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="agree_camara" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="refuse_camara_ocupada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="refuse_camara_no_estropeada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
     </events>
+    <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="sacar_foto_tiempo_superado"/>
+                <initialgoal ref="sacar_foto_retrato_tiempo_superado"/>
+                <initialgoal ref="reparar_camara_tiempo_superado"/>
+                <initialgoal ref="df_fotografia_sacar_foto">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Fotografia", "SacarFoto", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_sacar_foto">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "SacarFoto", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_fotografia_sacar_foto_retrato">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Fotografia", "SacarFotoRetrato", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_sacar_foto_retrato">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "SacarFotoRetrato", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_interaccionSocial_sacar_foto_retrato">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("InteraccionSocial", "SacarFotoRetrato", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_mecanica_reparar_camara">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Mecanica", "RepararCamara", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+            </goals>
+        </configuration>
+    </configurations>
 </agent>

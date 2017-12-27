@@ -4,15 +4,70 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
        name="Estanteria"
        package="dormitorio.estanteria">
+    <imports>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+    </imports>
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
+    <beliefs>
+        <belief name="tiempo_estanteria" class="int" updaterate="100">
+            <fact>(int) (System.currentTimeMillis()/1000)</fact>
+        </belief>
+        <belief name="tiempos_fin_estanteria" class="ArrayList"/>
+        <belief name="mensajes_estanteria" class="ArrayList"/>
+    </beliefs>
+    <goals>
+        <maintaingoal name="leer_libro_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_estanteria.get(0) >= $beliefbase.tiempo_estanteria
+                &amp;&amp; $beliefbase.ocupado_caballete == true
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoalref name="df_diversion_leer_libro">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_carisma_leer_libro">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_cocina_leer_libro">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_jardineria_leer_libro">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_pintura_leer_libro">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_fotografia_leer_libro">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_logica_leer_libro">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_ciencia_leer_libro">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+    </goals>
     <plans>
-        <plan name="LeerLibroPlan">
-            <body class="dormitorio.estanteria.LeerLibroPlan"/>
+        <plan name="LeerLibroPreguntaPlan">
+            <body class="dormitorio.estanteria.LeerLibroPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_leer_libro"/>
             </trigger>
         </plan>
+        <plan name="LeerLibroRespuestaPlan">
+            <body class="dormitorio.estanteria.LeerLibroRespuestaPlan"/>
+            <trigger>
+                <goal ref="leer_libro_tiempo_superado"/>
+            </trigger>
+        </plan>
     </plans>
-
     <events>
         <messageevent name="request_leer_libro" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
@@ -24,14 +79,96 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.LibroLeido"/>
-
-        </messageevent>
-        <messageevent name="libro_terminado" direction="send" type="fipa">
-            <parameter name="performative" class="String" direction="fixed">
-                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.LibroTerminado"/>
+        </messageevent>
+        <messageevent name="agree_estanteria" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="refuse_estanteria" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
     </events>
+    <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="leer_libro_tiempo_superado"/>
+                <initialgoal ref="df_diversion_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "LeerLibro", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_carisma_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Carisma", "LeerLibro", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_cocina_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Cocina", "LeerLibro", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_jardineria_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Jardineria", "LeerLibro", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_pintura_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Pintura", "LeerLibro", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_fotografia_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Fotografia", "LeerLibro", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_logica_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Logica", "LeerLibro", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_ciencia_leer_libro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Ciencia", "LeerLibro", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+            </goals>
+        </configuration>
+    </configurations>
 </agent>

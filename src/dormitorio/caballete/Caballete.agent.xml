@@ -4,25 +4,86 @@
 	                    http://jadex.sourceforge.net/jadex-0.96.xsd"
        name="Caballete"
        package="dormitorio.caballete">
-
+    <imports>
+        <import>jadex.planlib.*</import>
+        <import>jadex.runtime.*</import>
+        <import>jadex.planlib.*</import>
+        <import>jadex.util.*</import>
+        <import>jadex.adapter.fipa.*</import>
+        <import>java.util.logging.*</import>
+        <import>java.util.*</import>
+        <import>jadex.runtime.IMessageEvent</import>
+        <import>ontologia.conceptos.Cuadro</import>
+    </imports>
+    <capabilities>
+        <capability name="dfcap" file="jadex.planlib.DF"/>
+    </capabilities>
     <beliefs>
-        <belief name="cuadro_instalado" class="src.ontologia.conceptos.Cuadro"/>
+        <belief name="cuadro_instalado" class="Cuadro"/>
+        <belief name="ocupado_caballete" class="Boolean">
+            <fact>new Boolean(false)</fact>
+        </belief>
+        <belief name="tiempo_caballete" class="int" updaterate="100">
+            <fact>(int) (System.currentTimeMillis()/1000)</fact>
+        </belief>
+
+        <belief name="tiempo_fin_caballete" class="int">
+            <fact>(int) 0</fact>
+        </belief>
+        <belief name="mensaje_caballete" class="IMessageEvent"/>
     </beliefs>
+    <goals>
+        <maintaingoal name="pintar_nuevo_cuadro_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_caballete >= $beliefbase.tiempo_caballete
+                &amp;&amp; $beliefbase.ocupado_caballete == true
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoal name="seguir_pintando_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin_caballete >= $beliefbase.tiempo_caballete
+                &amp;&amp; $beliefbase.ocupado_caballete == true
+            </maintaincondition>
+        </maintaingoal>
+        <maintaingoalref name="df_diversion_pintar_nuevo_cuadro">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_pintura_pintar_nuevo_cuadro">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_diversion_seguir_pintando">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_pintura_seguir_pintando">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+    </goals>
     <plans>
-        <plan name="PintarNuevoCuadroPlan">
-            <body class="dormitorio.caballete.PintarNuevoCuadroPlan"/>
+        <plan name="PintarNuevoCuadroPreguntaPlan">
+            <body class="dormitorio.caballete.PintarNuevoCuadroPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_pintar_nuevo_cuadro"/>
             </trigger>
         </plan>
-        <plan name="SeguirPintandoPlan">
-            <body class="dormitorio.caballete.SeguirPintandoPlan"/>
+        <plan name="PintarNuevoCuadroRespuestaPlan">
+            <body class="dormitorio.caballete.PintarNuevoCuadroRespuestaPlan"/>
+            <trigger>
+                <goal ref="pintar_nuevo_cuadro_tiempo_superado"/>
+            </trigger>
+        </plan>
+        <plan name="SeguirPintandoPreguntaPlan">
+            <body class="dormitorio.caballete.SeguirPintandoPreguntaPlan"/>
             <trigger>
                 <messageevent ref="request_seguir_pintando"/>
             </trigger>
         </plan>
+        <plan name="SeguirPintandoRespuestaPlan">
+            <body class="dormitorio.caballete.SeguirPintandoRespuestaPlan"/>
+            <trigger>
+                <goal ref="seguir_pintando_tiempo_superado"/>
+            </trigger>
+        </plan>
     </plans>
-
     <events>
         <messageevent name="request_pintar_nuevo_cuadro" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
@@ -40,14 +101,81 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.CuadroPintado"/>
-
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
         <messageevent name="cuadro_terminado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.CuadroTerminado"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="agree_caballete" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="refuse_cuadro_instalado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        <messageevent name="refuse_caballete_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
     </events>
+    <configurations>
+        <configuration name="default">
+            <goals>
+                <initialgoal ref="pintar_nuevo_cuadro_tiempo_superado"/>
+                <initialgoal ref="seguir_pintando_tiempo_superado"/>
+                <initialgoal ref="df_diversion_pintar_nuevo_cuadro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "PintarNuevoCuadro", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_pintura_pintar_nuevo_cuadro">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Pintura", "PintarNuevoCuadro", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_diversion_seguir_pintando">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Diversion", "SeguirPintando", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+                <initialgoal ref="df_pintura_seguir_pintando">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Pintura", "SeguirPintando", null))
+                        </value>
+                    </parameter>
+                </initialgoal>
+            </goals>
+        </configuration>
+    </configurations>
 </agent>
