@@ -21,7 +21,6 @@ public class NavegarPorInternetRespuestaPlan extends Plan {
         IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje").getFact();
         getBeliefbase().getBelief("tiempo_fin").setFact(0);
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-        getGoalbase().getGoal("navegar_internet_tiempo_superado").drop();
 
         NavegarPorInternet content = (NavegarPorInternet) peticion.getContent();
         Energia energia = content.getEnergia();

@@ -57,9 +57,6 @@ public class JugarVideojuegoPreguntaPlan extends Plan {
                 sendMessage(failure);
             } else {
                 getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia - 1);
-
-                IGoal goal = createGoal("jugar_videojuego_tiempo_superado");
-                dispatchTopLevelGoal(goal);
             }
         }
     }

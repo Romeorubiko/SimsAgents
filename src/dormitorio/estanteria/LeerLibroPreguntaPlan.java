@@ -36,10 +36,5 @@ public class LeerLibroPreguntaPlan extends Plan {
         // Se actualiza el array de tiempos de finalización de las estanteria añadiendo la ultima
         arrayTiempos.add(tiempo + Accion.TIEMPO_MEDIO);
         getBeliefbase().getBelief("tiempos_fin_estanteria").setFact(arrayTiempos);
-
-        if (arrayMensajes.isEmpty()) {
-            IGoal goal = createGoal("leer_libro_tiempo_superado");
-            dispatchTopLevelGoal(goal);
-        }
     }
 }

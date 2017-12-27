@@ -26,7 +26,6 @@ public class RepararCamaraRespuestaPlan extends Plan {
         IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_camara").getFact();
         getBeliefbase().getBelief("tiempo_fin_foto").setFact(0);
         getBeliefbase().getBelief("ocupado_camara").setFact(Boolean.FALSE);
-        getGoalbase().getGoal("reparar_camara_tiempo_superado").drop();
 
         RepararCamara content = (RepararCamara) peticion.getContent();
         Energia energia = content.getEnergia();

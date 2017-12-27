@@ -51,9 +51,6 @@ public class ChatearPreguntaPlan extends Plan {
                 sendMessage(failure);
             } else {
                 getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia - 1);
-
-                IGoal goal = createGoal("chatear_tiempo_superado");
-                dispatchTopLevelGoal(goal);
             }
         }
     }

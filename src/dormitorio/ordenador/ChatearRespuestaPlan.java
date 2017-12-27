@@ -21,7 +21,6 @@ public class ChatearRespuestaPlan extends Plan {
         IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje").getFact();
         getBeliefbase().getBelief("tiempo_fin").setFact(0);
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-        getGoalbase().getGoal("chatear_tiempo_superado").drop();
 
         Chatear content = (Chatear) peticion.getContent();
 

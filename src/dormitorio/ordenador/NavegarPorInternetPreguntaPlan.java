@@ -52,9 +52,6 @@ public class NavegarPorInternetPreguntaPlan extends Plan {
                 sendMessage(failure);
             } else {
                 getBeliefbase().getBelief("obsolescencia").setFact(obsolescencia - 1);
-
-                IGoal goal = createGoal("navegar_internet_tiempo_superado");
-                dispatchTopLevelGoal(goal);
             }
         }
     }

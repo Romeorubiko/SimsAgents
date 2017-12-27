@@ -25,7 +25,6 @@ public class SacarFotoRetratoRespuestaPlan extends Plan {
         IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_camara").getFact();
         getBeliefbase().getBelief("tiempo_fin_foto").setFact(0);
         getBeliefbase().getBelief("ocupado_camara").setFact(Boolean.FALSE);
-        getGoalbase().getGoal("sacar_foto_tiempo_superado").drop();
 
         SacarFotoRetrato content = (SacarFotoRetrato) peticion.getContent();
         Retrato retrato = content.getRetrato();
@@ -54,7 +53,5 @@ public class SacarFotoRetratoRespuestaPlan extends Plan {
         FotoRealizada fotoRealizada = new FotoRealizada(diversion, energia, interaccionSocial, fotografia);
         respuesta.setContent(fotoRealizada);
         sendMessage(respuesta);
-
-
     }
 }

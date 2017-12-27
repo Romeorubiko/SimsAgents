@@ -36,11 +36,13 @@
         <maintaingoal name="pintar_nuevo_cuadro_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin_caballete >= $beliefbase.tiempo_caballete
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoal name="seguir_pintando_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin_caballete >= $beliefbase.tiempo_caballete
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoalref name="df_diversion_pintar_nuevo_cuadro">
@@ -139,6 +141,8 @@
     <configurations>
         <configuration name="default">
             <goals>
+                <initialgoal ref="pintar_nuevo_cuadro_tiempo_superado"/>
+                <initialgoal ref="seguir_pintando_tiempo_superado"/>
                 <initialgoal ref="df_diversion_pintar_nuevo_cuadro">
                     <parameter ref="description">
                         <value>

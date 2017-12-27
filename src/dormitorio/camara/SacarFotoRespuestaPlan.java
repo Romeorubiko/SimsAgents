@@ -25,7 +25,6 @@ public class SacarFotoRespuestaPlan extends Plan {
         IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_camara").getFact();
         getBeliefbase().getBelief("tiempo_fin_foto").setFact(0);
         getBeliefbase().getBelief("ocupado_camara").setFact(Boolean.FALSE);
-        getGoalbase().getGoal("sacar_foto_tiempo_superado").drop();
 
         SacarFoto content = (SacarFoto) peticion.getContent();
         Foto foto = content.getFoto();

@@ -26,6 +26,7 @@
         <maintaingoal name="leer_libro_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin_estanteria.get(0) >= $beliefbase.tiempo_estanteria
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoalref name="df_diversion_leer_libro">
@@ -102,6 +103,7 @@
     <configurations>
         <configuration name="default">
             <goals>
+                <initialgoal ref="leer_libro_tiempo_superado"/>
                 <initialgoal ref="df_diversion_leer_libro">
                     <parameter ref="description">
                         <value>

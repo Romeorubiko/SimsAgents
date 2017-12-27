@@ -36,16 +36,19 @@
         <maintaingoal name="sacar_foto_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin_foto >= $beliefbase.tiempo_foto
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoal name="sacar_foto_retrato_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin_foto >= $beliefbase.tiempo_foto
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoal name="reparar_camara_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin_foto >= $beliefbase.tiempo_foto
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoalref name="df_fotografia_sacar_foto">
@@ -228,6 +231,9 @@
     <configurations>
         <configuration name="default">
             <goals>
+                <initialgoal ref="sacar_foto_tiempo_superado"/>
+                <initialgoal ref="sacar_foto_retrato_tiempo_superado"/>
+                <initialgoal ref="reparar_camara_tiempo_superado"/>
                 <initialgoal ref="df_fotografia_sacar_foto">
                     <parameter ref="description">
                         <value>

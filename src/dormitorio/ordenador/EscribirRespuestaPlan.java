@@ -22,7 +22,6 @@ public class EscribirRespuestaPlan extends Plan {
         IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje").getFact();
         getBeliefbase().getBelief("tiempo_fin").setFact(0);
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-        getGoalbase().getGoal("escribir_tiempo_superado").drop();
         Escribir content = (Escribir) peticion.getContent();
 
         Energia energia = content.getEnergia();

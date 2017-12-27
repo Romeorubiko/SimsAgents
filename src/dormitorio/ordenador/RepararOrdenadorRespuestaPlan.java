@@ -21,7 +21,6 @@ public class RepararOrdenadorRespuestaPlan extends Plan {
         IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje").getFact();
         getBeliefbase().getBelief("tiempo_fin").setFact(0);
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-        getGoalbase().getGoal("reparar_ordenador_tiempo_superado").drop();
 
         RepararOrdenador content = (RepararOrdenador) peticion.getContent();
         Energia energia = content.getEnergia();

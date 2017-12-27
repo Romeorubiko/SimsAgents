@@ -54,9 +54,6 @@ public class SacarFotoRetratoPreguntaPlan extends Plan {
                     agree.setContent(content);
                     agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
                     sendMessage(agree);
-
-                    IGoal goal = createGoal("sacar_foto_retrato_tiempo_superado");
-                    dispatchTopLevelGoal(goal);
                 } else {
                     //No me acepto por tanto no realizo la accion
                     IMessageEvent refuse = createMessageEvent("sim_no_posa");

@@ -45,9 +45,6 @@ public class RepararCamaraPreguntaPlan extends Plan {
             agree.setContent(content);
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
-
-            IGoal goal = createGoal("reparar_camara_tiempo_superado");
-            dispatchTopLevelGoal(goal);
         }
     }
 }

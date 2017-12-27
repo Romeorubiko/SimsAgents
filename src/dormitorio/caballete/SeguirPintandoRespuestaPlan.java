@@ -29,7 +29,6 @@ public class SeguirPintandoRespuestaPlan extends Plan {
         IMessageEvent peticion = (IMessageEvent) getBeliefbase().getBelief("mensaje_caballete").getFact();
         getBeliefbase().getBelief("tiempo_fin_caballete").setFact(0);
         getBeliefbase().getBelief("ocupado_caballete").setFact(Boolean.FALSE);
-        getGoalbase().getGoal("seguir_pintando_tiempo_superado").drop();
 
         SeguirPintando content = (SeguirPintando) peticion.getContent();
         Cuadro cuadro = (Cuadro) getBeliefbase().getBelief("cuadro_instalado").getFact();

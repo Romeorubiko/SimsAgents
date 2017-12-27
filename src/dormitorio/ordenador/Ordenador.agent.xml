@@ -35,26 +35,31 @@
         <maintaingoal name="navegar_internet_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin >= $beliefbase.tiempo
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoal name="chatear_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin >= $beliefbase.tiempo
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoal name="escribir_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin >= $beliefbase.tiempo
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoal name="jugar_videojuego_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin >= $beliefbase.tiempo
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoal name="reparar_ordenador_tiempo_superado">
             <maintaincondition>
                 $beliefbase.tiempo_fin >= $beliefbase.tiempo
+                &amp;&amp; $beliefbase.ocupado_caballete == true
             </maintaincondition>
         </maintaingoal>
         <maintaingoalref name="df_diversion_chatear">
@@ -299,6 +304,11 @@
     <configurations>
         <configuration name="default">
             <goals>
+                <initialgoal ref="navegar_internet_tiempo_superado"/>
+                <initialgoal ref="chatear_tiempo_superado"/>
+                <initialgoal ref="escribir_tiempo_superado"/>
+                <initialgoal ref="jugar_videojuego_tiempo_superado"/>
+                <initialgoal ref="reparar_ordenador_tiempo_superado"/>
                 <initialgoal ref="df_diversion_chatear">
                     <parameter ref="description">
                         <value>

@@ -43,9 +43,6 @@ public class RepararOrdenadorPreguntaPlan extends Plan {
             agree.setContent(content);
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
-
-            IGoal goal = createGoal("reparar_ordenador_tiempo_superado");
-            dispatchTopLevelGoal(goal);
         }
     }
 }
