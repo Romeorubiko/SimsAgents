@@ -6,7 +6,14 @@ import ontologia.conceptos.necesidades.*;
 
 public class CocinarComida extends Accion {
 
-    private Hambre hambre;
+    public CocinarComida(Hambre hambre, Energia energia, Cocina cocina) {
+		super();
+		this.hambre = hambre;
+		this.energia = energia;
+		this.cocina = cocina;
+	}
+
+	private Hambre hambre;
     private Energia energia;
     private Cocina cocina;
 

@@ -87,7 +87,7 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="BeberMinibarPlan"/>
+            <parameter name="content" class="Beber"/>
         </messageevent>
 
 
@@ -126,7 +126,7 @@
                 <initialgoal ref="df_diversion_beber">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Diversion", "Beber"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Diversion", "Beber", "Minibar"))
                         </value>
                     </parameter>
                 </initialgoal>

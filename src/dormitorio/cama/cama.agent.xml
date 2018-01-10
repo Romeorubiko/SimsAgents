@@ -118,14 +118,14 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="DescansarCamaPlan"/>
+            <parameter name="content" class="Descansar"/>
         </messageevent>
 
         <messageevent name="hacer_cama" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="HacerCamaPlan"/>
+            <parameter name="content" class="HacerLaCama"/>
         </messageevent>
 
         <messageevent name="cama_ocupada" direction="send" type="fipa">
@@ -185,14 +185,14 @@
                 <initialgoal ref="df_energia_descansar">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "Descansar"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "Descansar", "Cama"))
                         </value>
                     </parameter>
                 </initialgoal>
                 <initialgoal ref="df_higiene_hacer_cama">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Higiene", "HacerLaCama"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Higiene", "HacerLaCama", "Cama"))
                         </value>
                     </parameter>
                 </initialgoal>

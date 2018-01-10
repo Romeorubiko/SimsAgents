@@ -112,7 +112,7 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="DormirSueloPlan"/>
+            <parameter name="content" class="DormirSuelo"/>
         </messageevent>
         
 		<messageevent name="has_dormido_suelo" direction="send" type="fipa">
@@ -128,7 +128,7 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="DormirSueloPlan"/>
+            <parameter name="content" class="OrinarSuelo"/>
         </messageevent>
         
 		<messageevent name="has_orinado_suelo" direction="send" type="fipa">
@@ -149,14 +149,14 @@
 					<initialgoal ref="df_energia_suelo">
 						<parameter ref="description">
 							<value>
-								S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "DormirSuelo"))
+								S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "DormirSuelo", "Suelo"))
 							</value>
 						</parameter>
 					</initialgoal>
 					<initialgoal ref="df_vejiga_suelo">
 						<parameter ref="description">
 							<value>
-								S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Vejiga", "OrinarSuelo"))
+								S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Vejiga", "OrinarSuelo", "Suelo"))
 							</value>
 						</parameter>
 					</initialgoal>

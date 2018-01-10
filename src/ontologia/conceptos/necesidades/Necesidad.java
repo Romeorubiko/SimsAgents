@@ -3,9 +3,9 @@ package ontologia.conceptos.necesidades;
 import ontologia.Concepto;
 
 public abstract class Necesidad extends Concepto {
-	public static final int NC_POCO = 1;
-	public static final int NC_NORMAL = 3;
-	public static final int NC_MUCHO = 5;
+	public static final int NC_POCO = 4;
+	public static final int NC_NORMAL = 6;
+	public static final int NC_MUCHO = 8;
 	private int grado;
 	public Necesidad(){
 		this.grado=100;

@@ -85,7 +85,7 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="EntrenarPlan"/>
+            <parameter name="content" class="Entrenar"/>
         </messageevent>
 
 
@@ -125,7 +125,7 @@
                 <initialgoal ref="df_deporte_entrenar">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Deporte", "Entrenar"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Deporte", "Entrenar", "MaquinaEjercicios"))
                         </value>
                     </parameter>
                 </initialgoal>

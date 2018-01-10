@@ -47,6 +47,10 @@
 		 <maintaingoalref name="df_diversion_beber">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
+        
+        <maintaingoalref name="df_hambre_comerNevera">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
     </goals>
 	
     <plans>
@@ -143,10 +147,18 @@
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-                            SFipa.createServiceDescription("Diversion", "Beber", ""))
+                            SFipa.createServiceDescription("Diversion", "Beber", "Nevera"))
                         </value>
                     </parameter>
                 </initialgoal>   
+                <initialgoal ref="df_hambre_comerNevera">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Hambre", "ComerComida", "Nevera"))
+                        </value>
+                    </parameter>
+                </initialgoal>
             </goals>
         </configuration>
     </configurations>

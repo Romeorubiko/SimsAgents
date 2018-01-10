@@ -18,7 +18,15 @@ public class CocinarComidaBarbacoa extends Accion {
     }
 
 
-    public Higiene getHigiene() {
+	public CocinarComidaBarbacoa(Higiene higiene, Hambre hambre, Diversion diversion, Cocina cocina) {
+		this.higiene = higiene;
+		this.hambre = hambre;
+		this.diversion = diversion;
+		this.cocina = cocina;
+	}
+
+
+	public Higiene getHigiene() {
         return higiene;
     }
 

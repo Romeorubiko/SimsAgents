@@ -20,8 +20,9 @@ import jadex.adapter.fipa.SFipa;
 
 public class CocinarBarbacoaPlan extends Plan {
     public void body() {
-
+    	System.out.println("Plan cocinar barbacoa");
         RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
+        System.out.println("Plan cocinar barbacoa1");
         CocinarComidaBarbacoa content = (CocinarComidaBarbacoa) peticion.getContent();
         Hambre hmb = content.getHambre();
         Higiene h = content.getHigiene();
@@ -71,7 +72,9 @@ public class CocinarBarbacoaPlan extends Plan {
                 int nivel = c.getNivel();
 
                 //Cuánto más nivel de cocina, más rápido cocina el sim
-                int end_timer = (int) System.currentTimeMillis() + (Accion.TIEMPO_MEDIO/nivel);
+
+                //int end_timer = (int) System.currentTimeMillis()/1000 + (Accion.TIEMPO_MEDIO/nivel);
+                int end_timer = (int) System.currentTimeMillis()/1000 + (Accion.TIEMPO_MEDIO);
                 getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer(end_timer));
 
                 /*IGoal goal= createGoal("terminar_cocinar_barbacoa");

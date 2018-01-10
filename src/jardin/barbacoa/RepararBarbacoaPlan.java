@@ -48,6 +48,7 @@ public class RepararBarbacoaPlan extends Plan {
 
             getBeliefbase().getBelief("mensaje_reparar_barbacoa").setFact(peticion);
 
+
             int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
             getBeliefbase().getBelief("tiempo_fin_reparar_barbacoa").setFact(new Integer(end_timer));
 

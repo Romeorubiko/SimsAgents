@@ -27,7 +27,8 @@
         <import>java.util.logging.*</import>
         <import>java.util.*</import>
         <import>ontologia.Accion</import>
-        <import>ontologia.*</import>
+        <import>ontologia.acciones.*</import>
+        <import>ontologia.conceptos.*</import>
         <import>jadex.model.IMMessageEvent</import>
         <import>jadex.runtime.impl.RMessageEvent</import>
     </imports>
@@ -52,16 +53,16 @@
         <belief name="mensaje_cocinar_barbacoa" class="RMessageEvent"/>
         <belief name="mensaje_reparar_barbacoa" class="RMessageEvent"/>
 
-        <belief name="tiempo" class="int">
+        <belief name="tiempo" class="int" updaterate="750">
             <fact>(int)(System.currentTimeMillis()/1000)</fact>
         </belief>
 
-        <belief name="tiempo_fin_cocinar_barbacoa" class="int">
-            <fact> (int) 0 </fact>
+        <belief name="tiempo_fin_cocinar_barbacoa" class="int" updaterate="750">
+            <fact> (int) $beliefbase.tiempo+1000 </fact>
         </belief>
 
-        <belief name="tiempo_fin_reparar_barbacoa" class="int">
-            <fact> (int) 0 </fact>
+        <belief name="tiempo_fin_reparar_barbacoa" class="int" updaterate="750">
+            <fact> (int) $beliefbase.tiempo+1000 </fact>
         </belief>
 
     </beliefs>
@@ -69,10 +70,10 @@
 
     <goals>
         <maintaingoal name="terminar_cocinar_barbacoa">
-            <maintaincondition>$beliefbase.tiempo_fin_cocinar_barbacoa>=beliefbase.tiempo</maintaincondition>
+            <maintaincondition>$beliefbase.tiempo_fin_cocinar_barbacoa >= $beliefbase.tiempo</maintaincondition>
         </maintaingoal>
         <maintaingoal name="terminar_reparar_barbacoa">
-            <maintaincondition>$beliefbase.tiempo_fin_reparar_barbacoa>=beliefbase.tiempo</maintaincondition>
+            <maintaincondition>$beliefbase.tiempo_fin_reparar_barbacoa >= $beliefbase.tiempo</maintaincondition>
         </maintaingoal>
 
 
@@ -136,7 +137,7 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="CocinarBarbacoaPlan"
+            <parameter name="content" class="CocinarComidaBarbacoa"
                        direction="fixed">
             </parameter>
         </messageevent>
@@ -146,7 +147,7 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="RepararBarbacoaPlan"
+            <parameter name="content" class="Reparar"
                        direction="fixed">
             </parameter>
         </messageevent>
@@ -235,31 +236,32 @@
                 <initialgoal ref="df_hambre_cocinarBarbacoa">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Hambre",
-                            "CocinarComidaBarbacoa"))
+                            SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Hambre", "CocinarComidaBarbacoa", "Barbacoa"))
                         </value>
                     </parameter>
                 </initialgoal>
                 <initialgoal ref="df_diversion_cocinarBarbacoa">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Diversion",
-                            "CocinarComidaBarbacoa"))
+                        SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Diversion", "CocinarComidaBarbacoa", "Barbacoa"))
                         </value>
                     </parameter>
                 </initialgoal>
                 <initialgoal ref="df_cocina_cocinarBarbacoa">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Cocina",
-                            "CocinarComidaBarbacoa"))
+                        SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Cocina", "CocinarComidaBarbacoa", "Barbacoa"))
                         </value>
                     </parameter>
                 </initialgoal>
                 <initialgoal ref="df_mecanica_reparar">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Mecanica", "Reparar"))
+                        SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Mecanica", "Reparar", "Barbacoa"))
                         </value>
                     </parameter>
                 </initialgoal>
