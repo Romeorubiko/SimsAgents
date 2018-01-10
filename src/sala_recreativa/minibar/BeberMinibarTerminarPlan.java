@@ -20,7 +20,8 @@ public class BeberMinibarTerminarPlan extends Plan {
     public void body() {
 
         //getGoalbase().getGoal("terminar_beber_minibar").drop();
-        getBeliefbase().getBelief("tiempo_fin_minibar").setFact(new Integer (0));
+    	int new_timer = (int) (System.currentTimeMillis() + 100000);
+        getBeliefbase().getBelief("tiempo_fin_minibar").setFact(new Integer (new_timer));
 
         RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_beber_minibar").getFact();
         Beber contenido = (Beber) peticion.getContent();

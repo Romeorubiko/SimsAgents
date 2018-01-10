@@ -21,10 +21,12 @@
         <import>java.util.logging.*</import>
         <import>java.util.*</import>
         <import>ontologia.Accion</import>
+        <import>ontologia.acciones.*</import>
 		<import>ontologia.*</import>
         <import>jadex.model.IMMessageEvent</import>
 		<import>jadex.runtime.impl.RMessageEvent</import>
 		<import>java.util.ArrayList</import>
+		<import>java.util.Arrays</import>
     </imports>
 
     <capabilities>
@@ -36,14 +38,27 @@
         
 
         <belief name="tiempo" class="int" updaterate="750">
-            <fact> (int)(System.currentTimeMillis()) </fact>
+            <fact> (int)(System.currentTimeMillis()/1000) </fact>
         </belief>
 		
 		<belief name="mensajes_dormir_suelo" class="ArrayList"/>
 		<belief name="mensajes_orinar_suelo" class="ArrayList"/>
 
-        <belief name="tiempos_fin_dormir_suelo" class="ArrayList"></belief>
-		<belief name="tiempos_fin_orinar_suelo" class="ArrayList"></belief>
+        <belief name="tiempos_fin_dormir_suelo" class="ArrayList" updaterate="750">
+         <fact>(ArrayList) {$beliefbase.tiempo+1000} </fact>
+         </belief>
+         
+         <belief name="tiempo_fin_dormir_suelo" class="int" updaterate="750">
+         <fact> (int) $beliefbase.tiempos_fin_dormir_suelo.get(0) </fact>
+         </belief>
+		
+		<belief name="tiempos_fin_orinar_suelo" class="ArrayList" updaterate="750">
+		<fact> (ArrayList) {$beliefbase.tiempo+1000} </fact>
+		</belief>
+		
+		<belief name="tiempo_fin_orinar_suelo" class="int" updaterate="750">
+		<fact> (int) $beliefbase.tiempos_fin_orinar_suelo.get(0) </fact>
+		</belief>
 
     </beliefs>
 
@@ -51,13 +66,13 @@
 	
 		<maintaingoal name="terminar_dormir_suelo">
             <maintaincondition>
-				$beliefbase.tiempo_fin_dormir_suelo.get(0) >= $beliefbase.tiempo
+				$beliefbase.tiempo_fin_dormir_suelo >= $beliefbase.tiempo
 			</maintaincondition>
         </maintaingoal>
 		
 		<maintaingoal name="terminar_orinar_suelo">
             <maintaincondition>
-				$beliefbase.tiempo_fin_orinar_suelo.get(0) >= $beliefbase.tiempo
+				$beliefbase.tiempo_fin_orinar_suelo >= $beliefbase.tiempo
 			</maintaincondition>
         </maintaingoal>
 		
@@ -149,14 +164,16 @@
 					<initialgoal ref="df_energia_suelo">
 						<parameter ref="description">
 							<value>
-								S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "DormirSuelo", "Suelo"))
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Energia", "DormirSuelo", "Suelo"))
 							</value>
 						</parameter>
 					</initialgoal>
 					<initialgoal ref="df_vejiga_suelo">
 						<parameter ref="description">
 							<value>
-								S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Vejiga", "OrinarSuelo", "Suelo"))
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Vejiga", "OrinarSuelo", "Suelo"))
 							</value>
 						</parameter>
 					</initialgoal>

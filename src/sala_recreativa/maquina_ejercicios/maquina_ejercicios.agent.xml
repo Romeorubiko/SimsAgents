@@ -22,6 +22,7 @@
         <import>java.util.logging.*</import>
         <import>java.util.*</import>
         <import>ontologia.Accion</import>
+        <import>ontologia.acciones.*</import>
         <import>ontologia.*</import>
         <import>jadex.model.IMMessageEvent</import>
         <import>jadex.runtime.impl.RMessageEvent</import>
@@ -39,18 +40,18 @@
         <belief name="mensaje_entrenar" class="RMessageEvent"/>
 
         <belief name="tiempo" class="int" updaterate="750">
-            <fact> (int)(System.currentTimeMillis()) </fact>
+            <fact> (int)(System.currentTimeMillis()/1000) </fact>
         </belief>
 
-        <belief name="tiempo_fin_entrenar" class="int">
-            <fact> (int) 0 </fact>
+        <belief name="tiempo_fin_entrenar" class="int" updaterate="750">
+            <fact> (int) $beliefbase.tiempo+1000 </fact>
         </belief>
 
     </beliefs>
 
     <goals>
         <maintaingoal name="terminar_entrenar">
-            <maintaincondition>$beliefbase.tiempo_fin_entrenar>=beliefbase.tiempo</maintaincondition>
+            <maintaincondition>$beliefbase.tiempo_fin_entrenar >= $beliefbase.tiempo</maintaincondition>
         </maintaingoal>
         <maintaingoalref name="df_deporte_entrenar">
             <concrete ref="dfcap.df_keep_registered"/>
@@ -125,7 +126,8 @@
                 <initialgoal ref="df_deporte_entrenar">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Deporte", "Entrenar", "MaquinaEjercicios"))
+                         SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Deporte", "Entrenar", "MaquinaEjercicios"))
                         </value>
                     </parameter>
                 </initialgoal>

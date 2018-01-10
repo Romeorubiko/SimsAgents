@@ -23,6 +23,7 @@
         <import>java.util.*</import>
         <import>ontologia.Accion</import>
         <import>ontologia.*</import>
+        <import>ontologia.acciones.*</import>
         <import>jadex.model.IMMessageEvent</import>
         <import>jadex.runtime.impl.RMessageEvent</import>
     </imports>
@@ -44,25 +45,26 @@
         <belief name="mensaje_hacer_cama" class="RMessageEvent"/>
 
         <belief name="tiempo" class="int" updaterate="750">
-            <fact> (int)(System.currentTimeMillis()) </fact>
+            <fact>(int)(System.currentTimeMillis()/1000)</fact>
+        </belief>
+        
+        <belief name="tiempo_fin_descansar_cama" class="int" updaterate="750">
+            <fact> (int) $beliefbase.tiempo+1000 </fact>
+        </belief>
+        
+        <belief name="tiempo_fin_hacer_cama" class="int" updaterate="750">
+            <fact> (int) $beliefbase.tiempo+1000 </fact>
         </belief>
 
-        <belief name="tiempo_fin_descansar_cama" class="int">
-            <fact> (int) 0 </fact>
-        </belief>
-
-        <belief name="tiempo_fin_hacer_cama" class="int">
-            <fact> (int) 0 </fact>
-        </belief>
 
     </beliefs>
 
     <goals>
         <maintaingoal name="terminar_descansar_cama">
-            <maintaincondition>$beliefbase.tiempo_fin_descansar>=beliefbase.tiempo</maintaincondition>
+            <maintaincondition>$beliefbase.tiempo_fin_descansar_cama >= $beliefbase.tiempo</maintaincondition>
         </maintaingoal>
         <maintaingoal name="terminar_hacer_cama">
-            <maintaincondition>$beliefbase.tiempo_fin_hacer_cama>=beliefbase.tiempo</maintaincondition>
+            <maintaincondition>$beliefbase.tiempo_fin_hacer_cama >= $beliefbase.tiempo</maintaincondition>
         </maintaingoal>
 
         <maintaingoalref name="df_energia_descansar">
@@ -185,14 +187,16 @@
                 <initialgoal ref="df_energia_descansar">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "Descansar", "Cama"))
+                        SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Energia", "Descansar", "Cama"))
                         </value>
                     </parameter>
                 </initialgoal>
                 <initialgoal ref="df_higiene_hacer_cama">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Higiene", "HacerLaCama", "Cama"))
+                                                SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Higiene", "HacerLaCama", "Cama"))
                         </value>
                     </parameter>
                 </initialgoal>

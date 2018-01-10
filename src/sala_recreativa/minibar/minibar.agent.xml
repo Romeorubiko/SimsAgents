@@ -22,6 +22,7 @@
         <import>java.util.*</import>
         <import>ontologia.Accion</import>
         <import>ontologia.*</import>
+        <import>ontologia.acciones.*</import>
         <import>jadex.model.IMMessageEvent</import>
         <import>jadex.runtime.impl.RMessageEvent</import>
     </imports>
@@ -39,18 +40,18 @@
         <belief name="mensaje_beber_minibar" class="RMessageEvent"/>
 
         <belief name="tiempo" class="int" updaterate="750">
-            <fact> (int)(System.currentTimeMillis()) </fact>
+            <fact> (int)(System.currentTimeMillis()/1000) </fact>
         </belief>
 
-        <belief name="tiempo_fin_minibar" class="int">
-            <fact> (int) 0 </fact>
+        <belief name="tiempo_fin_minibar" class="int" updaterate="750">
+            <fact> (int) $beliefbase.tiempo+1000 </fact>
         </belief>
 
     </beliefs>
 
     <goals>
         <maintaingoal name="terminar_beber_minibar">
-            <maintaincondition>$beliefbase.tiempo_fin_minibar>=beliefbase.tiempo</maintaincondition>
+            <maintaincondition>$beliefbase.tiempo_fin_minibar >= $beliefbase.tiempo</maintaincondition>
         </maintaingoal>
 
         <maintaingoalref name="df_diversion_beber">
@@ -126,7 +127,8 @@
                 <initialgoal ref="df_diversion_beber">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Diversion", "Beber", "Minibar"))
+                         SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Diversion", "Beber", "Minibar"))
                         </value>
                     </parameter>
                 </initialgoal>

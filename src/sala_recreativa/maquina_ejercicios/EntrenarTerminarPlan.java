@@ -24,7 +24,8 @@ public class EntrenarTerminarPlan extends Plan {
     public void body() {
 
         //getGoalbase().getGoal("terminar_entrenar").drop();
-        getBeliefbase().getBelief("tiempo_fin_entrenar").setFact(new Integer (0));
+    	int new_timer = (int) (System.currentTimeMillis() + 100000);
+        getBeliefbase().getBelief("tiempo_fin_entrenar").setFact(new Integer (new_timer));
         RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_entrenar").getFact();
         Entrenar contenido = (Entrenar) peticion.getContent();
 
