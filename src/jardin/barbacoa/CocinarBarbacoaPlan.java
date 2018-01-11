@@ -32,7 +32,7 @@ public class CocinarBarbacoaPlan extends Plan {
         if(ocupado.booleanValue()) {
         	System.out.println("Barbacoa ocupada");
             IMessageEvent refuse = createMessageEvent("barbacoa_ocupada");
-            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
             refuse.setContent(content);
             sendMessage(refuse);
         }
@@ -48,7 +48,7 @@ public class CocinarBarbacoaPlan extends Plan {
             	System.out.println("Barbacoa estropeada");
                 IMessageEvent failure = createMessageEvent("barbacoa_estropeada");
                 BarbacoaRota response = new BarbacoaRota (h, hmb, d, c);
-                failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+                failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
                 failure.setContent(response);
                 sendMessage(failure);
                 getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
@@ -56,7 +56,7 @@ public class CocinarBarbacoaPlan extends Plan {
             else if (((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1<=0){
                 getBeliefbase().getBelief("estropeado").setFact(Boolean.TRUE);
                 IMessageEvent failure = createMessageEvent("barbacoa_estropeada");
-                failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+                failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
                 BarbacoaRota response = new BarbacoaRota (h, hmb, d, c);
                 failure.setContent(response);
                 sendMessage(failure);

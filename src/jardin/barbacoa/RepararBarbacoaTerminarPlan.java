@@ -24,7 +24,7 @@ public class RepararBarbacoaTerminarPlan extends Plan {
     	int new_timer = (int) (System.currentTimeMillis() + 100000);
         getBeliefbase().getBelief("tiempo_fin_reparar_barbacoa").setFact(new Integer (new_timer));
 
-        RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_reparar_barbacoa").getFact();
+        IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_reparar_barbacoa").getFact();
         Reparar contenido = (Reparar) peticion.getContent();
 
         Higiene h = contenido.getHigiene();
@@ -40,11 +40,11 @@ public class RepararBarbacoaTerminarPlan extends Plan {
 
         HasReparado response = new HasReparado(e, h, m);
 
-        getBeliefbase().getBelief("obsolescencia").setFact(new Integer (15));
+        getBeliefbase().getBelief("obsolescencia").setFact(new Integer (100));
         getBeliefbase().getBelief("estropeado").setFact(Boolean.FALSE);
 
         IMessageEvent inform = createMessageEvent("has_reparado");
-        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
         inform.setContent(response);
         sendMessage(inform);
 

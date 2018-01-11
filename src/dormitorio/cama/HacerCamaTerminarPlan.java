@@ -36,7 +36,7 @@ public class HacerCamaTerminarPlan extends Plan {
         getBeliefbase().getBelief("cama_hecha").setFact(Boolean.TRUE);
 
         IMessageEvent inform = createMessageEvent("cama_hecha");
-        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
         inform.setContent(response);
         sendMessage(inform);
 

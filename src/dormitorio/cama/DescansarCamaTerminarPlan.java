@@ -31,7 +31,7 @@ public class DescansarCamaTerminarPlan extends Plan {
         HasDescansado response = new HasDescansado(e);
 
         IMessageEvent inform = createMessageEvent("has_descansado");
-        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
         inform.setContent(response);
         sendMessage(inform);
 

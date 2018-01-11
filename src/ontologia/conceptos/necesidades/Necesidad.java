@@ -18,6 +18,9 @@ public abstract class Necesidad extends Concepto {
 		if (grado >100) {
 			this.grado = 100;
 		}
+		else if (grado < 0){
+			this.grado = 0;
+		}
 		else {
 			this.grado = grado;
 		}

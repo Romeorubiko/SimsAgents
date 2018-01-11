@@ -19,36 +19,36 @@ import ontologia.acciones.Reparar;
  */
 public class RepararBarbacoaPlan extends Plan {
     public void body() {
-        RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
+        IMessageEvent peticion = (IMessageEvent)getInitialEvent();
         Reparar content = (Reparar) peticion.getContent();
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
         Boolean estropeado = (Boolean)getBeliefbase().getBelief("estropeado").getFact();
 
         if(ocupado.booleanValue()) {
             IMessageEvent refuse = createMessageEvent("barbacoa_ocupada");
-            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
             refuse.setContent(content);
             sendMessage(refuse);
         }
 
         else if (!estropeado.booleanValue()) {
-            IMessageEvent refuse = createMessageEvent("barbacoa_no_estropeada");
-            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            IMessageEvent refuse = createMessageEvent("objeto_no_estropeado");
+            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
             refuse.setContent(content);
             sendMessage(refuse);
         }
         else {
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
 
-            IMessageEvent agree = createMessageEvent("barbacoa_cocinar_no_ocupada");
-            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            IMessageEvent agree = createMessageEvent("barbacoa_reparar_no_ocupada");
+            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
             agree.setContent(content);
             sendMessage(agree);
 
             getBeliefbase().getBelief("mensaje_reparar_barbacoa").setFact(peticion);
 
 
-            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
+            int end_timer = (int) System.currentTimeMillis()/1000 + Accion.TIEMPO_MEDIO;
             getBeliefbase().getBelief("tiempo_fin_reparar_barbacoa").setFact(new Integer(end_timer));
 
             /*IGoal goal= createGoal("terminar_reparar_barbacoa");

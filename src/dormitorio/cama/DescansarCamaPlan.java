@@ -21,7 +21,7 @@ public class DescansarCamaPlan extends Plan {
 
         if(ocupado.booleanValue()) {
             IMessageEvent refuse = createMessageEvent("cama_ocupada");
-            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
             refuse.setContent(content);
             sendMessage(refuse);
         }
@@ -29,13 +29,13 @@ public class DescansarCamaPlan extends Plan {
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
 
             IMessageEvent agree = createMessageEvent("cama_no_ocupada");
-            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
             agree.setContent(content);
             sendMessage(agree);
 
             getBeliefbase().getBelief("mensaje_descansar_cama").setFact(peticion);
 
-            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_LARGO;
+            int end_timer = (int) System.currentTimeMillis()/1000 + Accion.TIEMPO_LARGO;
             getBeliefbase().getBelief("tiempo_fin_descansar_cama").setFact(new Integer(end_timer));
 
             /*IGoal goal= createGoal("terminar_descansar_cama");
