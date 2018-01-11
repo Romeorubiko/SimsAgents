@@ -7,6 +7,7 @@
 package casa.suelo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IGoal;
@@ -31,10 +32,7 @@ public class DormirSueloPlan extends Plan {
 				.getFact();
 		arrayTiempos.add((int) (System.currentTimeMillis() + Accion.TIEMPO_LARGO));
 		getBeliefbase().getBelief("tiempos_dormir_suelo").setFact(arrayTiempos);
+		getBeliefbase().getBelief("tiempo_dormir_suelo").setFact(arrayTiempos.get(0));
 
-		/*if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_dormir_suelo").getFact()).size() == 1) {
-			IGoal goal = createGoal("terminar_dormir_suelo");
-			dispatchSubgoal(goal);
-		}*/
 	}
 }

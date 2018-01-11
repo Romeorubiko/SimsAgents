@@ -45,19 +45,19 @@
 		<belief name="mensajes_orinar_suelo" class="ArrayList"/>
 
         <belief name="tiempos_fin_dormir_suelo" class="ArrayList" updaterate="750">
-         <fact> (new ArrayList(Arrays.asList($beliefbase.tiempo+1000)))</fact>
+         <fact> (new ArrayList())</fact>
          </belief>
          
          <belief name="tiempo_fin_dormir_suelo" class="int" updaterate="750">
-         <fact> (int) $beliefbase.tiempos_fin_dormir_suelo.get(0) </fact>
+         <fact> (int) 0 </fact>
          </belief>
 		
 		<belief name="tiempos_fin_orinar_suelo" class="ArrayList" updaterate="750">
-		<fact> (new ArrayList(Arrays.asList($beliefbase.tiempo+1000)))</fact>
+		<fact> (new ArrayList())</fact>
 		</belief>
 		
 		<belief name="tiempo_fin_orinar_suelo" class="int" updaterate="750">
-		<fact> (int) $beliefbase.tiempos_fin_orinar_suelo.get(0) </fact>
+		<fact> (int) 0 </fact>
 		</belief>
 
     </beliefs>
@@ -67,12 +67,14 @@
 		<maintaingoal name="terminar_dormir_suelo">
             <maintaincondition>
 				$beliefbase.tiempo_fin_dormir_suelo >= $beliefbase.tiempo
+				|| $beliefbase.tiempos_fin_dormir_suelo == null
 			</maintaincondition>
         </maintaingoal>
 		
 		<maintaingoal name="terminar_orinar_suelo">
             <maintaincondition>
 				$beliefbase.tiempo_fin_orinar_suelo >= $beliefbase.tiempo
+				|| $beliefbase.tiempos_fin_orinar_suelo == null
 			</maintaincondition>
         </maintaingoal>
 		
