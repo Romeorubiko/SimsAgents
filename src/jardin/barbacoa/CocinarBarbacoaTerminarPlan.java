@@ -24,11 +24,9 @@ import ontologia.predicados.PerritosQuemados;
 public class CocinarBarbacoaTerminarPlan extends Plan {
     public void body() {
 
-        //getGoalbase().getGoal("terminar_cocinar_barbacoa").drop();
-        int new_timer = (int) (System.currentTimeMillis() + 100000);
-        getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer (new_timer));
-
-        RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_cocinar_barbacoa").getFact();
+        int new_timer = (int) (System.currentTimeMillis()/1000 + 10000000);
+      
+        IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_cocinar_barbacoa").getFact();
         CocinarComidaBarbacoa contenido = (CocinarComidaBarbacoa)peticion.getContent();
 
         Higiene h = contenido.getHigiene();
@@ -36,27 +34,25 @@ public class CocinarBarbacoaTerminarPlan extends Plan {
         Diversion d = contenido.getDiversion();
         Cocina c = contenido.getCocina();
 
-
-        boolean val = new Random().nextInt(2*c.getExperiencia())==0;
+        int nivel = c.getNivel();
+        boolean val = new Random().nextInt(2*nivel)==0;
 
         //Comida quemada. La probabilidad de que se queme la comida es mas pequeña cuanto más alto es el nivel de cocina
         if (val) {
-            h.setGrado(h.getGrado()- Necesidad.NC_POCO);
-            hmb.setGrado(hmb.getGrado());
-            d.setGrado(d.getGrado()+Necesidad.NC_POCO);
-            c.setExperiencia(c.getExperiencia()+ Habilidad.HB_NORMAL);
-
-            PerritosQuemados response = new PerritosQuemados(h, hmb, d, c);
-
-
-            IMessageEvent failure = createMessageEvent("perritos_quemados");
-            failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
-            failure.setContent(response);
-            sendMessage(failure);
-            getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-
+			System.out.println("Comida quemada");
+		    h.setGrado(h.getGrado()- Necesidad.NC_POCO);
+		    hmb.setGrado(hmb.getGrado());
+		    d.setGrado(d.getGrado()+Necesidad.NC_POCO);
+		    c.setExperiencia(c.getExperiencia()+ Habilidad.HB_NORMAL);
+		    PerritosQuemados response = new PerritosQuemados(h, hmb, d, c);
+		    IMessageEvent failure = createMessageEvent("perritos_quemados");
+		    failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
+		    failure.setContent(response);
+		    sendMessage(failure);
         }
+
         else {
+        	System.out.println("Has hecho barbacoa");
             h.setGrado(h.getGrado()- Necesidad.NC_POCO);
             hmb.setGrado(hmb.getGrado()+Necesidad.NC_NORMAL);
             d.setGrado(d.getGrado()+Necesidad.NC_POCO);
@@ -64,12 +60,18 @@ public class CocinarBarbacoaTerminarPlan extends Plan {
 
             HasCocinadoBarbacoa response = new HasCocinadoBarbacoa(h, hmb, d, c);
 
+
             IMessageEvent inform = createMessageEvent("has_cocinado_barbacoa");
-            inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+
+            inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
+   
+           
             inform.setContent(response);
             sendMessage(inform);
-            getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-        }
+            
+        }  
+        getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
+        getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer(new_timer));
 
     }
 }

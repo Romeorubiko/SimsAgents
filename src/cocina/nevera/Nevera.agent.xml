@@ -22,11 +22,12 @@
         <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
-        <belief name="tiempo" class="int">
+        <belief name="tiempo" class="int" updaterate="750">
             <fact>(int) (System.currentTimeMillis()/1000)</fact>
         </belief>
-        <belief name="tiempo_fin" class="int">
-            <fact>(int) 0</fact>
+        
+        <belief name="tiempo_fin" class="int" updaterate="750">
+            <fact>(int) $beliefbase.tiempo+1000</fact> 
         </belief>
         <belief name="mensaje" class="IMessageEvent"/>
     </beliefs>

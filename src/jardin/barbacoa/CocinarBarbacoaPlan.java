@@ -20,9 +20,7 @@ import jadex.adapter.fipa.SFipa;
 
 public class CocinarBarbacoaPlan extends Plan {
     public void body() {
-    	System.out.println("Plan cocinar barbacoa");
-        RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
-        System.out.println("Plan cocinar barbacoa1");
+    	IMessageEvent peticion = (IMessageEvent)getInitialEvent();
         CocinarComidaBarbacoa content = (CocinarComidaBarbacoa) peticion.getContent();
         Hambre hmb = content.getHambre();
         Higiene h = content.getHigiene();
@@ -32,6 +30,7 @@ public class CocinarBarbacoaPlan extends Plan {
         Boolean estropeado = (Boolean)getBeliefbase().getBelief("estropeado").getFact();
 
         if(ocupado.booleanValue()) {
+        	System.out.println("Barbacoa ocupada");
             IMessageEvent refuse = createMessageEvent("barbacoa_ocupada");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             refuse.setContent(content);
@@ -41,11 +40,12 @@ public class CocinarBarbacoaPlan extends Plan {
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
 
             IMessageEvent agree = createMessageEvent("barbacoa_cocinar_no_ocupada");
-            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
             agree.setContent(content);
             sendMessage(agree);
 
             if (estropeado.booleanValue()) {
+            	System.out.println("Barbacoa estropeada");
                 IMessageEvent failure = createMessageEvent("barbacoa_estropeada");
                 BarbacoaRota response = new BarbacoaRota (h, hmb, d, c);
                 failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
@@ -64,19 +64,19 @@ public class CocinarBarbacoaPlan extends Plan {
             }
 
             else {
+           
                 int obsolescencia = ((Integer) getBeliefbase().getBelief("obsolescencia").getFact()).intValue() - 1;
+      
                 getBeliefbase().getBelief("obsolescencia").setFact(new Integer (obsolescencia));
-
+            
                 getBeliefbase().getBelief("mensaje_cocinar_barbacoa").setFact(peticion);
-
-                int nivel = c.getNivel();
-
+         
+                //int nivel = c.getNivel();
                 //Cuánto más nivel de cocina, más rápido cocina el sim
 
                 //int end_timer = (int) System.currentTimeMillis()/1000 + (Accion.TIEMPO_MEDIO/nivel);
-                int end_timer = (int) System.currentTimeMillis()/1000 + (Accion.TIEMPO_MEDIO);
+                int end_timer = (int) (System.currentTimeMillis()/1000) + (Accion.TIEMPO_MEDIO);
                 getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer(end_timer));
-
                 /*IGoal goal= createGoal("terminar_cocinar_barbacoa");
                 dispatchSubgoal(goal);*/
             }

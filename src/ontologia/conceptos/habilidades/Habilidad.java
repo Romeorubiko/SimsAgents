@@ -10,7 +10,7 @@ public abstract class Habilidad extends Concepto {
     public static final int HB_MUCHO = 40;
 
     public Habilidad() {
-        this.nivel = 0;
+        this.nivel = 1;
         this.experiencia = 0;
     }
 
@@ -23,18 +23,18 @@ public abstract class Habilidad extends Concepto {
     }
 
     public void setExperiencia(int experiencia) {
-        if (nivel==0) {
+        if (nivel==1) {
             if (experiencia > 100) {
                 this.experiencia = experiencia - 100;
-                nivel++;
+                this.nivel++;
             } else {
                 this.experiencia = experiencia;
             }
         }
-        else if (nivel <= 10) {
-            if (experiencia > 100 * (nivel+1)) {
-                this.experiencia = experiencia - 100 * (nivel+1);
-                nivel++;
+        else if (nivel < 10) {
+            if (experiencia > 100 * nivel) {
+                this.experiencia = experiencia - 100 * (nivel);
+                this.nivel++;
             } else {
                 this.experiencia = experiencia;
             }

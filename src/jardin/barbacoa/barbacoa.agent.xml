@@ -50,19 +50,19 @@
             <fact>new Integer(100)</fact>
         </belief>
 
-        <belief name="mensaje_cocinar_barbacoa" class="RMessageEvent"/>
-        <belief name="mensaje_reparar_barbacoa" class="RMessageEvent"/>
+        <belief name="mensaje_cocinar_barbacoa" class="IMessageEvent"/>
+        <belief name="mensaje_reparar_barbacoa" class="IMessageEvent"/>
 
         <belief name="tiempo" class="int" updaterate="750">
             <fact>(int)(System.currentTimeMillis()/1000)</fact>
         </belief>
 
-        <belief name="tiempo_fin_cocinar_barbacoa" class="int" updaterate="750">
-            <fact> (int) $beliefbase.tiempo+1000 </fact>
+        <belief name="tiempo_fin_cocinar_barbacoa" class="int">
+            <fact> (int) $beliefbase.tiempo+1000000 </fact>
         </belief>
 
-        <belief name="tiempo_fin_reparar_barbacoa" class="int" updaterate="750">
-            <fact> (int) $beliefbase.tiempo+1000 </fact>
+        <belief name="tiempo_fin_reparar_barbacoa" class="int">
+            <fact> (int) $beliefbase.tiempo+1000000 </fact>
         </belief>
 
     </beliefs>
@@ -137,9 +137,13 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="CocinarComidaBarbacoa"
-                       direction="fixed">
-            </parameter>
+
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+            <parameter name="content-class" class="Class" direction="fixed">
+                <value>CocinarComidaBarbacoa.class</value>
+            </parameter>
         </messageevent>
 
 
@@ -147,9 +151,12 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="Reparar"
-                       direction="fixed">
-            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                  <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+            <parameter name="content-class" class="Class" direction="fixed">
+                  <value>Reparar.class</value>
+             </parameter>
         </messageevent>
 
 
@@ -169,6 +176,9 @@
             <parameter name="language" class="String" direction="fixed">
                 <value>SFipa.NUGGETS_XML</value>
             </parameter>
+            <parameter name="content-class" class="Class" direction="fixed">
+				<value>CocinarComidaBarbacoa.class</value>
+			</parameter>
         </messageevent>
 
         <messageevent name="barbacoa_reparar_no_ocupada" direction="send" type="fipa">

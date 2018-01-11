@@ -19,7 +19,6 @@ import ontologia.acciones.Reparar;
  */
 public class RepararBarbacoaPlan extends Plan {
     public void body() {
-
         RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
         Reparar content = (Reparar) peticion.getContent();
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
