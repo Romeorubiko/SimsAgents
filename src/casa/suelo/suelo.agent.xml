@@ -45,7 +45,7 @@
 		<belief name="mensajes_orinar_suelo" class="ArrayList"/>
 
         <belief name="tiempos_fin_dormir_suelo" class="ArrayList" updaterate="750">
-         <fact>(ArrayList) {$beliefbase.tiempo+1000} </fact>
+         <fact> (new ArrayList(Arrays.asList($beliefbase.tiempo+1000)))</fact>
          </belief>
          
          <belief name="tiempo_fin_dormir_suelo" class="int" updaterate="750">
@@ -53,7 +53,7 @@
          </belief>
 		
 		<belief name="tiempos_fin_orinar_suelo" class="ArrayList" updaterate="750">
-		<fact> (ArrayList) {$beliefbase.tiempo+1000} </fact>
+		<fact> (new ArrayList(Arrays.asList($beliefbase.tiempo+1000)))</fact>
 		</belief>
 		
 		<belief name="tiempo_fin_orinar_suelo" class="int" updaterate="750">
