@@ -44,19 +44,19 @@
 		<belief name="mensajes_dormir_suelo" class="ArrayList"/>
 		<belief name="mensajes_orinar_suelo" class="ArrayList"/>
 
-        <belief name="tiempos_fin_dormir_suelo" class="ArrayList" updaterate="750">
+        <belief name="tiempos_fin_dormir_suelo" class="ArrayList">
          <fact> (new ArrayList())</fact>
          </belief>
          
-         <belief name="tiempo_fin_dormir_suelo" class="int" updaterate="750">
+         <belief name="tiempo_fin_dormir_suelo" class="int">
          <fact> (int) 0 </fact>
          </belief>
 		
-		<belief name="tiempos_fin_orinar_suelo" class="ArrayList" updaterate="750">
+		<belief name="tiempos_fin_orinar_suelo" class="ArrayList">
 		<fact> (new ArrayList())</fact>
 		</belief>
 		
-		<belief name="tiempo_fin_orinar_suelo" class="int" updaterate="750">
+		<belief name="tiempo_fin_orinar_suelo" class="int">
 		<fact> (int) 0 </fact>
 		</belief>
 
