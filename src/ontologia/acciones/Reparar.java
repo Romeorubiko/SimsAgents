@@ -16,7 +16,15 @@ public class Reparar extends Accion {
     }
 
 
-    public Higiene getHigiene() {
+    public Reparar(Higiene higiene, Energia energia, Mecanica mecanica) {
+		super();
+		this.higiene = higiene;
+		this.energia = energia;
+		this.mecanica = mecanica;
+	}
+
+
+	public Higiene getHigiene() {
         return higiene;
     }
 
