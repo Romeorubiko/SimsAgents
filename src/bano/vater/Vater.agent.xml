@@ -6,12 +6,18 @@
        package="bano.vater">
 
     <imports>
+        <import>java.sql.Time</import>
         <import>jadex.runtime.*</import>
         <import>jadex.planlib.*</import>
         <import>jadex.util.*</import>
         <import>jadex.adapter.fipa.*</import>
         <import>java.util.logging.*</import>
         <import>java.util.*</import>
+        <import>ontologia.Accion</import>
+        <import>ontologia.acciones.*</import>
+        <import>ontologia.conceptos.*</import>
+        <import>jadex.model.IMMessageEvent</import>
+        <import>jadex.runtime.impl.RMessageEvent</import>
     </imports>
 
     <capabilities>
@@ -20,7 +26,7 @@
 
     <beliefs>
         <belief name="obsolescencia" class="Integer">
-            <fact>new Integer(100)</fact>
+            <fact>new Integer(2)</fact>
         </belief>
 
         <belief name="ocupado" class="Boolean">
@@ -32,43 +38,75 @@
         </belief>
 
 		<belief name="time" class="int" updaterate="750">
-            <fact> (int)(System.currentTimeMillis()) </fact>
+            <fact> (int)(System.currentTimeMillis()/1000) </fact>
         </belief>
-		  <belief name="tiempoFinalizacion" class="Integer">
-              <fact> (int) 0 </fact>
+		  <belief name="tiempoFinalizacion" class="int">
+              <fact> (int) $beliefbase.time+100000 </fact>
           </belief>
+        <belief name="tiempoFinalizacion_reparar" class="int">
+              <fact> (int) $beliefbase.time+100000 </fact>
+         </belief>
+         <belief name="mensaje_usar_vater" class="IMessageEvent">
+          </belief>
+          <belief name="mensaje_reparar_vater" class="IMessageEvent">
+          </belief>
+          
     </beliefs>
 
 	<goals>
         <maintaingoal name="usar_vater_tiempo_superado">
             <maintaincondition>
-                $beliefbase.tiempo_fin_vater >= $beliefbase.tiempo_vater
+                $beliefbase.tiempoFinalizacion >= $beliefbase.time
+            </maintaincondition>
+        </maintaingoal>
+        
+        <maintaingoal name="reparar_vater_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempoFinalizacion_reparar >= $beliefbase.time
             </maintaincondition>
         </maintaingoal>
 
         <maintaingoalref name="df_vejiga_usar_vater">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
-
-        <maintaingoalref name="df_energia_usar_vater">
+        
+        <maintaingoalref name="df_mecanica_reparar_vater">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
+        
+        <achievegoalref name="df_deregister">
+            <concrete ref="dfcap.df_deregister"/>
+        </achievegoalref>
 
     </goals>
 
     <plans>
-        <plan name="UsarVaterPlan">
-            <body class="bano.vater.UsarVaterPlan"/>
+        <plan name="UsarVater">
+            <body class="UsarVaterPlan"/>
             <trigger>
-                 <goal ref="usar_vater_tiempo_superado"/>
+                 <messageevent ref="usar_vater"/>
             </trigger>
         </plan>
 
-		<plan name="UsarVaterTerminarPlan">
-            <body class="bano.vater.UsarVaterTerminarPlan"/>
+		<plan name="UsarVaterTerminar">
+            <body class="UsarVaterTerminarPlan"/>
                 <trigger>
                     <goal ref="usar_vater_tiempo_superado"/>
                 </trigger>
+        </plan>
+        
+        <plan name="RepararVater">
+            <body class="RepararVaterPlan"/>
+            <trigger>
+                 <messageevent ref="reparar"/>
+            </trigger>
+        </plan>
+        
+         <plan name="TerminarRepararVater">
+            <body class="TerminarRepararVaterPlan"/>
+            <trigger>
+                  <goal ref="reparar_vater_tiempo_superado"/>
+            </trigger>
         </plan>
 
     </plans>
@@ -78,28 +116,87 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="ontologia.acciones.UsarVater"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+            <parameter name="content-class" class="Class" direction="fixed">
+                <value>UsarVater.class</value>
+            </parameter>
+        </messageevent>
+        
+        <messageevent name="reparar" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+            <parameter name="content-class" class="Class" direction="fixed">
+                <value>Reparar.class</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="vater_usado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.VaterUsado"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="vater_estropeado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
-            <parameter name="content" class="ontologia.predicados.VaterEstropeado"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
 		 <messageevent name="vater_ocupado" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
             </parameter>
-            <parameter name="content" class="ontologia.acciones.UsarVater"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        
+        <messageevent name="vater_no_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        
+        <messageevent name="vater_reparar_no_ocupado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        
+        <messageevent name="objeto_no_estropeado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REFUSE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+        
+        <messageevent name="has_reparado" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
     </events>
@@ -107,22 +204,29 @@
 	 <configurations>
         <configuration name = "default">
             <goals>
+             <initialgoal ref="usar_vater_tiempo_superado"/>
+             <initialgoal ref="reparar_vater_tiempo_superado"/>
+              
                 <initialgoal ref="df_vejiga_usar_vater">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Vejiga", "UsarVater", "Vater"))
+                        SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Vejiga", "UsarVater", "Vater"))
                         </value>
                     </parameter>
                 </initialgoal>
 
-                <initialgoal ref="df_energia_usar_vater">
+                <initialgoal ref="df_mecanica_reparar_vater">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "UsarVater", "Vater"))
+                         SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Mecanica", "RepararVater", "Vater"))
                         </value>
                     </parameter>
                 </initialgoal>
+                <endgoal ref="df_deregister"/>
             </goals>
+            
         </configuration>
      </configurations>
 </agent>
