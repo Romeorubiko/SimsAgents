@@ -20,10 +20,9 @@ import ontologia.predicados.HasReparado;
 
 public class RepararBarbacoaTerminarPlan extends Plan {
     public void body() {
-        //getGoalbase().getGoal("terminar_reparar_barbacoa").drop();
-    	int new_timer = (int) (System.currentTimeMillis() + 100000);
-        getBeliefbase().getBelief("tiempo_fin_reparar_barbacoa").setFact(new Integer (new_timer));
-
+        
+    	int new_timer = (int) (System.currentTimeMillis()/1000) + 100000;
+        
         IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_reparar_barbacoa").getFact();
         Reparar contenido = (Reparar) peticion.getContent();
 
@@ -49,6 +48,7 @@ public class RepararBarbacoaTerminarPlan extends Plan {
         sendMessage(inform);
 
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
+        getBeliefbase().getBelief("tiempo_fin_reparar_barbacoa").setFact(new Integer (new_timer));
 
     }
 }
