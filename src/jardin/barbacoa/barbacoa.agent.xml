@@ -47,7 +47,7 @@
         </belief>
 
         <belief name="obsolescencia" class="Integer">
-            <fact>new Integer(2)</fact>
+            <fact>new Integer(100)</fact>
         </belief>
 
         <belief name="mensaje_cocinar_barbacoa" class="IMessageEvent"/>
