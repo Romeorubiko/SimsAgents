@@ -104,7 +104,7 @@
                 <initialgoal ref="terminar_sentarse_silla"/>
                 <initialgoal ref="df_energia_sentarse_silla">
                     <parameter ref="description">
-                        <value>S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "SentarseSilla"))</value>
+                        <value>S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "SentarseSilla", "Silla"))</value>
                     </parameter>
                 </initialgoal>
                 <endgoal ref="df_deregister"/>

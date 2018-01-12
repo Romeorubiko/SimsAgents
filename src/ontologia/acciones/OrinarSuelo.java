@@ -6,7 +6,14 @@ import ontologia.conceptos.necesidades.*;
 public class OrinarSuelo extends Accion {
 
     private Vejiga vejiga;
-    private Higiene higiene;
+    public OrinarSuelo(Vejiga vejiga, Higiene higiene, Diversion diversion) {
+		super();
+		this.vejiga = vejiga;
+		this.higiene = higiene;
+		this.diversion = diversion;
+	}
+
+	private Higiene higiene;
     private Diversion diversion;
 
     public OrinarSuelo() {

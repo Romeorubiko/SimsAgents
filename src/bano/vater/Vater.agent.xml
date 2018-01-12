@@ -74,7 +74,7 @@
     </plans>
 
     <events>
-        <messageevent name="_usar_vater" direction="receive" type="fipa">
+        <messageevent name="usar_vater" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
@@ -110,7 +110,7 @@
                 <initialgoal ref="df_vejiga_usar_vater">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Vejiga", "UsarVater"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Vejiga", "UsarVater", "Vater"))
                         </value>
                     </parameter>
                 </initialgoal>
@@ -118,7 +118,7 @@
                 <initialgoal ref="df_energia_usar_vater">
                     <parameter ref="description">
                         <value>
-                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "UsarVater"))
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Energia", "UsarVater", "Vater"))
                         </value>
                     </parameter>
                 </initialgoal>

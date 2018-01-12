@@ -17,6 +17,11 @@ public class SentarseSilla extends Accion {
     public void setEnergia(Energia energia) {
         this.energia = energia;
     }
+
+	public SentarseSilla(Energia energia) {
+		super();
+		this.energia = energia;
+	}
 }
 
    

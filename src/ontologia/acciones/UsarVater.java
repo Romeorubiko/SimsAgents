@@ -14,7 +14,13 @@ public class UsarVater extends Accion {
         return energia;
     }
 
-    public void setEnergia(Energia energia) {
+    public UsarVater(Energia energia, Vejiga vejiga) {
+		super();
+		this.energia = energia;
+		this.vejiga = vejiga;
+	}
+
+	public void setEnergia(Energia energia) {
         this.energia = energia;
     }
 
