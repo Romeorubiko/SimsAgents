@@ -12,7 +12,14 @@ public class DormirSuelo extends Accion {
     public DormirSuelo() {
     }
 
-    public Energia getEnergia() {
+    public DormirSuelo(Energia energia, Higiene higiene, Diversion diversion) {
+		super();
+		this.energia = energia;
+		this.higiene = higiene;
+		this.diversion = diversion;
+	}
+
+	public Energia getEnergia() {
         return energia;
     }
 

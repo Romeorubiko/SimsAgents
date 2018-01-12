@@ -16,14 +16,11 @@ import ontologia.predicados.HasDescansado;
 
 public class DescansarCamaTerminarPlan extends Plan {
     public void body() {
-
        // getGoalbase().getGoal("terminar_descansar_cama").drop();
-    	int new_timer = (int) (System.currentTimeMillis() + 100000);
-        getBeliefbase().getBelief("tiempo_fin_descansar_cama").setFact(new Integer (new_timer));
-
-        RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_descansar_cama").getFact();
+    	int new_timer = (int) (System.currentTimeMillis()/1000 + 1000000);
+       
+        IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_descansar_cama").getFact();
         Descansar contenido = (Descansar) peticion.getContent();
-
 
         Energia e  = contenido.getEnergia();
         e.setGrado(e.getGrado()+ Necesidad.NC_MUCHO);
@@ -34,9 +31,9 @@ public class DescansarCamaTerminarPlan extends Plan {
         inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
         inform.setContent(response);
         sendMessage(inform);
-
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
         getBeliefbase().getBelief("cama_hecha").setFact(Boolean.FALSE);
+        getBeliefbase().getBelief("tiempo_fin_descansar_cama").setFact(new Integer (new_timer));
     }
 
 }

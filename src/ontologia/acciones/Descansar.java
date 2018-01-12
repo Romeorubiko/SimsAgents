@@ -20,7 +20,13 @@ public class Descansar extends Accion {
         tipo = c;
     }
 
-    public Energia getEnergia() {
+    public Descansar(Energia energia) {
+		super();
+		this.energia = energia;
+	}
+
+
+	public Energia getEnergia() {
         return energia;
     }
 

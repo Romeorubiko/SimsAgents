@@ -41,19 +41,19 @@
             <fact>new Boolean(true)</fact>
         </belief>
 
-        <belief name="mensaje_descansar_cama" class="RMessageEvent"/>
-        <belief name="mensaje_hacer_cama" class="RMessageEvent"/>
+        <belief name="mensaje_descansar_cama" class="IMessageEvent"/>
+        <belief name="mensaje_hacer_cama" class="IMessageEvent"/>
 
         <belief name="tiempo" class="int" updaterate="750">
             <fact>(int)(System.currentTimeMillis()/1000)</fact>
         </belief>
         
-        <belief name="tiempo_fin_descansar_cama" class="int" updaterate="750">
-            <fact> (int) $beliefbase.tiempo+1000 </fact>
+        <belief name="tiempo_fin_descansar_cama" class="int">
+            <fact> (int) $beliefbase.tiempo+100000 </fact>
         </belief>
         
-        <belief name="tiempo_fin_hacer_cama" class="int" updaterate="750">
-            <fact> (int) $beliefbase.tiempo+1000 </fact>
+        <belief name="tiempo_fin_hacer_cama" class="int">
+            <fact> (int) $beliefbase.tiempo+100000 </fact>
         </belief>
 
 
@@ -120,14 +120,26 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="Descansar"/>
+            
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+            <parameter name="content-class" class="Class" direction="fixed">
+                <value>Descansar.class</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="hacer_cama" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="HacerLaCama"/>
+            
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+            <parameter name="content-class" class="Class" direction="fixed">
+                <value>HacerLaCama.class</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="cama_ocupada" direction="send" type="fipa">
