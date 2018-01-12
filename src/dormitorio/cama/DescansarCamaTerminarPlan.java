@@ -23,8 +23,8 @@ public class DescansarCamaTerminarPlan extends Plan {
         Descansar contenido = (Descansar) peticion.getContent();
 
         Energia e  = contenido.getEnergia();
-        e.setGrado(e.getGrado()+ Necesidad.NC_MUCHO);
-
+        //e.setGrado(e.getGrado()+ Necesidad.NC_MUCHO);
+        e.setGrado(100);
         HasDescansado response = new HasDescansado(e);
 
         IMessageEvent inform = createMessageEvent("has_descansado");

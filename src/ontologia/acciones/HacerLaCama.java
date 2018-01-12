@@ -4,21 +4,20 @@ import ontologia.Accion;
 import ontologia.conceptos.necesidades.*;
 
 public class HacerLaCama extends Accion {
-    private Energia energia;
     private Higiene higiene;
 
     public HacerLaCama() {
     }
 
-    public Energia getEnergia() {
-        return energia;
-    }
 
-    public void setEnergia(Energia energia) {
-        this.energia = energia;
-    }
 
-    public Higiene getHigiene() {
+    public HacerLaCama(Higiene higiene) {
+		super();
+		this.higiene = higiene;
+	}
+
+
+	public Higiene getHigiene() {
         return higiene;
     }
 

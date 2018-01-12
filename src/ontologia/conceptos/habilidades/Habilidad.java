@@ -17,27 +17,27 @@ public abstract class Habilidad extends Concepto {
     public int getNivel() {
         return nivel;
     }
+    public void setNivel(int nivel) {
+        this.nivel=nivel;
+    }
 
     public int getExperiencia() {
         return experiencia;
     }
 
     public void setExperiencia(int experiencia) {
-        if (nivel==1) {
-            if (experiencia > 100) {
-                this.experiencia = experiencia - 100;
-                this.nivel++;
-            } else {
-                this.experiencia = experiencia;
-            }
-        }
-        else if (nivel < 10) {
-            if (experiencia > 100 * nivel) {
-                this.experiencia = experiencia - 100 * (nivel);
-                this.nivel++;
-            } else {
-                this.experiencia = experiencia;
-            }
+    	if (nivel <10) {
+    		if (experiencia >=100) {
+    			 this.experiencia = experiencia - 100 * (nivel);
+    			 setNivel(this.nivel+1);
+    		}
+    		else {
+    			this.experiencia = experiencia;
+    		}
+    	}
+ 
+        else if (nivel==10) {
+        	System.out.println("Has llegado al nivel maximo");
         }
     }
 }

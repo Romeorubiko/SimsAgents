@@ -30,7 +30,7 @@ public class CocinarBarbacoaPlan extends Plan {
         Boolean estropeado = (Boolean)getBeliefbase().getBelief("estropeado").getFact();
 
         if(ocupado.booleanValue()) {
-        	System.out.println("Barbacoa ocupada");
+        	//System.out.println("Barbacoa ocupada");
             IMessageEvent refuse = createMessageEvent("barbacoa_ocupada");
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
             refuse.setContent(content);
@@ -45,7 +45,7 @@ public class CocinarBarbacoaPlan extends Plan {
             sendMessage(agree);
 
             if (estropeado.booleanValue()) {
-            	System.out.println("Barbacoa estropeada");
+            	//System.out.println("Barbacoa estropeada");
                 IMessageEvent failure = createMessageEvent("barbacoa_estropeada");
                 BarbacoaRota response = new BarbacoaRota (h, hmb, d, c);
                 failure.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());

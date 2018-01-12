@@ -18,7 +18,7 @@ import ontologia.acciones.HacerLaCama;
 public class HacerCamaPlan extends Plan {
     public void body() {
 
-        RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
+        IMessageEvent peticion = (IMessageEvent)getInitialEvent();
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
         Boolean hecha = (Boolean) getBeliefbase().getBelief("cama_hecha").getFact();
         HacerLaCama content = (HacerLaCama) peticion.getContent();

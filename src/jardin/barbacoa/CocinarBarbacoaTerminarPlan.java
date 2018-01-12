@@ -39,9 +39,9 @@ public class CocinarBarbacoaTerminarPlan extends Plan {
 
         //Comida quemada. La probabilidad de que se queme la comida es mas pequeña cuanto más alto es el nivel de cocina
         if (val) {
-			System.out.println("Comida quemada");
+			
 		    h.setGrado(h.getGrado()- Necesidad.NC_POCO);
-		    hmb.setGrado(hmb.getGrado());
+		    //hmb.setGrado(hmb.getGrado());
 		    d.setGrado(d.getGrado()+Necesidad.NC_POCO);
 		    c.setExperiencia(c.getExperiencia()+ Habilidad.HB_NORMAL);
 		    PerritosQuemados response = new PerritosQuemados(h, hmb, d, c);
@@ -52,9 +52,10 @@ public class CocinarBarbacoaTerminarPlan extends Plan {
         }
 
         else {
-        	System.out.println("Has hecho barbacoa");
+        
             h.setGrado(h.getGrado()- Necesidad.NC_POCO);
-            hmb.setGrado(hmb.getGrado()+Necesidad.NC_NORMAL);
+            //hmb.setGrado(hmb.getGrado()+Necesidad.NC_MUCHO);
+            hmb.setGrado(100);
             d.setGrado(d.getGrado()+Necesidad.NC_POCO);
             c.setExperiencia(c.getExperiencia()+ Habilidad.HB_NORMAL);
 

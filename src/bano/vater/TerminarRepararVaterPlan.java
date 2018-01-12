@@ -13,7 +13,7 @@ import ontologia.predicados.HasReparado;
 
 public class TerminarRepararVaterPlan extends Plan{
 	public void body() {
-int new_timer = ((int) (System.currentTimeMillis()/1000)) + 100000;
+		int new_timer = ((int) (System.currentTimeMillis()/1000)) + 100000;
         
         IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_reparar_vater").getFact();
         Reparar contenido = (Reparar) peticion.getContent();
