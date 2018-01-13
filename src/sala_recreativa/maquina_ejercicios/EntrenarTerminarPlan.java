@@ -23,10 +23,8 @@ import ontologia.predicados.HasEntrenado;
 public class EntrenarTerminarPlan extends Plan {
     public void body() {
 
-        //getGoalbase().getGoal("terminar_entrenar").drop();
-    	int new_timer = (int) (System.currentTimeMillis() + 100000);
-        getBeliefbase().getBelief("tiempo_fin_entrenar").setFact(new Integer (new_timer));
-        RMessageEvent peticion= (RMessageEvent)getBeliefbase().getBelief("mensaje_entrenar").getFact();
+    	int new_timer = (int) (System.currentTimeMillis()/1000 + 100000);
+        IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_entrenar").getFact();
         Entrenar contenido = (Entrenar) peticion.getContent();
 
 
@@ -35,7 +33,7 @@ public class EntrenarTerminarPlan extends Plan {
         Hambre hmb = contenido.getHambre();
         Deporte d = contenido.getDeporte();
 
-        //A más nivel gasta menos energía
+        //A mÃ¡s nivel gasta menos energÃ­a
         e.setGrado(e.getGrado()- Necesidad.NC_POCO/d.getNivel());
         h.setGrado(h.getGrado()-Necesidad.NC_POCO);
         hmb.setGrado(hmb.getGrado()-Necesidad.NC_POCO);
@@ -44,10 +42,11 @@ public class EntrenarTerminarPlan extends Plan {
         HasEntrenado response = new HasEntrenado(e, h, hmb, d);
 
         IMessageEvent inform = createMessageEvent("has_entrenado");
-        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+        inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
         inform.setContent(response);
         sendMessage(inform);
 
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
+        getBeliefbase().getBelief("tiempo_fin_entrenar").setFact(new Integer (new_timer));
     }
 }
