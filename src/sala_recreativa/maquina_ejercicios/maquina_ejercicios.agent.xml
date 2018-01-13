@@ -37,14 +37,14 @@
             <fact>new Boolean(false)</fact>
         </belief>
 
-        <belief name="mensaje_entrenar" class="RMessageEvent"/>
+        <belief name="mensaje_entrenar" class="IMessageEvent"/>
 
         <belief name="tiempo" class="int" updaterate="750">
             <fact> (int)(System.currentTimeMillis()/1000) </fact>
         </belief>
 
-        <belief name="tiempo_fin_entrenar" class="int" updaterate="750">
-            <fact> (int) $beliefbase.tiempo+1000 </fact>
+        <belief name="tiempo_fin_entrenar" class="int">
+            <fact> (int) $beliefbase.tiempo+1000000 </fact>
         </belief>
 
     </beliefs>
@@ -86,7 +86,12 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="Entrenar"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+            <parameter name="content-class" class="Class" direction="fixed">
+                <value>Entrenar.class</value>
+            </parameter>
         </messageevent>
 
 
