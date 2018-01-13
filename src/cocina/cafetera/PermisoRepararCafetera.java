@@ -1,4 +1,4 @@
-package cocina.lavaplatos;
+package cocina.cafetera;
 
 import jadex.adapter.fipa.SFipa;
 import jadex.runtime.IMessageEvent;
@@ -6,42 +6,38 @@ import jadex.runtime.Plan;
 import jadex.runtime.impl.RBeliefbase;
 import ontologia.Accion;
 
-public class PermisoLavarPlatosPlan extends Plan {
+public class PermisoRepararCafetera extends Plan {
 
-	@Override
 	public void body() {
+
 		IMessageEvent request = (IMessageEvent) getInitialEvent();
 		RBeliefbase creencias = (RBeliefbase) getBeliefbase();
 		int obsolescencia = (int) creencias.getBelief("obsolescencia").getFact();
 		Boolean ocupado = (Boolean) creencias.getBelief("ocupado").getFact();
 
-		if (ocupado) {
-			IMessageEvent refuse = createMessageEvent("lavaplatos_ocupado");
+		if (ocupado.booleanValue()) {
+			IMessageEvent refuse = createMessageEvent("cafetera_ocupada");
 			refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet("sender").getValues());
 			refuse.setContent(request.getContent());
 			sendMessage(refuse);
-		} else if (obsolescencia <= 0) {
-			IMessageEvent refuse = createMessageEvent("lavaplatos_estropeado");
+		} else if (obsolescencia > 0) {
+			IMessageEvent refuse = createMessageEvent("cafetera_no_estropeada");
 			refuse.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet("sender").getValues());
 			refuse.setContent(request.getContent());
 			sendMessage(refuse);
 
 		} else {
-			obsolescencia--;
-			creencias.getBelief("obsolescencia").setFact(obsolescencia);
 			creencias.getBelief("ocupado").setFact(Boolean.TRUE);
 
-			creencias.getBelief("mensaje_lavar_platos").setFact(request);
+			creencias.getBelief("mensaje_reparar_cafetera").setFact(request);
 
-			int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_LARGO;
-			creencias.getBelief("tiempo_fin_lavar_platos").setFact(new Integer(end_timer));
+			int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
+			creencias.getBelief("tiempo_fin_reparar_cafetera").setFact(new Integer(end_timer));
 
-			IMessageEvent agree = createMessageEvent("puedes_lavar_platos");
+			IMessageEvent agree = createMessageEvent("puedes_reparar_cafetera");
 			agree.getParameterSet(SFipa.RECEIVERS).addValue(request.getParameterSet("sender").getValues());
 			agree.setContent(request.getContent());
 			sendMessage(agree);
-
 		}
-
 	}
 }

@@ -1,12 +1,19 @@
 <agent xmlns="http://jadex.sourceforge.net/jadex" name="Cafetera"
 	package="cocina.cafetera">
-<imports>
+	<imports>
+		<import>java.sql.Time</import>
 		<import>jadex.runtime.*</import>
 		<import>jadex.planlib.*</import>
 		<import>jadex.util.*</import>
 		<import>jadex.adapter.fipa.*</import>
 		<import>java.util.logging.*</import>
 		<import>java.util.*</import>
+		<import>ontologia.Accion</import>
+		<import>ontologia.acciones.*</import>
+		<import>ontologia.conceptos.*</import>
+		<import>jadex.model.IMMessageEvent</import>
+		<import>jadex.runtime.impl.RMessageEvent</import>
+
 	</imports>
 
 	<capabilities>
@@ -16,7 +23,7 @@
 	<beliefs>
 		<!-- Obsolescencia de la cafetera -->
 		<belief name="obsolescencia" class="Integer">
-			<fact>new Integer(100)</fact>
+			<fact>new Integer(10)</fact>
 		</belief>
 		<!-- Ocupacion de la cafetera -->
 		<belief name="ocupado" class="Boolean">
@@ -24,27 +31,49 @@
 		</belief>
 		<!-- Tiempo actual de la cafetera -->
 		<belief name="tiempo_cafetera" class="int" updaterate="750">
-			<fact> (int)(System.currentTimeMillis()/1000) </fact>
+			<fact>(int)(System.currentTimeMillis()/1000)</fact>
 		</belief>
-		<!-- Momento en el tiempo donde se finaliza la accion -->
-		<belief name="tiempo_fin" class="int">
-			<fact> (int) 0 </fact>
+		<!-- Tiempo fin de beber cafe -->
+		<belief name="tiempo_fin_beber_cafe" class="int">
+			<fact> (int) $beliefbase.tiempo+1000000 </fact>
+		</belief>
+		<!-- Tiempo fin de reparar la cafetera -->
+		<belief name="tiempo_fin_reparar_cafetera" class="int">
+			<fact> (int) $beliefbase.tiempo+1000000 </fact>
 		</belief>
 		<!-- Contenido del request que le llega al agente, necesario para ejecutar 
 			segundo plan -->
-		<belief name="mensaje_cafetera" class="IMessageEvent" />
+		<belief name="mensaje_beber_cafe" class="IMessageEvent" />
+		<belief name="mensaje_reparar_cafetera" class="IMessageEvent" />
 
 	</beliefs>
 	<goals>
-		<maintaingoal name="tiempo_superado">
+		<maintaingoal name="fin_beber_cafe">
 			<maintaincondition>
-				$beliefbase.tiempo_fin >=
-				$beliefbase.tiempo_lavaplatos
+				$beliefbase.tiempo_fin_beber_cafe >=
+				$beliefbase.tiempo_cafetera
 			</maintaincondition>
 		</maintaingoal>
+
+		<maintaingoal name="fin_reparar_cafetera">
+			<maintaincondition>
+				$beliefbase.tiempo_fin_reparar_cafetera >=
+				$beliefbase.tiempo_cafetera
+			</maintaincondition>
+		</maintaingoal>
+
 		<maintaingoalref name="df_energia_beber_cafe">
 			<concrete ref="dfcap.df_keep_registered" />
 		</maintaingoalref>
+
+		<maintaingoalref name="df_mecanica_reparar_cafetera">
+			<concrete ref="dfcap.df_keep_registered" />
+		</maintaingoalref>
+
+		<achievegoalref name="df_deregister">
+			<concrete ref="dfcap.df_deregister" />
+		</achievegoalref>
+
 	</goals>
 	<plans>
 		<plan name="PermisoBeberCafePlan">
@@ -59,42 +88,118 @@
 				<messageevent ref="cafe_bebido" />
 			</trigger>
 		</plan>
+		<plan name="PermisoRepararCafetera">
+			<body class="cocina.cafetera.PermisoRepararCafetera" />
+			<trigger>
+				<messageevent ref="request_reparar_cafetera" />
+			</trigger>
+		</plan>
+		<plan name="RespuestaRepararCafetera">
+			<body class="cocina.cafetera.RespuestaRepararCafetera" />
+			<trigger>
+				<messageevent ref="cafetera_reparada" />
+			</trigger>
+		</plan>
 	</plans>
 	<events>
 		<messageevent name="request_beber_cafe" direction="receive"
 			type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
+				<value>jadex.adapter.fipa.SFipa.REQUEST</value>
 			</parameter>
-			<parameter name="content" class="PermisoBeberCafePlan"
-				direction="fixed">
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+			<parameter name="content-class" class="Class" direction="fixed">
+				<value>PermisoBeberCafePlan.class</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="puedes_beber_cafe" direction="send"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.adapter.fipa.SFipa.AGREE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+			<parameter name="content-class" class="Class" direction="fixed">
+				<value>RespuestaBeberCafePlan.class</value>
 			</parameter>
 		</messageevent>
 
 		<messageevent name="cafetera_ocupada" direction="send"
 			type="fipa">
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
 			</parameter>
 		</messageevent>
 
-		<messageevent name="cafetera_no_ocupada" direction="send"
-			type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>jadex.bridge.fipa.SFipa.AGREE</value>
+		<messageevent name="cafe_bebido" direction="send" type="fipa">
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
 			</parameter>
-		</messageevent>
-
-		<messageevent name="cafe_bebido" direction="send"
-			type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.INFORM</value>
 			</parameter>
 		</messageevent>
+
 		<messageevent name="cafetera_estropeada" direction="send"
 			type="fipa">
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="request_reparar_cafetera" direction="receive"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.adapter.fipa.SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+			<parameter name="content-class" class="Class" direction="fixed">
+				<value>RequestRepararCafetera.class</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="puedes_reparar_cafetera" direction="send"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.adapter.fipa.SFipa.AGREE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+			<parameter name="content-class" class="Class" direction="fixed">
+				<value>RespuestaRepararCafetera.class</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="cafetera_no_estropeada" direction="send"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.adapter.fipa.SFipa.REFUSE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="cafetera_reparada" direction="send"
+			type="fipa">
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
 			</parameter>
 		</messageevent>
 
@@ -102,6 +207,9 @@
 	<configurations>
 		<configuration name="default">
 			<goals>
+				<initialgoal ref="fin_beber_cafe" />
+				<initialgoal ref="fin_reparar_cafetera" />
+
 				<initialgoal ref="df_energia_beber_cafe">
 					<parameter ref="description">
 						<value>
@@ -111,7 +219,16 @@
 						</value>
 					</parameter>
 				</initialgoal>
-
+				<initialgoal ref="df_mecanica_reparar_cafetera">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Mecanica", "Reparar",
+							"Cafetera"))
+						</value>
+					</parameter>
+				</initialgoal>
+				<endgoal ref="df_deregister" />
 			</goals>
 		</configuration>
 	</configurations>

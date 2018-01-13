@@ -3,12 +3,18 @@
 	package="cocina.lavaplatos">
 
 	<imports>
+		<import>java.sql.Time</import>
 		<import>jadex.runtime.*</import>
 		<import>jadex.planlib.*</import>
 		<import>jadex.util.*</import>
 		<import>jadex.adapter.fipa.*</import>
 		<import>java.util.logging.*</import>
 		<import>java.util.*</import>
+		<import>ontologia.Accion</import>
+		<import>ontologia.acciones.*</import>
+		<import>ontologia.conceptos.*</import>
+		<import>jadex.model.IMMessageEvent</import>
+		<import>jadex.runtime.impl.RMessageEvent</import>
 	</imports>
 
 	<capabilities>
@@ -26,21 +32,32 @@
 		</belief>
 		<!-- Tiempo actual del lavaplatos -->
 		<belief name="tiempo_lavaplatos" class="int" updaterate="750">
-			<fact> (int)(System.currentTimeMillis()/1000) </fact>
+			<fact>(int)(System.currentTimeMillis()/1000)</fact>
 		</belief>
 		<!-- Momento en el tiempo donde se finaliza la accion -->
-		<belief name="tiempo_fin" class="int">
-			<fact> (int) 0 </fact>
+		<belief name="tiempo_fin_lavar_platos" class="int">
+			<fact> (int) $beliefbase.tiempo+1000000 </fact>
+		</belief>
+		<!-- Momento en el tiempo donde se finaliza la accion -->
+		<belief name="tiempo_fin_reparar_lavaplatos" class="int">
+			<fact> (int) $beliefbase.tiempo+1000000 </fact>
 		</belief>
 		<!-- Contenido del request que le llega al agente, necesario para ejecutar 
 			segundo plan -->
-		<belief name="mensaje_lavaplatos" class="IMessageEvent" />
+		<belief name="mensaje_lavar_platos" class="IMessageEvent" />
+		<belief name="mensaje_reparar_lavaplatos" class="IMessageEvent" />
 
 	</beliefs>
 	<goals>
-		<maintaingoal name="tiempo_superado">
+		<maintaingoal name="fin_lavar_platos">
 			<maintaincondition>
-				$beliefbase.tiempo_fin >=
+				$beliefbase.tiempo_fin_lavar_platos >=
+				$beliefbase.tiempo_lavaplatos
+			</maintaincondition>
+		</maintaingoal>
+		<maintaingoal name="fin_reparar_lavaplatos">
+			<maintaincondition>
+				$beliefbase.tiempo_fin_reparar_lavaplatos >=
 				$beliefbase.tiempo_lavaplatos
 			</maintaincondition>
 		</maintaingoal>
@@ -50,6 +67,14 @@
 		<maintaingoalref name="df_diversion_lavar_platos">
 			<concrete ref="dfcap.df_keep_registered" />
 		</maintaingoalref>
+
+		<maintaingoalref name="df_mecanica_reparar_lavaplatos">
+			<concrete ref="dfcap.df_keep_registered" />
+		</maintaingoalref>
+
+		<achievegoalref name="df_deregister">
+			<concrete ref="dfcap.df_deregister" />
+		</achievegoalref>
 	</goals>
 	<plans>
 		<plan name="PermisoLavarPlatosPlan">
@@ -64,42 +89,118 @@
 				<messageevent ref="platos_lavados" />
 			</trigger>
 		</plan>
+		<plan name="PermisoRepararLavaplatos">
+			<body class="cocina.lavaplatos.PermisoRepararLavaplatos" />
+			<trigger>
+				<messageevent ref="request_reparar_lavaplatos" />
+			</trigger>
+		</plan>
+		<plan name="RespuestaRepararLavaplatos">
+			<body class="cocina.lavaplatos.RespuestaRepararLavaplatos" />
+			<trigger>
+				<messageevent ref="lavaplatos_reparado" />
+			</trigger>
+		</plan>
 	</plans>
 	<events>
 		<messageevent name="request_lavar_platos" direction="receive"
 			type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
+				<value>jadex.adapter.fipa.SFipa.REQUEST</value>
 			</parameter>
-			<parameter name="content" class="PermisoLavarPlatosPlan"
-				direction="fixed">
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+			<parameter name="content-class" class="Class" direction="fixed">
+				<value>PermisoBeberCafePlan.class</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="puedes_lavar_platos" direction="send"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.adapter.fipa.SFipa.AGREE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+			<parameter name="content-class" class="Class" direction="fixed">
+				<value>RespuestaLavarPlatosPlan.class</value>
 			</parameter>
 		</messageevent>
 
 		<messageevent name="lavaplatos_ocupado" direction="send"
 			type="fipa">
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.REFUSE</value>
 			</parameter>
 		</messageevent>
 
-		<messageevent name="lavaplatos_no_ocupado" direction="send"
-			type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>jadex.bridge.fipa.SFipa.AGREE</value>
-			</parameter>
-		</messageevent>
-
 		<messageevent name="platos_lavados" direction="send"
 			type="fipa">
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.INFORM</value>
 			</parameter>
 		</messageevent>
 		<messageevent name="lavaplatos_estropeado" direction="send"
 			type="fipa">
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
 			<parameter name="performative" class="String" direction="fixed">
 				<value>jadex.bridge.fipa.SFipa.FAILURE</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="request_reparar_lavaplatos"
+			direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.adapter.fipa.SFipa.REQUEST</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+			<parameter name="content-class" class="Class" direction="fixed">
+				<value>RequestRepararLavaplatos.class</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="puedes_reparar_lavaplatos" direction="send"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.adapter.fipa.SFipa.AGREE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+			<parameter name="content-class" class="Class" direction="fixed">
+				<value>RespuestaRepararLavaplatos.class</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="lavaplatos_no_estropeado" direction="send"
+			type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.adapter.fipa.SFipa.REFUSE</value>
+			</parameter>
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+		</messageevent>
+
+		<messageevent name="lavaplatos_reparado" direction="send"
+			type="fipa">
+			<parameter name="language" class="String" direction="fixed">
+				<value>SFipa.NUGGETS_XML</value>
+			</parameter>
+			<parameter name="performative" class="String" direction="fixed">
+				<value>jadex.bridge.fipa.SFipa.INFORM</value>
 			</parameter>
 		</messageevent>
 
@@ -107,6 +208,9 @@
 	<configurations>
 		<configuration name="default">
 			<goals>
+				<initialgoal ref="fin_lavar_platos" />
+				<initialgoal ref="fin_reparar_lavaplatos" />
+
 				<initialgoal ref="df_diversion_lavar_platos">
 					<parameter ref="description">
 						<value>
@@ -126,6 +230,17 @@
 						</value>
 					</parameter>
 				</initialgoal>
+
+				<initialgoal ref="df_mecanica_reparar_lavaplatos">
+					<parameter ref="description">
+						<value>
+							SFipa.createAgentDescription(null,
+							SFipa.createServiceDescription("Mecanica", "Reparar",
+							"Lavaplatos"))
+						</value>
+					</parameter>
+				</initialgoal>
+				<endgoal ref="df_deregister" />
 			</goals>
 		</configuration>
 	</configurations>
