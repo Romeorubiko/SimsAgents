@@ -16,13 +16,13 @@ import ontologia.acciones.Entrenar;
 
 public class EntrenarPlan extends Plan{
     public void body() {
-        RMessageEvent peticion = ((RMessageEvent)getInitialEvent());
+        IMessageEvent peticion = (IMessageEvent)getInitialEvent();
         Entrenar content = (Entrenar)peticion.getContent();
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
 
         if(ocupado.booleanValue()) {
             IMessageEvent refuse = createMessageEvent("maquina_ejercicios_ocupada");
-            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
             refuse.setContent(content);
             sendMessage(refuse);
         }
@@ -30,17 +30,15 @@ public class EntrenarPlan extends Plan{
             getBeliefbase().getBelief("ocupado").setFact(Boolean.TRUE);
 
             IMessageEvent agree = createMessageEvent("maquina_ejercicios_no_ocupada");
-            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+            agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
             agree.setContent(content);
             sendMessage(agree);
 
             getBeliefbase().getBelief("mensaje_entrenar").setFact(peticion);
 
-            int end_timer = (int) System.currentTimeMillis() + Accion.TIEMPO_MEDIO;
+            int end_timer = (int) (System.currentTimeMillis()/1000) + Accion.TIEMPO_MEDIO;
             getBeliefbase().getBelief("tiempo_fin_entrenar").setFact(new Integer(end_timer));
 
-            /*IGoal goal= createGoal("terminar_entrenar");
-            dispatchSubgoal(goal);*/
 
         }
 
