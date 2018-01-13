@@ -1,10 +1,13 @@
 package cocina.fogones;
 
 import jadex.runtime.IMessageEvent;
+
 import jadex.runtime.Plan;
 import jadex.runtime.impl.RMessageEvent;
 import ontologia.Accion;
 import ontologia.acciones.CocinarComida;
+import ontologia.conceptos.habilidades.Cocina;
+import ontologia.conceptos.habilidades.Habilidad;
 import ontologia.conceptos.necesidades.Hambre;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.conceptos.necesidades.Necesidad;
@@ -26,12 +29,16 @@ public class cocinarComidaRespuestaPlan extends Plan {
 
         Energia energia = content.getEnergia();
         Hambre hambre = content.getHambre();
+        Cocina cocina = content.getCocina();
 
         energia.setGrado(energia.getGrado() - Necesidad.NC_POCO);
         content.setEnergia(energia);
 
         hambre.setGrado(hambre.getGrado() + Necesidad.NC_NORMAL);
         content.setHambre(hambre);
+        
+        cocina.setExperiencia(cocina.getExperiencia() + Habilidad.HB_NORMAL);
+
 
         IMessageEvent respuesta = createMessageEvent("has_cocinado");
         HasCocinado hasCocinado = new HasCocinado(energia, hambre);

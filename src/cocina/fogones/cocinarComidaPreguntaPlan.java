@@ -7,6 +7,7 @@ import jadex.runtime.Plan;
 import ontologia.Accion;
 import ontologia.acciones.CocinarComida;
 import ontologia.conceptos.necesidades.Hambre;
+import ontologia.conceptos.habilidades.Cocina;
 import ontologia.conceptos.necesidades.Energia;
 import ontologia.predicados.FogonesEstropeados;
 
@@ -19,9 +20,11 @@ public class cocinarComidaPreguntaPlan extends Plan {
     @Override
     public void body() {
         IMessageEvent peticion = ((IMessageEvent) getInitialEvent());
+        CocinarComida content = (CocinarComida) peticion.getContent();
 
         if (getBeliefbase().getBelief("ocupado").getFact().equals(Boolean.TRUE)) {
             IMessageEvent refuse = createMessageEvent("refuse");
+            refuse.setContent(content);
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         } else {
@@ -32,16 +35,18 @@ public class cocinarComidaPreguntaPlan extends Plan {
             Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact();
 
             IMessageEvent agree = createMessageEvent("agree");
+            agree.setContent(content);
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 
             if (obsolescencia <= 0) {
-            	CocinarComida content = (CocinarComida) peticion.getContent();
                 Energia energia = content.getEnergia();
                 Hambre hambre = content.getHambre();
+                Cocina cocina = content.getCocina();
+
 
                 IMessageEvent failure = createMessageEvent("fogones_estropeados_cocinar_comida");
-                FogonesEstropeados fogonesEstropeados = new FogonesEstropeados(energia, hambre);
+                FogonesEstropeados fogonesEstropeados = new FogonesEstropeados(energia, hambre, cocina);
                 failure.setContent(fogonesEstropeados);
                 failure.getParameterSet(SFipa.RECEIVERS).addValue(failure.getParameterSet(SFipa.SENDER).getValues());
                 sendMessage(failure);

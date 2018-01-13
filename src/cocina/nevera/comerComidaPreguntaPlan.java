@@ -19,9 +19,11 @@ public class comerComidaPreguntaPlan extends Plan {
     @Override
     public void body() {
         IMessageEvent peticion = ((IMessageEvent) getInitialEvent());
+        ComerComida content = (ComerComida) peticion.getContent();
 
         if (getBeliefbase().getBelief("ocupado").getFact().equals(Boolean.TRUE)) {
             IMessageEvent refuse = createMessageEvent("refuse");
+            refuse.setContent(content);
             refuse.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(refuse);
         } else {
@@ -32,11 +34,11 @@ public class comerComidaPreguntaPlan extends Plan {
             Integer obsolescencia = (Integer) getBeliefbase().getBelief("obsolescencia").getFact();
 
             IMessageEvent agree = createMessageEvent("agree");
+            agree.setContent(content);
             agree.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
             sendMessage(agree);
 
             if (obsolescencia <= 0) {
-            	ComerComida content = (ComerComida) peticion.getContent();
                 Energia energia = content.getEnergia();
                 Hambre hambre = content.getHambre();
 

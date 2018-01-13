@@ -22,14 +22,22 @@
         <belief name="ocupado" class="Boolean">
             <fact>new Boolean(false)</fact>
         </belief>
-        <belief name="tiempo" class="int" updaterate="750">
+        <belief name="estropeado" class="Boolean">
+            <fact>new Boolean(false)</fact>
+        </belief>
+        <belief name="tiempo" class="int">
             <fact>(int) (System.currentTimeMillis()/1000)</fact>
         </belief>
-        
-        <belief name="tiempo_fin" class="int" updaterate="750">
-            <fact>(int) $beliefbase.tiempo+1000</fact> 
+        <belief name="tiempo_fin" class="int">
+            <fact>(int) 0</fact>
         </belief>
         <belief name="mensaje" class="IMessageEvent"/>
+        <belief name="mensaje_reparar_nevera" class="RMessageEvent"/>
+
+        <belief name="tiempo_fin_reparar_nevera" class="int">
+            <fact> (int) 0 </fact>
+        </belief>
+
     </beliefs>
 
     <goals>
@@ -44,17 +52,43 @@
                 $beliefbase.tiempo_fin >= $beliefbase.tiempo
             </maintaincondition>
         </maintaingoal>
+
+        <maintaingoal name="reparar_nevera_tiempo_superado">
+            <maintaincondition>
+                $beliefbase.tiempo_fin >= $beliefbase.tiempo
+            </maintaincondition>
+        </maintaingoal>
 		
 		 <maintaingoalref name="df_diversion_beber">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
-        
-        <maintaingoalref name="df_hambre_comerNevera">
+        <maintaingoalref name="df_energia_beber">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_energia_comer_comida">
+            <concrete ref="dfcap.df_keep_registered"/>
+        </maintaingoalref>
+        <maintaingoalref name="df_mecanica_reparar_nevera">
             <concrete ref="dfcap.df_keep_registered"/>
         </maintaingoalref>
     </goals>
 	
     <plans>
+
+        <plan name="repararNeveraPreguntaPlan">
+            <body class="cocina.repararNeveraPreguntaPlan"/>
+            <trigger>
+                <messageevent ref="request_reparar_nevera"/>
+            </trigger>
+        </plan>
+
+        <plan name="repararNeveraRespuestaPlan">
+            <body class="cocina.nevera.repararNeveraRespuestaPlan"/>
+            <trigger>
+                <messageevent ref="reparar_nevera_tiempo_superado"/>
+            </trigger>
+        </plan>
+
         <plan name="comerComidaPreguntaPlan">
             <body class="cocina.nevera.comerComidaPreguntaPlan"/>
             <trigger>
@@ -85,6 +119,25 @@
     </plans>
 	
     <events>
+
+        <messageevent name="request_reparar_nevera" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.REQUEST</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.RepararNevera"
+                       direction="fixed">
+            </parameter>
+        </messageevent>
+
+         <messageevent name="has_reparado_nevera" direction="receive" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
+            </parameter>
+            <parameter name="content" class="ontologia.acciones.HasReparado"
+                       direction="fixed">
+            </parameter>
+        </messageevent>
+
         <messageevent name="request_comer_comida" direction="receive" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
@@ -112,6 +165,18 @@
                 <value>jadex.adapter.fipa.SFipa.INFORM_REF</value>
             </parameter>
             <parameter name="content" class="ontologia.predicados.HasBebido"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+        </messageevent>
+
+        <messageevent name="nevera_no_ocupada" direction="send" type="fipa">
+            <parameter name="performative" class="String" direction="fixed">
+                <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="nevera_estropeada_comer" direction="send" type="fipa">
@@ -119,6 +184,9 @@
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
             <parameter name="content" class="ontologia.predicados.NeveraEstropeadaComer"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="nevera_estropeada_beber" direction="send" type="fipa">
@@ -126,11 +194,17 @@
                 <value>jadex.adapter.fipa.SFipa.FAILURE</value>
             </parameter>
             <parameter name="content" class="ontologia.predicados.NeveraEstropeadaBeber"/>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
 
         <messageevent name="agree" direction="send" type="fipa">
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.AGREE</value>
+            </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
             </parameter>
         </messageevent>
 
@@ -138,12 +212,24 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REFUSE</value>
             </parameter>
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
         </messageevent>
     </events>
 	
 	<configurations>
         <configuration name="default">
             <goals>
+
+                <initialgoal ref="df_mecanica_reparar_nevera">
+                    <parameter ref="description">
+                        <value>
+                            S.Fipa.createAgentDescription (null, S.Fipa.createAgentDescription ("Mecanica", "Reparar", "Nevera"))
+                        </value>
+                    </parameter>
+                </initialgoal>
+
                 <initialgoal ref="df_diversion_beber">
                     <parameter ref="description">
                         <value>
@@ -151,15 +237,23 @@
                             SFipa.createServiceDescription("Diversion", "Beber", "Nevera"))
                         </value>
                     </parameter>
-                </initialgoal>   
-                <initialgoal ref="df_hambre_comerNevera">
+                </initialgoal>
+                <initialgoal ref="df_energia_beber">
                     <parameter ref="description">
                         <value>
                             SFipa.createAgentDescription(null,
-							SFipa.createServiceDescription("Hambre", "ComerComida", "Nevera"))
+                            SFipa.createServiceDescription("Energia", "Beber", "Nevera"))
                         </value>
                     </parameter>
-                </initialgoal>
+                </initialgoal>  
+                <initialgoal ref="df_energia_comer_comida">
+                    <parameter ref="description">
+                        <value>
+                            SFipa.createAgentDescription(null,
+                            SFipa.createServiceDescription("Energia", "ComerComida", "Nevera"))
+                        </value>
+                    </parameter>
+                </initialgoal>   
             </goals>
         </configuration>
     </configurations>
