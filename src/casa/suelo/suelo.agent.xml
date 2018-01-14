@@ -67,14 +67,12 @@
 		<maintaingoal name="terminar_dormir_suelo">
             <maintaincondition>
 				$beliefbase.tiempo_fin_dormir_suelo >= $beliefbase.tiempo
-				|| $beliefbase.tiempos_fin_dormir_suelo == null
 			</maintaincondition>
         </maintaingoal>
 		
 		<maintaingoal name="terminar_orinar_suelo">
             <maintaincondition>
 				$beliefbase.tiempo_fin_orinar_suelo >= $beliefbase.tiempo
-				|| $beliefbase.tiempos_fin_orinar_suelo == null
 			</maintaincondition>
         </maintaingoal>
 		
@@ -129,13 +127,7 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            
-            <parameter name="language" class="String" direction="fixed">
-                <value>SFipa.NUGGETS_XML</value>
-            </parameter>
-            <parameter name="content-class" class="Class" direction="fixed">
-                <value>DormirSuelo.class</value>
-            </parameter>
+            <parameter name="content" class="DormirSuelo"/>
         </messageevent>
         
 		<messageevent name="has_dormido_suelo" direction="send" type="fipa">
@@ -151,13 +143,7 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            
-            <parameter name="language" class="String" direction="fixed">
-                <value>SFipa.NUGGETS_XML</value>
-            </parameter>
-            <parameter name="content-class" class="Class" direction="fixed">
-                <value>OrinarSuelo.class</value>
-            </parameter>
+            <parameter name="content" class="OrinarSuelo"/>
         </messageevent>
         
 		<messageevent name="has_orinado_suelo" direction="send" type="fipa">
