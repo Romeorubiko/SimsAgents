@@ -1,4 +1,5 @@
-* Lizaveta Mishkinitse		NIA: 100317944
+/**
+ * Lizaveta Mishkinitse		NIA: 100317944
  * Raul Escabia				NIA: 100315903
  */
 
@@ -14,7 +15,7 @@ import ontologia.acciones.Beber;
 
 public class BeberMinibarPlan extends Plan {
     public void body() {
-    	System.out.println("BeberMinibarPla");
+
         IMessageEvent peticion = (IMessageEvent)getInitialEvent();
         Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
         Beber content = (Beber) peticion.getContent();

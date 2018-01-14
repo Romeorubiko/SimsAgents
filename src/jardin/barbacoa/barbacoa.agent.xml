@@ -58,11 +58,11 @@
         </belief>
 
         <belief name="tiempo_fin_cocinar_barbacoa" class="int">
-            <fact> (int) $beliefbase.tiempo+1000000 </fact>
+            <fact> (int) 0 </fact>
         </belief>
 
         <belief name="tiempo_fin_reparar_barbacoa" class="int">
-            <fact> (int) $beliefbase.tiempo+1000000 </fact>
+            <fact> (int) 0 </fact>
         </belief>
 
     </beliefs>
@@ -70,10 +70,16 @@
 
     <goals>
         <maintaingoal name="terminar_cocinar_barbacoa">
-            <maintaincondition>$beliefbase.tiempo_fin_cocinar_barbacoa >= $beliefbase.tiempo</maintaincondition>
+            <maintaincondition>
+            $beliefbase.tiempo_fin_cocinar_barbacoa >= $beliefbase.tiempo
+            || $beliefbase.tiempo_fin_cocinar_barbacoa == 0
+            </maintaincondition>
         </maintaingoal>
         <maintaingoal name="terminar_reparar_barbacoa">
-            <maintaincondition>$beliefbase.tiempo_fin_reparar_barbacoa >= $beliefbase.tiempo</maintaincondition>
+            <maintaincondition>
+            $beliefbase.tiempo_fin_reparar_barbacoa >= $beliefbase.tiempo
+            || $beliefbase.tiempo_fin_reparar_barbacoa == 0
+            </maintaincondition>
         </maintaingoal>
 
 

@@ -41,9 +41,14 @@
             <fact> (int)(System.currentTimeMillis()/1000) </fact>
         </belief>
 		
-		<belief name="mensajes_dormir_suelo" class="ArrayList"/>
-		<belief name="mensajes_orinar_suelo" class="ArrayList"/>
-
+		<belief name="mensajes_dormir_suelo" class="ArrayList">
+		<fact> (new ArrayList())</fact>
+		</belief>
+		
+		<belief name="mensajes_orinar_suelo" class="ArrayList">
+		<fact> (new ArrayList())</fact>
+		</belief>
+		
         <belief name="tiempos_fin_dormir_suelo" class="ArrayList">
          <fact> (new ArrayList())</fact>
          </belief>
@@ -67,12 +72,14 @@
 		<maintaingoal name="terminar_dormir_suelo">
             <maintaincondition>
 				$beliefbase.tiempo_fin_dormir_suelo >= $beliefbase.tiempo
+				|| $beliefbase.tiempo_fin_dormir_suelo == 0
 			</maintaincondition>
         </maintaingoal>
 		
 		<maintaingoal name="terminar_orinar_suelo">
             <maintaincondition>
 				$beliefbase.tiempo_fin_orinar_suelo >= $beliefbase.tiempo
+				|| $beliefbase.tiempo_fin_dormir_suelo == 0
 			</maintaincondition>
         </maintaingoal>
 		
@@ -127,7 +134,13 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="DormirSuelo"/>
+            
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+            <parameter name="content-class" class="Class" direction="fixed">
+                <value>DormirSuelo.class</value>
+            </parameter>
         </messageevent>
         
 		<messageevent name="has_dormido_suelo" direction="send" type="fipa">
@@ -143,7 +156,13 @@
             <parameter name="performative" class="String" direction="fixed">
                 <value>jadex.adapter.fipa.SFipa.REQUEST</value>
             </parameter>
-            <parameter name="content" class="OrinarSuelo"/>
+            
+            <parameter name="language" class="String" direction="fixed">
+                <value>SFipa.NUGGETS_XML</value>
+            </parameter>
+            <parameter name="content-class" class="Class" direction="fixed">
+                <value>OrinarSuelo.class</value>
+            </parameter>
         </messageevent>
         
 		<messageevent name="has_orinado_suelo" direction="send" type="fipa">

@@ -27,11 +27,11 @@ public class OrinarSueloPlan extends Plan {
 		arrayMensajes.add(peticion);
 		getBeliefbase().getBelief("mensajes_orinar_suelo").setFact(arrayMensajes);
 
-		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_orinar_suelo")
+		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_fin_orinar_suelo")
 				.getFact();
 		arrayTiempos.add((int) (System.currentTimeMillis() + Accion.TIEMPO_CORTO));
-		getBeliefbase().getBelief("tiempos_orinar_suelo").setFact(arrayTiempos);
-		getBeliefbase().getBelief("tiempo_orinar_suelo").setFact(arrayTiempos.get(0));
+		getBeliefbase().getBelief("tiempos_fin_orinar_suelo").setFact(arrayTiempos);
+		getBeliefbase().getBelief("tiempo_fin_orinar_suelo").setFact(arrayTiempos.get(0));
 		
 		/**if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_orinar_suelo").getFact()).size() == 1) {
 			IGoal goal = createGoal("terminar_orinar_suelo");

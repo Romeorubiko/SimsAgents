@@ -19,7 +19,7 @@ import ontologia.predicados.CamaHecha;
 public class HacerCamaTerminarPlan extends Plan {
     public void body() {
 
-    	int new_timer = (int) (System.currentTimeMillis()/1000 + 100000);
+    	//int new_timer = (int) (System.currentTimeMillis()/1000 + 100000);
         
         IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_hacer_cama").getFact();
         HacerLaCama contenido = (HacerLaCama) peticion.getContent();
@@ -39,7 +39,7 @@ public class HacerCamaTerminarPlan extends Plan {
         sendMessage(inform);
 
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-        getBeliefbase().getBelief("tiempo_fin_hacer_cama").setFact(new Integer (new_timer));
+        getBeliefbase().getBelief("tiempo_fin_hacer_cama").setFact(new Integer (0));
 
 
     }

@@ -49,11 +49,11 @@
         </belief>
         
         <belief name="tiempo_fin_descansar_cama" class="int">
-            <fact> (int) $beliefbase.tiempo+100000 </fact>
+            <fact> (int) 0 </fact>
         </belief>
         
         <belief name="tiempo_fin_hacer_cama" class="int">
-            <fact> (int) $beliefbase.tiempo+100000 </fact>
+            <fact> (int) 0 </fact>
         </belief>
 
 
@@ -61,10 +61,16 @@
 
     <goals>
         <maintaingoal name="terminar_descansar_cama">
-            <maintaincondition>$beliefbase.tiempo_fin_descansar_cama >= $beliefbase.tiempo</maintaincondition>
+            <maintaincondition>
+            $beliefbase.tiempo_fin_descansar_cama >= $beliefbase.tiempo
+            || $beliefbase.tiempo_fin_descansar_cama == 0
+            </maintaincondition>
         </maintaingoal>
         <maintaingoal name="terminar_hacer_cama">
-            <maintaincondition>$beliefbase.tiempo_fin_hacer_cama >= $beliefbase.tiempo</maintaincondition>
+            <maintaincondition>
+            $beliefbase.tiempo_fin_hacer_cama >= $beliefbase.tiempo
+            || $beliefbase.tiempo_fin_hacer_cama == 0
+            </maintaincondition>
         </maintaingoal>
 
         <maintaingoalref name="df_energia_descansar">

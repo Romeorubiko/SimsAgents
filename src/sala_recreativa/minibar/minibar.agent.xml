@@ -44,14 +44,17 @@
         </belief>
 
         <belief name="tiempo_fin_minibar" class="int">
-            <fact> (int) $beliefbase.tiempo+100000 </fact>
+            <fact> (int) 0 </fact>
         </belief>
 
     </beliefs>
 
     <goals>
         <maintaingoal name="terminar_beber_minibar">
-            <maintaincondition>$beliefbase.tiempo_fin_minibar >= $beliefbase.tiempo</maintaincondition>
+            <maintaincondition>
+            $beliefbase.tiempo_fin_minibar >= $beliefbase.tiempo
+            || $beliefbase.tiempo_fin_minibar == 0
+            </maintaincondition>
         </maintaingoal>
 
         <maintaingoalref name="df_diversion_beber">

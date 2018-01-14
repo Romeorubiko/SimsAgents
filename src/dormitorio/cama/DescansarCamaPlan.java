@@ -15,9 +15,9 @@ import ontologia.acciones.Descansar;
 public class DescansarCamaPlan extends Plan {
     public void body(){
 
-        IMessageEvent peticion = ((IMessageEvent)getInitialEvent());
-        Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
+        IMessageEvent peticion = ((IMessageEvent)getInitialEvent());      
         Descansar content = (Descansar) peticion.getContent();
+        Boolean ocupado = (Boolean)getBeliefbase().getBelief("ocupado").getFact();
 
         if(ocupado.booleanValue()) {
             IMessageEvent refuse = createMessageEvent("cama_ocupada");
@@ -35,7 +35,7 @@ public class DescansarCamaPlan extends Plan {
 
             getBeliefbase().getBelief("mensaje_descansar_cama").setFact(peticion);
 
-            int end_timer = (int) (System.currentTimeMillis()/1000) + Accion.TIEMPO_CORTO;
+            int end_timer = (int) (System.currentTimeMillis()/1000) + Accion.TIEMPO_LARGO;
             getBeliefbase().getBelief("tiempo_fin_descansar_cama").setFact(new Integer(end_timer));
 
         }

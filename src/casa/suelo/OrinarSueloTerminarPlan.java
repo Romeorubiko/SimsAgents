@@ -50,15 +50,17 @@ public class OrinarSueloTerminarPlan extends Plan {
 		arrayMensajes.remove(0);
 		getBeliefbase().getBelief("mensajes_orinar_suelo").setFact(arrayMensajes);
 
-		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_orinar_suelo")
+		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_fin_orinar_suelo")
 				.getFact();
 		arrayTiempos.remove(0);
-		getBeliefbase().getBelief("tiempos_orinar_suelo").setFact(arrayTiempos);
+		getBeliefbase().getBelief("tiempos_fin_orinar_suelo").setFact(arrayTiempos);
 
 		IMessageEvent inform = createMessageEvent("has_orinado_suelo");
-		inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+		inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
 		inform.setContent(response);
 		sendMessage(inform);
+		
+		getBeliefbase().getBelief("tiempo_fin_orinar_suelo").setFact(new Integer (0));
 
 	}
 

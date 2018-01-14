@@ -33,7 +33,7 @@ public class EntrenarTerminarPlan extends Plan {
         Hambre hmb = contenido.getHambre();
         Deporte d = contenido.getDeporte();
 
-        //A mÃ¡s nivel gasta menos energÃ­a
+        //A más nivel gasta menos energía
         e.setGrado(e.getGrado()- Necesidad.NC_POCO/d.getNivel());
         h.setGrado(h.getGrado()-Necesidad.NC_POCO);
         hmb.setGrado(hmb.getGrado()-Necesidad.NC_POCO);

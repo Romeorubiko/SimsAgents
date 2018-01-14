@@ -24,7 +24,7 @@ import ontologia.predicados.PerritosQuemados;
 public class CocinarBarbacoaTerminarPlan extends Plan {
     public void body() {
 
-        int new_timer = (int) (System.currentTimeMillis()/1000 + 10000000);
+        //int new_timer = (int) (System.currentTimeMillis()/1000 + 10000000);
       
         IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_cocinar_barbacoa").getFact();
         CocinarComidaBarbacoa contenido = (CocinarComidaBarbacoa)peticion.getContent();
@@ -72,7 +72,7 @@ public class CocinarBarbacoaTerminarPlan extends Plan {
             
         }  
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-        getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer(new_timer));
+        getBeliefbase().getBelief("tiempo_fin_cocinar_barbacoa").setFact(new Integer(0));
 
     }
 }

@@ -50,15 +50,19 @@ public class DormirSueloTerminarPlan extends Plan {
 		arrayMensajes.remove(0);
 		getBeliefbase().getBelief("mensajes_dormir_suelo").setFact(arrayMensajes);
 
-		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_dormir_suelo")
+		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_fin_dormir_suelo")
 				.getFact();
 		arrayTiempos.remove(0);
-		getBeliefbase().getBelief("tiempos_dormir_suelo").setFact(arrayTiempos);
+		getBeliefbase().getBelief("tiempos_fin_dormir_suelo").setFact(arrayTiempos);
+		
 
 		IMessageEvent inform = createMessageEvent("has_dormido_suelo");
-		inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameterSet(SFipa.SENDER).getValues());
+		inform.getParameterSet(SFipa.RECEIVERS).addValue(peticion.getParameter(SFipa.SENDER).getValue());
 		inform.setContent(response);
 		sendMessage(inform);
+		
+		getBeliefbase().getBelief("tiempo_fin_dormir_suelo").setFact(new Integer (0));
+
 
 	}
 }

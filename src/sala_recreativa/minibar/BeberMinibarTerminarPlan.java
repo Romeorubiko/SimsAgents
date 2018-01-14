@@ -18,8 +18,8 @@ import ontologia.predicados.HasBebido;
 
 public class BeberMinibarTerminarPlan extends Plan {
     public void body() {
-    	System.out.println("BeberMinibarPlaTerminar");
-    	int new_timer = (int) (System.currentTimeMillis()/1000 + 100000);      
+
+    	//int new_timer = (int) (System.currentTimeMillis()/1000 + 100000);      
 
         IMessageEvent peticion= (IMessageEvent)getBeliefbase().getBelief("mensaje_beber_minibar").getFact();
         Beber contenido = (Beber) peticion.getContent();
@@ -38,6 +38,6 @@ public class BeberMinibarTerminarPlan extends Plan {
         sendMessage(inform);
         
         getBeliefbase().getBelief("ocupado").setFact(Boolean.FALSE);
-        getBeliefbase().getBelief("tiempo_fin_minibar").setFact(new Integer (new_timer));
+        getBeliefbase().getBelief("tiempo_fin_minibar").setFact(new Integer (0));
     }
 }
