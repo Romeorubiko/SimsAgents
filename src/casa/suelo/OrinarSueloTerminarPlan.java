@@ -27,22 +27,21 @@ public class OrinarSueloTerminarPlan extends Plan {
 		/*if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_orinar_suelo").getFact()).size() == 1) {
 			getGoalbase().getGoal("terminar_orinar_suelo").drop();
 		}*/
-
-		IMessageEvent peticion = ((ArrayList<IMessageEvent>) getBeliefbase()
-				.getBelief("mensajes_orinar_suelo").getFact()).get(0);
+		System.out.println("OrinarSueloTErminarPlan");
+		IMessageEvent peticion = ((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_orinar_suelo").getFact()).get(0);
 		OrinarSuelo content = (OrinarSuelo) peticion.getContent();
 		HasOrinadoSuelo response = new HasOrinadoSuelo();
 
 		Higiene h = content.getHigiene();
-		h.setGrado(content.getHigiene().getGrado() - Necesidad.NC_MUCHO);
+		h.setGrado(content.getHigiene().getGrado() - 50);
 		response.setHigiene(h);
 
 		Diversion d = content.getDiversion();
-		d.setGrado(content.getDiversion().getGrado() - Necesidad.NC_NORMAL);
+		d.setGrado(content.getDiversion().getGrado() - 50);
 		response.setDiversion(d);
 
 		Vejiga v = content.getVejiga();
-		v.setGrado(content.getVejiga().getGrado() + Necesidad.NC_NORMAL);
+		v.setGrado(100);
 		response.setVejiga(v);
 
 		ArrayList<IMessageEvent> arrayMensajes = (ArrayList<IMessageEvent>) getBeliefbase()

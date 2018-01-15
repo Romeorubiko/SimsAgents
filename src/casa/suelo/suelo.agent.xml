@@ -79,7 +79,7 @@
 		<maintaingoal name="terminar_orinar_suelo">
             <maintaincondition>
 				$beliefbase.tiempo_fin_orinar_suelo >= $beliefbase.tiempo
-				|| $beliefbase.tiempo_fin_dormir_suelo == 0
+				|| $beliefbase.tiempo_fin_orinar_suelo == 0
 			</maintaincondition>
         </maintaingoal>
 		

@@ -19,19 +19,19 @@ public class OrinarSueloPlan extends Plan {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void body() {
-		IMessageEvent peticion = ((IMessageEvent) getInitialEvent());
+		System.out.println("OrinarSueloPlan");
+		IMessageEvent peticion = (IMessageEvent) getInitialEvent();
 
 
 		ArrayList<IMessageEvent> arrayMensajes = (ArrayList<IMessageEvent>) getBeliefbase()
 				.getBelief("mensajes_orinar_suelo").getFact();
 		arrayMensajes.add(peticion);
 		getBeliefbase().getBelief("mensajes_orinar_suelo").setFact(arrayMensajes);
-
-		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_fin_orinar_suelo")
-				.getFact();
-		arrayTiempos.add((int) (System.currentTimeMillis() + Accion.TIEMPO_CORTO));
+		ArrayList<Integer> arrayTiempos = (ArrayList<Integer>) getBeliefbase().getBelief("tiempos_fin_orinar_suelo").getFact();
+		arrayTiempos.add((int) (System.currentTimeMillis()/1000) + Accion.TIEMPO_CORTO);
 		getBeliefbase().getBelief("tiempos_fin_orinar_suelo").setFact(arrayTiempos);
-		getBeliefbase().getBelief("tiempo_fin_orinar_suelo").setFact(arrayTiempos.get(0));
+		getBeliefbase().getBelief("tiempo_fin_orinar_suelo").setFact(new Integer (arrayTiempos.get(0)));
+		
 		
 		/**if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_orinar_suelo").getFact()).size() == 1) {
 			IGoal goal = createGoal("terminar_orinar_suelo");
