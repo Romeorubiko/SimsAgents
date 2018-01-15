@@ -27,7 +27,7 @@ public class OrinarSueloTerminarPlan extends Plan {
 		/*if (((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_orinar_suelo").getFact()).size() == 1) {
 			getGoalbase().getGoal("terminar_orinar_suelo").drop();
 		}*/
-		System.out.println("OrinarSueloTErminarPlan");
+		
 		IMessageEvent peticion = ((ArrayList<IMessageEvent>) getBeliefbase().getBelief("mensajes_orinar_suelo").getFact()).get(0);
 		OrinarSuelo content = (OrinarSuelo) peticion.getContent();
 		HasOrinadoSuelo response = new HasOrinadoSuelo();
