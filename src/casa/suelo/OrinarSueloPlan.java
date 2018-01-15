@@ -19,7 +19,7 @@ public class OrinarSueloPlan extends Plan {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void body() {
-		System.out.println("OrinarSueloPlan");
+		
 		IMessageEvent peticion = (IMessageEvent) getInitialEvent();
 
 
